@@ -5,6 +5,9 @@
 const DATA = {};
 const FILES = ['matches', 'standings', 'scorers', 'teams', 'meta'];
 
+// Abertura da Copa 2026 (usada como fallback enquanto a API não publica os jogos).
+const KICKOFF = '2026-06-11T18:00:00Z';
+
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
@@ -38,6 +41,13 @@ function crest(team) {
 
 function teamCell(team, align = '') {
   return `<span class="team-cell ${align}">${crest(team)}<span>${team?.name ?? '—'}</span></span>`;
+}
+
+// Normaliza o nome do grupo: "Group A" ou "GROUP_A" -> "Grupo A".
+function groupLabel(g) {
+  if (!g) return '';
+  const letter = g.replace(/^group/i, '').replace(/[_\s]/g, '').toUpperCase();
+  return letter ? `Grupo ${letter}` : g;
 }
 
 function fmtTime(iso) {
@@ -74,16 +84,20 @@ function startCountdown() {
     .filter(d => d > new Date())
     .sort((a, b) => a - b)[0];
 
-  const box = $('#countdown');
-  if (!next) { box.innerHTML = '<span class="countdown-label">🏆 Em andamento</span>'; return; }
+  // Sem jogos agendados na API ainda: usa a data de abertura como alvo.
+  const target = next || (new Date(KICKOFF) > new Date() ? new Date(KICKOFF) : null);
 
+  const box = $('#countdown');
+  if (!target) { box.innerHTML = '<span class="countdown-label">🏆 Em andamento</span>'; return; }
+
+  const label = next ? 'Próximo jogo:' : 'Abertura da Copa:';
   const tick = () => {
-    const diff = next - new Date();
+    const diff = target - new Date();
     if (diff <= 0) { box.innerHTML = '<span class="countdown-label">🔴 Começou!</span>'; return; }
     const d = Math.floor(diff / 864e5);
     const h = Math.floor(diff % 864e5 / 36e5);
     const m = Math.floor(diff % 36e5 / 6e4);
-    box.innerHTML = `<span class="countdown-label">Próximo jogo:</span>
+    box.innerHTML = `<span class="countdown-label">${label}</span>
       <span><span class="num">${d}</span><span class="unit"> d</span></span>
       <span><span class="num">${h}</span><span class="unit"> h</span></span>
       <span><span class="num">${m}</span><span class="unit"> min</span></span>`;
@@ -119,7 +133,7 @@ function matchHTML(m) {
     center = `<div class="score">${ft.home ?? 0} : ${ft.away ?? 0}</div>` +
       (live ? '<div class="badge-live">AO VIVO</div>' : `<div class="stage">${STAGE_LABELS[m.stage] || ''}</div>`);
   } else {
-    center = `<div class="time">${fmtTime(m.utcDate)}</div><div class="stage">${m.group ? m.group.replace('GROUP_', 'Grupo ') : (STAGE_LABELS[m.stage] || '')}</div>`;
+    center = `<div class="time">${fmtTime(m.utcDate)}</div><div class="stage">${m.group ? groupLabel(m.group) : (STAGE_LABELS[m.stage] || '')}</div>`;
   }
   return `<div class="match">
     <div class="side home">${teamCell(m.homeTeam, 'home')}</div>
@@ -168,7 +182,7 @@ function renderStandings() {
   }
   el.innerHTML = groups.map(g => `
     <div class="group-card">
-      <h3>${g.group.replace('GROUP_', 'Grupo ')}</h3>
+      <h3>${groupLabel(g.group)}</h3>
       <table>
         <thead><tr><th>#</th><th>Seleção</th><th>P</th><th>J</th><th>SG</th></tr></thead>
         <tbody>
@@ -251,7 +265,7 @@ function renderAllMatches() {
   const filter = $('#matches-filter');
   const groups = [...new Set(matches.map(m => m.group).filter(Boolean))].sort();
   filter.innerHTML = '<option value="">Todos os jogos</option>' +
-    groups.map(g => `<option value="${g}">${g.replace('GROUP_', 'Grupo ')}</option>`).join('');
+    groups.map(g => `<option value="${g}">${groupLabel(g)}</option>`).join('');
 
   const draw = () => {
     const g = filter.value;
