@@ -58,6 +58,34 @@ a { color: var(--accent); }
 .countdown-label { font-weight: 600; }
 .updated { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
 
+/* ---------- Seletor de idioma ---------- */
+.lang-switcher {
+  display: inline-flex;
+  gap: 2px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.lang-btn:hover { color: var(--text); }
+.lang-btn.is-active { background: var(--green); color: #06240f; }
+.lang-flag { font-size: 14px; line-height: 1; }
+
 /* ---------- Tabs ---------- */
 .tabs {
   display: flex;

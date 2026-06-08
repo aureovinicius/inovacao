@@ -2,6 +2,8 @@
 // Lê os JSON gerados em /data (atualizados diariamente pelo script de fetch).
 // Nenhuma chave de API é usada no front — tudo vem de arquivos estáticos.
 
+import { LANGS, UI, STAGE_KEY, TEAMS, TEAMS_BY_NAME } from './i18n.js';
+
 const DATA = {};
 const FILES = ['matches', 'standings', 'scorers', 'teams', 'meta'];
 
@@ -11,15 +13,25 @@ const KICKOFF = '2026-06-11T18:00:00Z';
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
-const STAGE_LABELS = {
-  GROUP_STAGE: 'Fase de grupos',
-  LAST_32: '16-avos',
-  LAST_16: 'Oitavas',
-  QUARTER_FINALS: 'Quartas',
-  SEMI_FINALS: 'Semifinal',
-  THIRD_PLACE: 'Disputa 3º lugar',
-  FINAL: 'Final',
-};
+// ---------- Idioma ----------
+const LANG_CODES = LANGS.map(l => l.code);
+function detectLang() {
+  const saved = localStorage.getItem('lang');
+  if (saved && LANG_CODES.includes(saved)) return saved;
+  const nav = (navigator.language || 'pt-BR').toLowerCase();
+  if (nav.startsWith('en')) return 'en-US';
+  if (nav.startsWith('es')) return 'es-MX';
+  return 'pt-BR';
+}
+let lang = detectLang();
+const t = (key) => UI[lang][key] ?? key;
+
+function teamName(team) {
+  if (!team) return t('tbd');
+  if (team.tla && TEAMS[team.tla]) return TEAMS[team.tla][lang];
+  if (team.name && TEAMS_BY_NAME[team.name]) return TEAMS_BY_NAME[team.name][lang];
+  return team.name ?? t('tbd');
+}
 
 // ---------- Carregamento ----------
 async function loadData() {
@@ -40,19 +52,22 @@ function crest(team) {
 }
 
 function teamCell(team, align = '') {
-  return `<span class="team-cell ${align}">${crest(team)}<span>${team?.name ?? '—'}</span></span>`;
+  return `<span class="team-cell ${align}">${crest(team)}<span>${teamName(team)}</span></span>`;
 }
 
-// Normaliza o nome do grupo: "Group A" ou "GROUP_A" -> "Grupo A".
+// Nome do grupo traduzido: "Group A" / "GROUP_A" -> "Grupo A" / "Group A" / "Grupo A".
 function groupLabel(g) {
   if (!g) return '';
   const letter = g.replace(/^group/i, '').replace(/[_\s]/g, '').toUpperCase();
-  return letter ? `Grupo ${letter}` : g;
+  return letter ? `${t('group')} ${letter}` : g;
+}
+
+function stageLabel(stage) {
+  return STAGE_KEY[stage] ? t(STAGE_KEY[stage]) : '';
 }
 
 function fmtTime(iso) {
-  const d = new Date(iso);
-  return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  return new Date(iso).toLocaleString(lang, { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
 
 function isSameDay(iso, ref) {
@@ -65,7 +80,7 @@ function renderMeta() {
   const meta = DATA.meta || {};
   const el = $('#last-updated');
   if (meta.generatedAt) {
-    el.textContent = new Date(meta.generatedAt).toLocaleString('pt-BR');
+    el.textContent = new Date(meta.generatedAt).toLocaleString(lang);
     el.dateTime = meta.generatedAt;
   } else {
     el.textContent = '—';
@@ -76,7 +91,9 @@ function allMatches() {
   return DATA.matches?.matches || [];
 }
 
+let countdownTimer = null;
 function startCountdown() {
+  if (countdownTimer) clearInterval(countdownTimer);
   const matches = allMatches();
   const next = matches
     .filter(m => m.status === 'SCHEDULED' || m.status === 'TIMED')
@@ -88,22 +105,22 @@ function startCountdown() {
   const target = next || (new Date(KICKOFF) > new Date() ? new Date(KICKOFF) : null);
 
   const box = $('#countdown');
-  if (!target) { box.innerHTML = '<span class="countdown-label">🏆 Em andamento</span>'; return; }
+  if (!target) { box.innerHTML = `<span class="countdown-label">${t('cd_live')}</span>`; return; }
 
-  const label = next ? 'Próximo jogo:' : 'Abertura da Copa:';
+  const label = next ? t('cd_next') : t('cd_kickoff');
   const tick = () => {
     const diff = target - new Date();
-    if (diff <= 0) { box.innerHTML = '<span class="countdown-label">🔴 Começou!</span>'; return; }
+    if (diff <= 0) { box.innerHTML = `<span class="countdown-label">${t('cd_started')}</span>`; return; }
     const d = Math.floor(diff / 864e5);
     const h = Math.floor(diff % 864e5 / 36e5);
     const m = Math.floor(diff % 36e5 / 6e4);
     box.innerHTML = `<span class="countdown-label">${label}</span>
-      <span><span class="num">${d}</span><span class="unit"> d</span></span>
-      <span><span class="num">${h}</span><span class="unit"> h</span></span>
-      <span><span class="num">${m}</span><span class="unit"> min</span></span>`;
+      <span><span class="num">${d}</span><span class="unit"> ${t('unit_d')}</span></span>
+      <span><span class="num">${h}</span><span class="unit"> ${t('unit_h')}</span></span>
+      <span><span class="num">${m}</span><span class="unit"> ${t('unit_min')}</span></span>`;
   };
   tick();
-  setInterval(tick, 30000);
+  countdownTimer = setInterval(tick, 30000);
 }
 
 function renderSummary() {
@@ -114,10 +131,10 @@ function renderSummary() {
   const avg = played.length ? (goals / played.length).toFixed(2) : '0.00';
 
   const cards = [
-    { value: teams, label: 'Seleções' },
-    { value: `${played.length}/${matches.length || '—'}`, label: 'Jogos disputados' },
-    { value: goals, label: 'Gols marcados' },
-    { value: avg, label: 'Média de gols/jogo' },
+    { value: teams, label: t('card_teams') },
+    { value: `${played.length}/${matches.length || '—'}`, label: t('card_played') },
+    { value: goals, label: t('card_goals') },
+    { value: avg, label: t('card_avg') },
   ];
   $('#summary-cards').innerHTML = cards.map(c =>
     `<div class="stat-card"><div class="value">${c.value}</div><div class="label">${c.label}</div></div>`
@@ -131,9 +148,9 @@ function matchHTML(m) {
   let center;
   if (finished || live) {
     center = `<div class="score">${ft.home ?? 0} : ${ft.away ?? 0}</div>` +
-      (live ? '<div class="badge-live">AO VIVO</div>' : `<div class="stage">${STAGE_LABELS[m.stage] || ''}</div>`);
+      (live ? `<div class="badge-live">${t('live')}</div>` : `<div class="stage">${stageLabel(m.stage)}</div>`);
   } else {
-    center = `<div class="time">${fmtTime(m.utcDate)}</div><div class="stage">${m.group ? groupLabel(m.group) : (STAGE_LABELS[m.stage] || '')}</div>`;
+    center = `<div class="time">${fmtTime(m.utcDate)}</div><div class="stage">${m.group ? groupLabel(m.group) : stageLabel(m.stage)}</div>`;
   }
   return `<div class="match">
     <div class="side home">${teamCell(m.homeTeam, 'home')}</div>
@@ -145,20 +162,17 @@ function matchHTML(m) {
 function renderToday() {
   const ref = new Date();
   const today = allMatches().filter(m => isSameDay(m.utcDate, ref));
-  const el = $('#today-matches');
-  el.innerHTML = today.length ? today.map(matchHTML).join('')
-    : '<p class="empty">Nenhum jogo hoje. Confira a aba “Jogos” para a tabela completa.</p>';
+  $('#today-matches').innerHTML = today.length ? today.map(matchHTML).join('')
+    : `<p class="empty">${t('no_today')}</p>`;
 }
 
 function renderScorers() {
   const scorers = DATA.scorers?.scorers || [];
-  // Top 5 resumido
   $('#mini-scorers').innerHTML = scorers.slice(0, 5).map((s, i) =>
     `<li><span class="pos">${i + 1}</span>${teamCell(s.team)}
      <span>${s.player?.name ?? '—'}</span><span class="goals">${s.goals ?? 0} ⚽</span></li>`
-  ).join('') || '<li class="empty">Sem dados de artilharia ainda.</li>';
+  ).join('') || `<li class="empty">${t('no_scorers')}</li>`;
 
-  // Tabela completa
   const tbody = $('#scorers-table tbody');
   tbody.innerHTML = scorers.map((s, i) =>
     `<tr>
@@ -170,21 +184,21 @@ function renderScorers() {
       <td>${s.penalties ?? 0}</td>
       <td>${s.playedMatches ?? '—'}</td>
     </tr>`
-  ).join('') || '<tr><td colspan="7" class="empty">Sem dados de artilharia ainda.</td></tr>';
+  ).join('') || `<tr><td colspan="7" class="empty">${t('no_scorers')}</td></tr>`;
 }
 
 function renderStandings() {
   const groups = (DATA.standings?.standings || []).filter(s => s.type === 'TOTAL' && s.group);
   const el = $('#groups-container');
   if (!groups.length) {
-    el.innerHTML = '<p class="empty">Classificação ainda não disponível (a fase de grupos começa em 11/06).</p>';
+    el.innerHTML = `<p class="empty">${t('standings_empty')}</p>`;
     return;
   }
   el.innerHTML = groups.map(g => `
     <div class="group-card">
       <h3>${groupLabel(g.group)}</h3>
       <table>
-        <thead><tr><th>#</th><th>Seleção</th><th>P</th><th>J</th><th>SG</th></tr></thead>
+        <thead><tr><th>#</th><th>${t('th_team')}</th><th>${t('th_p')}</th><th>${t('th_j')}</th><th>${t('th_sg')}</th></tr></thead>
         <tbody>
           ${g.table.map(r => `
             <tr class="${r.position <= 2 ? 'qualify' : ''}">
@@ -202,21 +216,19 @@ function renderStandings() {
 // ---------- Chaveamento ----------
 // Formato da Copa 2026: 32 classificados -> oitavas -> quartas -> semis -> final.
 const KO_STAGES = [
-  { key: 'LAST_32', label: '16-avos', slots: 16 },
-  { key: 'LAST_16', label: 'Oitavas', slots: 8 },
-  { key: 'QUARTER_FINALS', label: 'Quartas', slots: 4 },
-  { key: 'SEMI_FINALS', label: 'Semis', slots: 2 },
-  { key: 'FINAL', label: 'Final', slots: 1 },
+  { key: 'LAST_32', tkey: 'ko_last32', slots: 16 },
+  { key: 'LAST_16', tkey: 'ko_last16', slots: 8 },
+  { key: 'QUARTER_FINALS', tkey: 'ko_qf', slots: 4 },
+  { key: 'SEMI_FINALS', tkey: 'ko_sf', slots: 2 },
+  { key: 'FINAL', tkey: 'ko_final', slots: 1 },
 ];
 
 function bracketTeam(team, isWinner) {
-  return `<div class="bt ${isWinner ? 'win' : ''}">${crest(team)}<span>${team?.name ?? 'A definir'}</span></div>`;
+  return `<div class="bt ${isWinner ? 'win' : ''}">${crest(team)}<span>${teamName(team)}</span></div>`;
 }
 
-function bracketMatch(m, placeholder = false) {
-  if (placeholder || !m) {
-    return `<div class="bm pending">${bracketTeam(null)}${bracketTeam(null)}</div>`;
-  }
+function bracketMatch(m) {
+  if (!m) return `<div class="bm pending">${bracketTeam(null)}${bracketTeam(null)}</div>`;
   const ft = m.score?.fullTime || {};
   const done = m.status === 'FINISHED';
   const hw = m.score?.winner === 'HOME_TEAM';
@@ -235,20 +247,19 @@ function renderBracket() {
 
   $('#bracket').innerHTML = KO_STAGES.map(st => {
     const ms = byStage(st.key);
-    const cells = Array.from({ length: st.slots }, (_, i) => bracketMatch(ms[i], !ms[i]));
+    const cells = Array.from({ length: st.slots }, (_, i) => bracketMatch(ms[i]));
     return `<div class="bracket-col">
-      <h3>${st.label}</h3>
+      <h3>${t(st.tkey)}</h3>
       <div class="bracket-cells">${cells.join('')}</div>
     </div>`;
   }).join('');
 
   const third = ko.find(m => m.stage === 'THIRD_PLACE');
-  $('#third-place').innerHTML = `<h3>Disputa de 3º lugar</h3>${bracketMatch(third, !third)}`;
+  $('#third-place').innerHTML = `<h3>${t('bracket_third')}</h3>${bracketMatch(third)}`;
 }
 
 // ---------- Comparador ----------
 function teamStatsTable() {
-  // Agrega estatísticas por time a partir das standings.
   const map = {};
   (DATA.standings?.standings || []).filter(s => s.type === 'TOTAL').forEach(s => {
     s.table.forEach(r => {
@@ -265,19 +276,23 @@ function teamStatsTable() {
 
 function renderCompareControls() {
   const stats = teamStatsTable();
-  const teams = Object.values(stats).map(s => s.team).sort((a, b) => a.name.localeCompare(b.name));
-  const opts = teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+  const teams = Object.values(stats).map(s => s.team)
+    .sort((a, b) => teamName(a).localeCompare(teamName(b), lang));
   if (!teams.length) {
-    $('#compare-result').innerHTML = '<p class="empty">Disponível quando a fase de grupos começar.</p>';
+    $('#compare-result').innerHTML = `<p class="empty">${t('compare_empty')}</p>`;
     return;
   }
-  $('#team-a').innerHTML = opts;
-  $('#team-b').innerHTML = opts;
-  if (teams[1]) $('#team-b').value = teams[1].id;
+  const opts = teams.map(tm => `<option value="${tm.id}">${teamName(tm)}</option>`).join('');
+  const a = $('#team-a'), b = $('#team-b');
+  const prevA = a.value, prevB = b.value;        // preserva seleção ao trocar idioma
+  a.innerHTML = opts;
+  b.innerHTML = opts;
+  a.value = prevA || teams[0].id;
+  b.value = prevB || (teams[1] ? teams[1].id : teams[0].id);
 
-  const update = () => renderCompare(stats, $('#team-a').value, $('#team-b').value);
-  $('#team-a').onchange = update;
-  $('#team-b').onchange = update;
+  const update = () => renderCompare(stats, a.value, b.value);
+  a.onchange = update;
+  b.onchange = update;
   update();
 }
 
@@ -285,11 +300,11 @@ function renderCompare(stats, idA, idB) {
   const a = stats[idA], b = stats[idB];
   if (!a || !b) return;
   const rows = [
-    ['Pontos', a.points, b.points],
-    ['Vitórias', a.won, b.won],
-    ['Gols pró', a.goalsFor, b.goalsFor],
-    ['Gols contra', a.goalsAgainst, b.goalsAgainst],
-    ['Saldo de gols', a.gd, b.gd],
+    [t('cmp_points'), a.points, b.points],
+    [t('cmp_wins'), a.won, b.won],
+    [t('cmp_goals_for'), a.goalsFor, b.goalsFor],
+    [t('cmp_goals_against'), a.goalsAgainst, b.goalsAgainst],
+    [t('cmp_gd'), a.gd, b.gd],
   ];
   $('#compare-result').innerHTML = `
     <div class="compare-row"><div class="va">${teamCell(a.team)}</div><div></div><div class="vb">${teamCell(b.team)}</div></div>
@@ -310,18 +325,59 @@ function renderCompare(stats, idA, idB) {
 function renderAllMatches() {
   const matches = [...allMatches()].sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
   const filter = $('#matches-filter');
+  const prev = filter.value;
   const groups = [...new Set(matches.map(m => m.group).filter(Boolean))].sort();
-  filter.innerHTML = '<option value="">Todos os jogos</option>' +
+  filter.innerHTML = `<option value="">${t('matches_all')}</option>` +
     groups.map(g => `<option value="${g}">${groupLabel(g)}</option>`).join('');
+  filter.value = prev;
 
   const draw = () => {
     const g = filter.value;
     const list = g ? matches.filter(m => m.group === g) : matches;
     $('#all-matches').innerHTML = list.length ? list.map(matchHTML).join('')
-      : '<p class="empty">Sem jogos para este filtro.</p>';
+      : `<p class="empty">${t('matches_empty')}</p>`;
   };
   filter.onchange = draw;
   draw();
+}
+
+// ---------- i18n estático + seletor de idioma ----------
+function applyStaticI18n() {
+  document.documentElement.lang = lang.toLowerCase();
+  document.title = t('title');
+  $$('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+}
+
+function renderLangSwitcher() {
+  const box = $('#lang-switcher');
+  box.innerHTML = LANGS.map(l =>
+    `<button class="lang-btn ${l.code === lang ? 'is-active' : ''}" data-lang="${l.code}" title="${l.code}">
+       <span class="lang-flag">${l.flag}</span><span class="lang-label">${l.label}</span>
+     </button>`
+  ).join('');
+  $$('.lang-btn', box).forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.lang === lang) return;
+      lang = btn.dataset.lang;
+      localStorage.setItem('lang', lang);
+      renderAll();
+    });
+  });
+}
+
+// ---------- Render geral ----------
+function renderAll() {
+  applyStaticI18n();
+  renderLangSwitcher();
+  renderMeta();
+  startCountdown();
+  renderSummary();
+  renderToday();
+  renderScorers();
+  renderStandings();
+  renderBracket();
+  renderCompareControls();
+  renderAllMatches();
 }
 
 // ---------- Navegação ----------
@@ -339,15 +395,7 @@ function initTabs() {
 // ---------- Boot ----------
 async function init() {
   await loadData();
-  renderMeta();
-  startCountdown();
-  renderSummary();
-  renderToday();
-  renderScorers();
-  renderStandings();
-  renderBracket();
-  renderCompareControls();
-  renderAllMatches();
+  renderAll();
   initTabs();
 }
 
