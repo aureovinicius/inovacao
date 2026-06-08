@@ -29,6 +29,7 @@
     <button class="tab is-active" data-view="overview" role="tab">Visão geral</button>
     <button class="tab" data-view="scorers" role="tab">Artilharia</button>
     <button class="tab" data-view="standings" role="tab">Classificação</button>
+    <button class="tab" data-view="bracket" role="tab">Chaveamento</button>
     <button class="tab" data-view="compare" role="tab">Comparador</button>
     <button class="tab" data-view="matches" role="tab">Jogos</button>
   </nav>
@@ -63,6 +64,18 @@
     <!-- CLASSIFICAÇÃO -->
     <section class="view" data-view="standings">
       <div id="groups-container" class="groups"></div>
+    </section>
+
+    <!-- CHAVEAMENTO -->
+    <section class="view" data-view="bracket">
+      <div class="panel">
+        <div class="bracket-head">
+          <h2>Chaveamento — fase final</h2>
+          <p class="bracket-note">32 classificados: 1º e 2º de cada grupo + 8 melhores 3º lugares. Preenche automaticamente conforme os jogos avançam.</p>
+        </div>
+        <div id="bracket" class="bracket"></div>
+        <div id="third-place" class="third-place"></div>
+      </div>
     </section>
 
     <!-- COMPARADOR -->

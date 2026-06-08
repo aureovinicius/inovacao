@@ -199,6 +199,53 @@ function renderStandings() {
     </div>`).join('');
 }
 
+// ---------- Chaveamento ----------
+// Formato da Copa 2026: 32 classificados -> oitavas -> quartas -> semis -> final.
+const KO_STAGES = [
+  { key: 'LAST_32', label: '16-avos', slots: 16 },
+  { key: 'LAST_16', label: 'Oitavas', slots: 8 },
+  { key: 'QUARTER_FINALS', label: 'Quartas', slots: 4 },
+  { key: 'SEMI_FINALS', label: 'Semis', slots: 2 },
+  { key: 'FINAL', label: 'Final', slots: 1 },
+];
+
+function bracketTeam(team, isWinner) {
+  return `<div class="bt ${isWinner ? 'win' : ''}">${crest(team)}<span>${team?.name ?? 'A definir'}</span></div>`;
+}
+
+function bracketMatch(m, placeholder = false) {
+  if (placeholder || !m) {
+    return `<div class="bm pending">${bracketTeam(null)}${bracketTeam(null)}</div>`;
+  }
+  const ft = m.score?.fullTime || {};
+  const done = m.status === 'FINISHED';
+  const hw = m.score?.winner === 'HOME_TEAM';
+  const aw = m.score?.winner === 'AWAY_TEAM';
+  const sc = (v) => done ? `<span class="bs">${v ?? 0}</span>` : '';
+  return `<div class="bm">
+    <div class="bm-row">${bracketTeam(m.homeTeam, hw)}${sc(ft.home)}</div>
+    <div class="bm-row">${bracketTeam(m.awayTeam, aw)}${sc(ft.away)}</div>
+  </div>`;
+}
+
+function renderBracket() {
+  const ko = allMatches().filter(m => m.stage && m.stage !== 'GROUP_STAGE');
+  const byStage = (key) => ko.filter(m => m.stage === key)
+    .sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
+
+  $('#bracket').innerHTML = KO_STAGES.map(st => {
+    const ms = byStage(st.key);
+    const cells = Array.from({ length: st.slots }, (_, i) => bracketMatch(ms[i], !ms[i]));
+    return `<div class="bracket-col">
+      <h3>${st.label}</h3>
+      <div class="bracket-cells">${cells.join('')}</div>
+    </div>`;
+  }).join('');
+
+  const third = ko.find(m => m.stage === 'THIRD_PLACE');
+  $('#third-place').innerHTML = `<h3>Disputa de 3º lugar</h3>${bracketMatch(third, !third)}`;
+}
+
 // ---------- Comparador ----------
 function teamStatsTable() {
   // Agrega estatísticas por time a partir das standings.
@@ -298,6 +345,7 @@ async function init() {
   renderToday();
   renderScorers();
   renderStandings();
+  renderBracket();
   renderCompareControls();
   renderAllMatches();
   initTabs();
