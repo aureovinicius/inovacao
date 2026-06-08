@@ -1,53 +1,16 @@
 {
-  "count": 8,
-  "matches": [
-    {
-      "id": 1, "utcDate": "2026-06-11T20:00:00Z", "status": "FINISHED", "stage": "GROUP_STAGE", "group": "GROUP_A",
-      "homeTeam": { "id": 1, "name": "Brasil", "crest": "https://flagcdn.com/w40/br.png" },
-      "awayTeam": { "id": 3, "name": "México", "crest": "https://flagcdn.com/w40/mx.png" },
-      "score": { "winner": "HOME_TEAM", "fullTime": { "home": 3, "away": 1 } }
-    },
-    {
-      "id": 2, "utcDate": "2026-06-11T23:00:00Z", "status": "FINISHED", "stage": "GROUP_STAGE", "group": "GROUP_A",
-      "homeTeam": { "id": 2, "name": "Croácia", "crest": "https://flagcdn.com/w40/hr.png" },
-      "awayTeam": { "id": 4, "name": "Japão", "crest": "https://flagcdn.com/w40/jp.png" },
-      "score": { "winner": "AWAY_TEAM", "fullTime": { "home": 1, "away": 2 } }
-    },
-    {
-      "id": 3, "utcDate": "2026-06-12T20:00:00Z", "status": "FINISHED", "stage": "GROUP_STAGE", "group": "GROUP_B",
-      "homeTeam": { "id": 5, "name": "Argentina", "crest": "https://flagcdn.com/w40/ar.png" },
-      "awayTeam": { "id": 8, "name": "Canadá", "crest": "https://flagcdn.com/w40/ca.png" },
-      "score": { "winner": "HOME_TEAM", "fullTime": { "home": 3, "away": 0 } }
-    },
-    {
-      "id": 4, "utcDate": "2026-06-12T23:00:00Z", "status": "FINISHED", "stage": "GROUP_STAGE", "group": "GROUP_B",
-      "homeTeam": { "id": 6, "name": "França", "crest": "https://flagcdn.com/w40/fr.png" },
-      "awayTeam": { "id": 7, "name": "Marrocos", "crest": "https://flagcdn.com/w40/ma.png" },
-      "score": { "winner": "HOME_TEAM", "fullTime": { "home": 2, "away": 1 } }
-    },
-    {
-      "id": 5, "utcDate": "2026-06-16T20:00:00Z", "status": "SCHEDULED", "stage": "GROUP_STAGE", "group": "GROUP_A",
-      "homeTeam": { "id": 1, "name": "Brasil", "crest": "https://flagcdn.com/w40/br.png" },
-      "awayTeam": { "id": 2, "name": "Croácia", "crest": "https://flagcdn.com/w40/hr.png" },
-      "score": { "winner": null, "fullTime": { "home": null, "away": null } }
-    },
-    {
-      "id": 6, "utcDate": "2026-06-16T23:00:00Z", "status": "SCHEDULED", "stage": "GROUP_STAGE", "group": "GROUP_A",
-      "homeTeam": { "id": 4, "name": "Japão", "crest": "https://flagcdn.com/w40/jp.png" },
-      "awayTeam": { "id": 3, "name": "México", "crest": "https://flagcdn.com/w40/mx.png" },
-      "score": { "winner": null, "fullTime": { "home": null, "away": null } }
-    },
-    {
-      "id": 7, "utcDate": "2026-06-17T20:00:00Z", "status": "SCHEDULED", "stage": "GROUP_STAGE", "group": "GROUP_B",
-      "homeTeam": { "id": 5, "name": "Argentina", "crest": "https://flagcdn.com/w40/ar.png" },
-      "awayTeam": { "id": 6, "name": "França", "crest": "https://flagcdn.com/w40/fr.png" },
-      "score": { "winner": null, "fullTime": { "home": null, "away": null } }
-    },
-    {
-      "id": 8, "utcDate": "2026-06-17T23:00:00Z", "status": "SCHEDULED", "stage": "GROUP_STAGE", "group": "GROUP_B",
-      "homeTeam": { "id": 7, "name": "Marrocos", "crest": "https://flagcdn.com/w40/ma.png" },
-      "awayTeam": { "id": 8, "name": "Canadá", "crest": "https://flagcdn.com/w40/ca.png" },
-      "score": { "winner": null, "fullTime": { "home": null, "away": null } }
-    }
-  ]
+  "filters": {
+    "season": "2026"
+  },
+  "resultSet": {
+    "count": 0
+  },
+  "competition": {
+    "id": 2000,
+    "name": "FIFA World Cup",
+    "code": "WC",
+    "type": "CUP",
+    "emblem": "https://crests.football-data.org/wm26.png"
+  },
+  "matches": []
 }
