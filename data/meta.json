@@ -1,0 +1,7 @@
+{
+  "generatedAt": "2026-06-08T09:00:00.000Z",
+  "competition": "WC",
+  "source": "football-data.org (dados de EXEMPLO)",
+  "totalTeams": 48,
+  "note": "Arquivo de demonstração. Será sobrescrito pelos dados reais quando FOOTBALL_DATA_TOKEN estiver configurado."
+}

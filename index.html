@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copa 2026 · Dashboard de Estatísticas</title>
+  <meta name="description" content="Estatísticas interativas da Copa do Mundo FIFA 2026: artilharia, classificação dos grupos, comparador de seleções e jogos do dia. Atualizado diariamente.">
+  <link rel="preconnect" href="https://crests.football-data.org">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">⚽</span>
+      <div>
+        <h1>Copa 2026 · Stats</h1>
+        <p class="brand-sub">EUA · Canadá · México — 48 seleções</p>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <div id="countdown" class="countdown" aria-live="polite">
+        <span class="countdown-label">Carregando…</span>
+      </div>
+      <p class="updated">Dados: <a href="https://www.football-data.org/" target="_blank" rel="noopener">football-data.org</a> · atualizado <time id="last-updated">—</time></p>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab is-active" data-view="overview" role="tab">Visão geral</button>
+    <button class="tab" data-view="scorers" role="tab">Artilharia</button>
+    <button class="tab" data-view="standings" role="tab">Classificação</button>
+    <button class="tab" data-view="compare" role="tab">Comparador</button>
+    <button class="tab" data-view="matches" role="tab">Jogos</button>
+  </nav>
+
+  <main id="app">
+    <!-- VISÃO GERAL -->
+    <section class="view is-active" data-view="overview">
+      <div class="stat-grid" id="summary-cards"></div>
+      <div class="panel">
+        <h2>Jogos de hoje</h2>
+        <div id="today-matches" class="match-list"></div>
+      </div>
+      <div class="panel">
+        <h2>Top 5 artilheiros</h2>
+        <ol id="mini-scorers" class="mini-rank"></ol>
+      </div>
+    </section>
+
+    <!-- ARTILHARIA -->
+    <section class="view" data-view="scorers">
+      <div class="panel">
+        <h2>Artilharia</h2>
+        <table class="data-table" id="scorers-table">
+          <thead>
+            <tr><th>#</th><th>Jogador</th><th>Seleção</th><th>Gols</th><th>Assist.</th><th>Pênaltis</th><th>Jogos</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CLASSIFICAÇÃO -->
+    <section class="view" data-view="standings">
+      <div id="groups-container" class="groups"></div>
+    </section>
+
+    <!-- COMPARADOR -->
+    <section class="view" data-view="compare">
+      <div class="panel">
+        <h2>Comparador de seleções</h2>
+        <div class="compare-controls">
+          <select id="team-a" class="team-select"></select>
+          <span class="vs">×</span>
+          <select id="team-b" class="team-select"></select>
+        </div>
+        <div id="compare-result" class="compare-result"></div>
+      </div>
+    </section>
+
+    <!-- JOGOS -->
+    <section class="view" data-view="matches">
+      <div class="panel">
+        <div class="matches-toolbar">
+          <h2>Jogos</h2>
+          <select id="matches-filter" class="team-select"></select>
+        </div>
+        <div id="all-matches" class="match-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Projeto educativo · dados de <a href="https://www.football-data.org/" target="_blank" rel="noopener">football-data.org</a>. Não afiliado à FIFA.</p>
+  </footer>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

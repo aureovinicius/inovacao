@@ -1,0 +1,26 @@
+{
+  "standings": [
+    {
+      "stage": "GROUP_STAGE",
+      "type": "TOTAL",
+      "group": "GROUP_A",
+      "table": [
+        { "position": 1, "team": { "id": 1, "name": "Brasil", "crest": "https://flagcdn.com/w40/br.png" }, "playedGames": 2, "won": 2, "draw": 0, "lost": 0, "points": 6, "goalsFor": 5, "goalsAgainst": 1, "goalDifference": 4 },
+        { "position": 2, "team": { "id": 2, "name": "Croácia", "crest": "https://flagcdn.com/w40/hr.png" }, "playedGames": 2, "won": 1, "draw": 0, "lost": 1, "points": 3, "goalsFor": 3, "goalsAgainst": 2, "goalDifference": 1 },
+        { "position": 3, "team": { "id": 4, "name": "Japão", "crest": "https://flagcdn.com/w40/jp.png" }, "playedGames": 2, "won": 1, "draw": 0, "lost": 1, "points": 3, "goalsFor": 2, "goalsAgainst": 3, "goalDifference": -1 },
+        { "position": 4, "team": { "id": 3, "name": "México", "crest": "https://flagcdn.com/w40/mx.png" }, "playedGames": 2, "won": 0, "draw": 0, "lost": 2, "points": 0, "goalsFor": 1, "goalsAgainst": 5, "goalDifference": -4 }
+      ]
+    },
+    {
+      "stage": "GROUP_STAGE",
+      "type": "TOTAL",
+      "group": "GROUP_B",
+      "table": [
+        { "position": 1, "team": { "id": 5, "name": "Argentina", "crest": "https://flagcdn.com/w40/ar.png" }, "playedGames": 2, "won": 1, "draw": 1, "lost": 0, "points": 4, "goalsFor": 4, "goalsAgainst": 2, "goalDifference": 2 },
+        { "position": 2, "team": { "id": 6, "name": "França", "crest": "https://flagcdn.com/w40/fr.png" }, "playedGames": 2, "won": 1, "draw": 1, "lost": 0, "points": 4, "goalsFor": 3, "goalsAgainst": 1, "goalDifference": 2 },
+        { "position": 3, "team": { "id": 7, "name": "Marrocos", "crest": "https://flagcdn.com/w40/ma.png" }, "playedGames": 2, "won": 1, "draw": 0, "lost": 1, "points": 3, "goalsFor": 2, "goalsAgainst": 2, "goalDifference": 0 },
+        { "position": 4, "team": { "id": 8, "name": "Canadá", "crest": "https://flagcdn.com/w40/ca.png" }, "playedGames": 2, "won": 0, "draw": 0, "lost": 2, "points": 0, "goalsFor": 1, "goalsAgainst": 5, "goalDifference": -4 }
+      ]
+    }
+  ]
+}

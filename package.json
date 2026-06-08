@@ -1,0 +1,11 @@
+{
+  "name": "copa-2026-stats",
+  "version": "0.1.0",
+  "description": "Dashboard interativo de estatísticas da Copa do Mundo FIFA 2026",
+  "type": "module",
+  "scripts": {
+    "fetch": "node scripts/fetch-data.mjs",
+    "serve": "node --version >/dev/null && python3 -m http.server 8000"
+  },
+  "license": "MIT"
+}
