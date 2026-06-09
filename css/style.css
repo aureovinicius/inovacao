@@ -196,6 +196,8 @@ main {
 .badge-live { color: var(--danger); font-weight: 700; animation: blink 1.2s infinite; }
 @keyframes blink { 50% { opacity: .4; } }
 .empty { color: var(--muted); text-align: center; padding: 24px; }
+.live-status { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12px; font-weight: 700; color: var(--danger); text-transform: uppercase; letter-spacing: .03em; }
+.live-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--danger); animation: blink 1.2s infinite; }
 
 /* ---------- Notícias ---------- */
 .digest-summary { margin: 0; font-size: 15px; line-height: 1.6; }

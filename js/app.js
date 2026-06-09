@@ -3,6 +3,7 @@
 // Nenhuma chave de API é usada no front — tudo vem de arquivos estáticos.
 
 import { LANGS, UI, STAGE_KEY, TEAMS, TEAMS_BY_NAME } from './i18n.js';
+import { LIVE_PROXY_URL, LIVE_POLL_MS } from './config.js';
 
 const DATA = {};
 const FILES = ['matches', 'standings', 'scorers', 'teams', 'meta'];
@@ -452,6 +453,51 @@ function renderAll() {
   renderNews();
 }
 
+// ---------- Placar ao vivo ----------
+// Liga sozinho quando há jogo em andamento (ou prestes a começar) e o proxy está configurado.
+function inLiveWindow() {
+  const now = Date.now();
+  return allMatches().some(m => {
+    if (m.status === 'IN_PLAY' || m.status === 'PAUSED') return true;
+    if (m.status === 'FINISHED') return false;
+    const t = new Date(m.utcDate).getTime();
+    return t <= now + 15 * 60000 && t >= now - 3 * 3600000; // janela: ~15min antes a 3h depois do início
+  });
+}
+
+function setLiveStatus(on) {
+  const el = $('#live-status');
+  if (!el) return;
+  el.hidden = !on;
+  if (on) el.innerHTML = `<span class="live-dot" aria-hidden="true"></span>${t('live')} · ${t('updated')} ${new Date().toLocaleTimeString(lang)}`;
+}
+
+async function pollLive() {
+  if (!LIVE_PROXY_URL || document.visibilityState !== 'visible' || !inLiveWindow()) {
+    setLiveStatus(false);
+    return;
+  }
+  try {
+    const res = await fetch(`${LIVE_PROXY_URL.replace(/\/$/, '')}/matches`, { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data?.matches) return;
+    DATA.matches = data;
+    renderSummary();
+    renderToday();
+    renderAllMatches();
+    renderBracket();
+    startCountdown();
+    setLiveStatus(true);
+  } catch { /* mantém os dados atuais em caso de falha de rede */ }
+}
+
+function startLivePolling() {
+  if (!LIVE_PROXY_URL) return;
+  setInterval(pollLive, LIVE_POLL_MS);
+  pollLive();
+}
+
 // ---------- Navegação ----------
 function initTabs() {
   $$('.tab').forEach(tab => {
@@ -469,6 +515,7 @@ async function init() {
   await loadData();
   renderAll();
   initTabs();
+  startLivePolling();
 }
 
 init();
