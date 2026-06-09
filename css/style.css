@@ -307,6 +307,7 @@ main {
 
 .matches-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
 .matches-toolbar h2 { margin: 0; }
+.matches-filters { display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* ---------- Footer ---------- */
 .footer { text-align: center; padding: 30px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); }

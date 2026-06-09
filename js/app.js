@@ -81,6 +81,7 @@ function groupLabel(g) {
 }
 
 function stageLabel(stage) {
+  if (stage === 'GROUP_STAGE') return t('stage_groups');
   return STAGE_KEY[stage] ? t(STAGE_KEY[stage]) : '';
 }
 
@@ -465,22 +466,58 @@ function renderCompare(stats, idA, idB) {
 }
 
 // ---------- Jogos ----------
+const STAGE_ORDER = ['GROUP_STAGE', 'LAST_32', 'LAST_16', 'QUARTER_FINALS', 'SEMI_FINALS', 'THIRD_PLACE', 'FINAL'];
+
+// Fase "atual": a do jogo ao vivo; senão a do próximo agendado; senão a do último disputado.
+function currentStage(matches) {
+  const live = matches.find(m => m.status === 'IN_PLAY' || m.status === 'PAUSED');
+  if (live) return live.stage;
+  const next = matches.filter(m => m.status === 'SCHEDULED' || m.status === 'TIMED')
+    .sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate))[0];
+  if (next) return next.stage;
+  const done = matches.filter(m => m.status === 'FINISHED')
+    .sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
+  return done.length ? done[done.length - 1].stage : null;
+}
+
+let matchesPhaseTouched = false; // só aplica a fase atual como padrão até o usuário escolher
 function renderAllMatches() {
   const matches = [...allMatches()].sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
-  const filter = $('#matches-filter');
-  const prev = filter.value;
-  const groups = [...new Set(matches.map(m => m.group).filter(Boolean))].sort();
-  filter.innerHTML = `<option value="">${t('matches_all')}</option>` +
+  const phaseSel = $('#matches-phase');
+  const groupSel = $('#matches-group');
+  const prevPhase = phaseSel.value, prevGroup = groupSel.value;
+
+  // Filtro de fases (só as que existem nos dados)
+  const stages = STAGE_ORDER.filter(s => matches.some(m => m.stage === s));
+  phaseSel.innerHTML = `<option value="">${t('matches_all')}</option>` +
+    stages.map(s => `<option value="${s}">${stageLabel(s)}</option>`).join('');
+
+  let phaseVal = prevPhase;
+  if (!matchesPhaseTouched && phaseVal === '') {
+    const cur = currentStage(matches);            // padrão: fase atual
+    if (cur && stages.includes(cur)) phaseVal = cur;
+  }
+  if (phaseVal && !stages.includes(phaseVal)) phaseVal = '';
+  phaseSel.value = phaseVal;
+
+  // Filtro de grupos (relevante só na fase de grupos)
+  const groups = [...new Set(matches.filter(m => m.group).map(m => m.group))].sort();
+  groupSel.innerHTML = `<option value="">${t('all_groups')}</option>` +
     groups.map(g => `<option value="${g}">${groupLabel(g)}</option>`).join('');
-  filter.value = prev;
+  if (groups.includes(prevGroup)) groupSel.value = prevGroup;
 
   const draw = () => {
-    const g = filter.value;
-    const list = g ? matches.filter(m => m.group === g) : matches;
+    const ph = phaseSel.value;
+    const showGroup = (ph === '' || ph === 'GROUP_STAGE') && groups.length > 0;
+    groupSel.style.display = showGroup ? '' : 'none';
+    let list = matches;
+    if (ph) list = list.filter(m => m.stage === ph);
+    if (showGroup && groupSel.value) list = list.filter(m => m.group === groupSel.value);
     $('#all-matches').innerHTML = list.length ? list.map(matchHTML).join('')
       : `<p class="empty">${t('matches_empty')}</p>`;
   };
-  filter.onchange = draw;
+  phaseSel.onchange = () => { matchesPhaseTouched = true; draw(); };
+  groupSel.onchange = draw;
   draw();
 }
 
