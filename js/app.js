@@ -3,7 +3,7 @@
 // Nenhuma chave de API é usada no front — tudo vem de arquivos estáticos.
 
 import { LANGS, UI, STAGE_KEY, TEAMS, TEAMS_BY_NAME } from './i18n.js';
-import { LIVE_PROXY_URL, LIVE_POLL_MS } from './config.js';
+import { LIVE_PROXY_URL, LIVE_POLL_MS, LIVE_WINDOW_BRT } from './config.js';
 
 const DATA = {};
 const FILES = ['matches', 'standings', 'scorers', 'teams', 'meta'];
@@ -454,6 +454,13 @@ function renderAll() {
 }
 
 // ---------- Placar ao vivo ----------
+// Janela diária por hora de Brasília (BRT = UTC-3); cruza a meia-noite quando start > end.
+function inBrtWindow() {
+  const { start, end } = LIVE_WINDOW_BRT;
+  const h = (new Date().getUTCHours() - 3 + 24) % 24;
+  return start <= end ? (h >= start && h < end) : (h >= start || h < end);
+}
+
 // Liga sozinho quando há jogo em andamento (ou prestes a começar) e o proxy está configurado.
 function inLiveWindow() {
   const now = Date.now();
@@ -473,7 +480,7 @@ function setLiveStatus(on) {
 }
 
 async function pollLive() {
-  if (!LIVE_PROXY_URL || document.visibilityState !== 'visible' || !inLiveWindow()) {
+  if (!LIVE_PROXY_URL || document.visibilityState !== 'visible' || !inBrtWindow() || !inLiveWindow()) {
     setLiveStatus(false);
     return;
   }

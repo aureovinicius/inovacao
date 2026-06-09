@@ -2,7 +2,7 @@ name: Atualizar dados da Copa 2026
 
 on:
   schedule:
-    - cron: '0 9 * * *'   # todo dia às 09:00 UTC (~06:00 BRT)
+    - cron: '0 */2 * * *'   # a cada 2 horas (UTC)
   workflow_dispatch:        # permite rodar manualmente pelo painel do GitHub
 
 permissions:
