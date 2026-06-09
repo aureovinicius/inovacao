@@ -330,6 +330,36 @@ async function renderNews() {
     </a>`).join('') : `<p class="empty">${t('news_empty')}</p>`;
 }
 
+// ---------- Probabilidades (modelo preditivo) ----------
+let PREDICTIONS; // cache
+async function renderPredictions() {
+  if (PREDICTIONS === undefined) {
+    try {
+      const r = await fetch('data/predictions.json', { cache: 'no-store' });
+      PREDICTIONS = r.ok ? await r.json() : null;
+    } catch { PREDICTIONS = null; }
+  }
+  const tb = $('#odds-table tbody');
+  const teams = PREDICTIONS?.teams || [];
+  if (!teams.length) {
+    tb.innerHTML = `<tr><td colspan="9" class="empty">${t('odds_empty')}</td></tr>`;
+    return;
+  }
+  const max = Math.max(...teams.map(x => x.pChampion), 1);
+  tb.innerHTML = teams.map((tm, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${teamCell({ tla: tm.tla, name: tm.name, crest: tm.crest })}</td>
+      <td>${t('group')} ${tm.group}</td>
+      <td>${tm.elo}</td>
+      <td><div class="odds-bar"><span style="width:${(tm.pChampion / max * 100).toFixed(1)}%"></span><b>${tm.pChampion}%</b></div></td>
+      <td>${tm.pFinal}%</td>
+      <td>${tm.pSemi}%</td>
+      <td><strong>${tm.pAdvance}%</strong></td>
+      <td>${tm.pWinGroup}%</td>
+    </tr>`).join('');
+}
+
 // ---------- Comparador ----------
 function teamStatsTable() {
   const map = {};
@@ -451,6 +481,7 @@ function renderAll() {
   renderCompareControls();
   renderAllMatches();
   renderNews();
+  renderPredictions();
 }
 
 // ---------- Placar ao vivo ----------

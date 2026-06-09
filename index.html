@@ -36,6 +36,7 @@
     <button class="tab" data-view="scorers" data-i18n="tab_scorers" role="tab">Artilharia</button>
     <button class="tab" data-view="standings" data-i18n="tab_standings" role="tab">Classificação</button>
     <button class="tab" data-view="bracket" data-i18n="tab_bracket" role="tab">Chaveamento</button>
+    <button class="tab" data-view="odds" data-i18n="tab_odds" role="tab">Probabilidades</button>
     <button class="tab" data-view="compare" data-i18n="tab_compare" role="tab">Comparador</button>
     <button class="tab" data-view="matches" data-i18n="tab_matches" role="tab">Jogos</button>
   </nav>
@@ -102,6 +103,32 @@
         </div>
         <div id="bracket" class="bracket"></div>
         <div id="third-place" class="third-place"></div>
+      </div>
+    </section>
+
+    <!-- PROBABILIDADES -->
+    <section class="view" data-view="odds">
+      <div class="panel">
+        <h2 data-i18n="odds_title">Probabilidades (modelo)</h2>
+        <p class="bracket-note" data-i18n="odds_note">Grupos: cálculo exato. Mata-mata: aproximação v1.</p>
+        <div class="table-scroll">
+          <table class="data-table" id="odds-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th data-i18n="th_team">Seleção</th>
+                <th data-i18n="group">Grupo</th>
+                <th data-i18n="oc_elo">Força</th>
+                <th data-i18n="oc_champion">Título</th>
+                <th data-i18n="oc_final">Final</th>
+                <th data-i18n="oc_semi">Semi</th>
+                <th data-i18n="oc_advance">Avança</th>
+                <th data-i18n="oc_wingroup">1º do grupo</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </section>
 

@@ -150,7 +150,13 @@ main {
 .stat-card .label { color: var(--muted); font-size: 13px; margin-top: 4px; }
 
 /* ---------- Tables ---------- */
+.table-scroll { overflow-x: auto; }
 .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+/* Barra de probabilidade de título */
+.odds-bar { position: relative; display: flex; align-items: center; min-width: 84px; height: 18px; background: var(--line); border-radius: 5px; overflow: hidden; }
+.odds-bar span { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, var(--green-dark), var(--gold)); }
+.odds-bar b { position: relative; z-index: 1; font-size: 11px; padding: 0 6px; }
 .data-table th, .data-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); }
 .data-table th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
 .data-table tbody tr:hover { background: var(--bg-soft); }

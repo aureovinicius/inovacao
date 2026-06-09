@@ -41,6 +41,9 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/fetch-news.mjs
 
+      - name: Calcular probabilidades (Elo + Monte Carlo)
+        run: node scripts/predict.mjs
+
       - name: Montar o site (apenas arquivos públicos)
         run: |
           mkdir -p _site
