@@ -379,12 +379,15 @@ async function renderCalibration() {
     { v: `${(m.accuracy * 100).toFixed(1)}%`, l: t('cal_accuracy') },
     { v: CALIB.evaluated.toLocaleString(lang), l: `${t('cal_samples')} (${CALIB.sinceYear}+)` },
   ];
+  const temper = (CALIB.shrink != null && CALIB.untempered)
+    ? `<p class="bracket-note">tempering s=${CALIB.shrink} · Brier ${CALIB.untempered.brier.toFixed(3)} → ${m.brier.toFixed(3)}</p>` : '';
   el.innerHTML = `
     <h3>${t('cal_title')}</h3>
     <p class="bracket-note">${t('cal_note')}</p>
     <div class="stat-grid">
       ${cards.map(c => `<div class="stat-card"><div class="value">${c.v}</div><div class="label">${c.l}</div></div>`).join('')}
     </div>
+    ${temper}
     <table class="data-table calib-table">
       <thead><tr><th>${t('cal_predicted')}</th><th>${t('cal_observed')}</th><th>${t('cal_samples')}</th></tr></thead>
       <tbody>

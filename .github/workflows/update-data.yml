@@ -41,11 +41,11 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/fetch-news.mjs
 
+      - name: Calibrar o modelo (backtest histórico + tempering)
+        run: node scripts/calibrate.mjs
+
       - name: Calcular probabilidades (Elo + Monte Carlo)
         run: node scripts/predict.mjs
-
-      - name: Calibrar o modelo (backtest histórico)
-        run: node scripts/calibrate.mjs
 
       - name: Montar o site (apenas arquivos públicos)
         run: |

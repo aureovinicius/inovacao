@@ -32,6 +32,9 @@ const HOME_ADV = 70;       // bônus Elo de mando (só para país-sede jogando e
 const ELO_PER_GOAL = 170;  // ~170 pontos de Elo ≈ 1 gol de diferença esperada
 const AVG_TOTAL_GOALS = 2.6;
 const HOSTS = new Set(['United States', 'Mexico', 'Canada']);
+// Tempering: encolhe a diferença de força na hora de prever (calibrado em calibrate.mjs).
+// Lido de data/calibration.json no main; este é só o fallback.
+let ELO_SHRINK = 0.85;
 
 // Pesos de importância por tipo de torneio (afeta o K do Elo).
 function tournamentWeight(t = '') {
@@ -84,9 +87,9 @@ function poisson(lambda) {
 // Probabilidade de vitória de A pelo Elo (logística padrão do Elo).
 const expectedScore = (ra, rb) => 1 / (1 + 10 ** ((rb - ra) / 400));
 
-// Gera um placar de um confronto de grupo via Poisson, a partir do Elo.
+// Gera um placar de um confronto de grupo via Poisson, a partir do Elo (com tempering).
 function sampleGroupMatch(ra, rb, homeAdvA = 0, homeAdvB = 0) {
-  const mu = (ra + homeAdvA - rb - homeAdvB) / ELO_PER_GOAL; // saldo esperado
+  const mu = ((ra - rb) * ELO_SHRINK + homeAdvA - homeAdvB) / ELO_PER_GOAL; // saldo esperado
   const la = Math.max(0.15, (AVG_TOTAL_GOALS + mu) / 2);
   const lb = Math.max(0.15, (AVG_TOTAL_GOALS - mu) / 2);
   return [poisson(la), poisson(lb)];
@@ -319,7 +322,8 @@ function koWinner(A, B, elo, finishedKO) {
   const real = finishedKO?.[`${Math.min(A.id, B.id)}-${Math.max(A.id, B.id)}`];
   if (real != null) return real === A.id ? A : B;
   const ha = t => (HOSTS.has(t.name) ? HOME_ADV : 0); // sede joga em casa
-  return Math.random() < expectedScore(elo[A.tla] + ha(A), elo[B.tla] + ha(B)) ? A : B;
+  const diff = (elo[A.tla] - elo[B.tla]) * ELO_SHRINK + ha(A) - ha(B); // com tempering
+  return Math.random() < 1 / (1 + 10 ** (-diff / 400)) ? A : B;
 }
 
 function simulateKnockout(winnersByG, runnersByG, bestThirds, elo, finishedKO) {
@@ -349,6 +353,8 @@ function simulateKnockout(winnersByG, runnersByG, bestThirds, elo, finishedKO) {
 async function main() {
   const standings = await loadJSON('standings.json');
   const matches = await loadJSON('matches.json');
+  const calib = await loadJSON('calibration.json');
+  if (calib?.shrink) ELO_SHRINK = calib.shrink; // usa o tempering ajustado pela calibração
   const groups = buildGroups(standings);
   const groupLetters = Object.keys(groups).sort();
   const allTeams = groupLetters.flatMap(g => groups[g]);
@@ -415,6 +421,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     sims: SIMS,
     model: {
+      tempering: ELO_SHRINK,
       ratings: (eloFromHist ? 'elo_historico' : 'elo_semente_fallback') + ' + jogos da Copa (Elo ao vivo)',
       groupStage: 'exato (desempates FIFA: pts, saldo, gols, confronto direto); resultados já ocorridos são fixados',
       knockout: 'tabela oficial FIFA 2026 (jogos 73–104); 3ºs por matching nos grupos permitidos; jogos já decididos são travados',

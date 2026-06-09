@@ -34,8 +34,9 @@ function poissonPmf(lambda, kmax = 10) {
   return a;
 }
 // Probabilidades [Vitória mandante, Empate, Vitória visitante] a partir do Elo.
-function wdl(ra, rb, ha) {
-  const mu = (ra + ha - rb) / ELO_PER_GOAL;
+// `shrink` < 1 "tempera" a diferença de força (puxa as probabilidades para perto de 50%).
+function wdl(ra, rb, ha, shrink = 1) {
+  const mu = ((ra - rb) * shrink + ha) / ELO_PER_GOAL;
   const la = Math.max(0.15, (AVG_TOTAL_GOALS + mu) / 2);
   const lb = Math.max(0.15, (AVG_TOTAL_GOALS - mu) / 2);
   const A = poissonPmf(la), B = poissonPmf(lb);
@@ -84,11 +85,13 @@ async function main() {
   const ratings = new Map();
   const get = n => ratings.get(n) ?? ELO_BASE;
 
-  // métricas (modelo) e contagens (para o palpite-base)
-  let n = 0, brier = 0, logloss = 0, correct = 0;
-  let nW = 0, nD = 0, nL = 0;
+  // Candidatos de "tempering": multiplicador da diferença de Elo na hora de PREVER.
+  const SHRINKS = [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0];
+  const C = SHRINKS.length;
   const BINS = 10;
-  const bins = Array.from({ length: BINS }, () => ({ sumPred: 0, obs: 0, n: 0 })); // calibração da prob. de vitória do mandante
+  const brier = new Array(C).fill(0), logloss = new Array(C).fill(0), correct = new Array(C).fill(0);
+  const binsC = Array.from({ length: C }, () => Array.from({ length: BINS }, () => ({ sumPred: 0, obs: 0, n: 0 })));
+  let n = 0, nW = 0, nD = 0, nL = 0;
 
   for (const m of rows) {
     const Rh = get(m.home), Ra = get(m.away);
@@ -96,21 +99,21 @@ async function main() {
     const year = parseInt(m.date.slice(0, 4), 10);
 
     if (year >= EVAL_SINCE) {
-      const [pw, pd, pl] = wdl(Rh, Ra, ha);
       const outcome = m.hg > m.ag ? 0 : m.hg === m.ag ? 1 : 2; // 0=V,1=E,2=D
-      const y = [outcome === 0 ? 1 : 0, outcome === 1 ? 1 : 0, outcome === 2 ? 1 : 0];
-      brier += (pw - y[0]) ** 2 + (pd - y[1]) ** 2 + (pl - y[2]) ** 2;
-      const probActual = [pw, pd, pl][outcome];
-      logloss += -Math.log(Math.max(probActual, 1e-12));
-      const pred = [pw, pd, pl];
-      if (pred.indexOf(Math.max(...pred)) === outcome) correct++;
-      const bi = Math.min(BINS - 1, Math.floor(pw * BINS));
-      bins[bi].sumPred += pw; bins[bi].obs += (outcome === 0 ? 1 : 0); bins[bi].n++;
+      for (let ci = 0; ci < C; ci++) {
+        const [pw, pd, pl] = wdl(Rh, Ra, ha, SHRINKS[ci]);
+        brier[ci] += (pw - (outcome === 0 ? 1 : 0)) ** 2 + (pd - (outcome === 1 ? 1 : 0)) ** 2 + (pl - (outcome === 2 ? 1 : 0)) ** 2;
+        logloss[ci] += -Math.log(Math.max([pw, pd, pl][outcome], 1e-12));
+        const pred = [pw, pd, pl];
+        if (pred.indexOf(Math.max(...pred)) === outcome) correct[ci]++;
+        const bi = Math.min(BINS - 1, Math.floor(pw * BINS));
+        binsC[ci][bi].sumPred += pw; binsC[ci][bi].obs += (outcome === 0 ? 1 : 0); binsC[ci][bi].n++;
+      }
       if (outcome === 0) nW++; else if (outcome === 1) nD++; else nL++;
       n++;
     }
 
-    // atualiza o Elo com o resultado (walk-forward)
+    // atualiza o Elo com o resultado (walk-forward) — SEM tempering (dinâmica do rating)
     const Eh = expectedScore(Rh + ha, Ra);
     const Wh = m.hg > m.ag ? 1 : m.hg === m.ag ? 0.5 : 0;
     const gd = Math.abs(m.hg - m.ag);
@@ -122,7 +125,13 @@ async function main() {
 
   if (!n) { console.warn('Sem jogos para avaliar.'); return; }
 
-  // Palpite-base: sempre as taxas médias do período (calculável a partir das contagens).
+  // Escolhe o tempering que minimiza o log-loss.
+  let best = 0;
+  for (let ci = 1; ci < C; ci++) if (logloss[ci] < logloss[best]) best = ci;
+  const untemperedIdx = SHRINKS.indexOf(1.0);
+  const metrics = ci => ({ brier: brier[ci] / n, logloss: logloss[ci] / n, accuracy: correct[ci] / n });
+
+  // Palpite-base: sempre as taxas médias do período.
   const bW = nW / n, bD = nD / n, bL = nL / n;
   const baseBrier = (
     nW * ((bW - 1) ** 2 + bD ** 2 + bL ** 2) +
@@ -135,19 +144,22 @@ async function main() {
     generatedAt: new Date().toISOString(),
     sinceYear: EVAL_SINCE,
     evaluated: n,
-    model: { brier: brier / n, logloss: logloss / n, accuracy: correct / n },
+    shrink: SHRINKS[best],                  // tempering escolhido (usado pelo predict.mjs)
+    model: metrics(best),                   // métricas já com o tempering
+    untempered: metrics(untemperedIdx),     // sem tempering (para o antes/depois)
     baseline: { brier: baseBrier, logloss: baseLog },
     baseRates: { homeWin: bW, draw: bD, awayWin: bL },
-    bins: bins.map((b, i) => ({
+    bins: binsC[best].map((b, i) => ({
       from: i / BINS, to: (i + 1) / BINS,
       predicted: b.n ? b.sumPred / b.n : 0,
       observed: b.n ? b.obs / b.n : 0,
       n: b.n,
     })),
-    note: 'Backtest walk-forward do modelo de partidas (Elo→Poisson). Brier/log-loss menores = melhor; previsto ≈ observado = bem calibrado.',
+    note: 'Backtest walk-forward do modelo de partidas (Elo→Poisson) com tempering ajustado por log-loss. Brier/log-loss menores = melhor; previsto ≈ observado = bem calibrado.',
   };
   await writeFile(join(DATA_DIR, 'calibration.json'), JSON.stringify(out, null, 2));
-  console.log(`✓ data/calibration.json — ${n} jogos (${EVAL_SINCE}+): Brier ${out.model.brier.toFixed(3)} (base ${baseBrier.toFixed(3)}), acurácia ${(out.model.accuracy * 100).toFixed(1)}%`);
+  console.log(`✓ data/calibration.json — ${n} jogos (${EVAL_SINCE}+)`);
+  console.log(`  tempering s=${out.shrink} | Brier ${out.untempered.brier.toFixed(3)}→${out.model.brier.toFixed(3)} | LogLoss ${out.untempered.logloss.toFixed(3)}→${out.model.logloss.toFixed(3)} | base ${baseLog.toFixed(3)} | acurácia ${(out.model.accuracy * 100).toFixed(1)}%`);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
