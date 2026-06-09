@@ -198,6 +198,9 @@ main {
 .empty { color: var(--muted); text-align: center; padding: 24px; }
 
 /* ---------- Notícias ---------- */
+.digest-summary { margin: 0; font-size: 15px; line-height: 1.6; }
+.digest-note { margin: 10px 0 0; font-size: 11px; color: var(--muted); font-style: italic; }
+.digest-note::before { content: "✨ "; }
 .digest-list { list-style: none; margin: 0; padding: 0; }
 .digest-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .digest-item:last-child { border: none; }

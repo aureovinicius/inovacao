@@ -32,6 +32,53 @@ const DT = {
 const KICKOFF = new Date('2026-06-11T18:00:00Z');
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+// ---------- Síntese das manchetes via Claude API (opcional) ----------
+// Se ANTHROPIC_API_KEY estiver definido, gera um resumo em texto das manchetes do dia,
+// em cada idioma. Sem a chave (ou se a API falhar), o front usa o resumo dos dados.
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const SUMMARY_MODEL = process.env.SUMMARY_MODEL || 'claude-haiku-4-5';
+
+const SUMMARY_SYSTEM = {
+  'pt-BR': 'Você é um editor de jornalismo esportivo. Com base APENAS nas manchetes fornecidas, escreva um resumo coeso de 2 a 3 frases sobre o noticiário da Copa do Mundo de 2026, em português do Brasil. Tom jornalístico e neutro. Não invente fatos que não estejam nas manchetes. Responda somente com o resumo — sem preâmbulo, listas, títulos ou aspas.',
+  'en-US': 'You are a sports news editor. Based ONLY on the headlines provided, write a cohesive 2–3 sentence summary of the 2026 World Cup news, in English. Neutral, journalistic tone. Do not invent facts not present in the headlines. Respond with the summary only — no preamble, lists, titles, or quotes.',
+  'es-MX': 'Eres un editor de periodismo deportivo. Basándote ÚNICAMENTE en los titulares proporcionados, escribe un resumen coherente de 2 a 3 frases sobre las noticias del Mundial 2026, en español. Tono periodístico y neutral. No inventes datos que no estén en los titulares. Responde solo con el resumen, sin preámbulo, listas, títulos ni comillas.',
+  'fr-CA': 'Tu es un rédacteur en chef de journalisme sportif. En te basant UNIQUEMENT sur les manchettes fournies, rédige un résumé cohérent de 2 à 3 phrases sur l’actualité de la Coupe du monde 2026, en français. Ton journalistique et neutre. N’invente aucun fait absent des manchettes. Réponds uniquement avec le résumé — sans préambule, liste, titre ni guillemets.',
+};
+const SUMMARY_USER = {
+  'pt-BR': 'Manchetes de hoje sobre a Copa 2026:',
+  'en-US': "Today's 2026 World Cup headlines:",
+  'es-MX': 'Titulares de hoy sobre el Mundial 2026:',
+  'fr-CA': 'Manchettes du jour sur la Coupe du monde 2026 :',
+};
+
+async function summarizeHeadlines(lang, news) {
+  if (!ANTHROPIC_API_KEY || !news.length) return null;
+  const headlines = news.slice(0, 10).map((n, i) => `${i + 1}. ${n.title}`).join('\n');
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: SUMMARY_MODEL,
+        max_tokens: 320,
+        system: SUMMARY_SYSTEM[lang],
+        messages: [{ role: 'user', content: `${SUMMARY_USER[lang]}\n${headlines}` }],
+      }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join(' ').trim();
+    return text || null;
+  } catch (err) {
+    console.error(`  ⚠ resumo IA (${lang}) falhou: ${err.message}`);
+    return null;
+  }
+}
+
 // ---------- Helpers de dados ----------
 async function readJSON(name) {
   try { return JSON.parse(await readFile(join(DATA_DIR, name), 'utf8')); }
@@ -166,9 +213,11 @@ async function main() {
     } catch (err) {
       console.error(`✗ ${feed.lang}: falha no RSS (${err.message}) — gravando só o resumo`);
     }
+    const summary = await summarizeHeadlines(feed.lang, news);
+    if (summary) console.log(`  ✨ resumo IA (${feed.lang}) gerado`);
     await writeFile(
       join(DATA_DIR, `news.${feed.lang}.json`),
-      JSON.stringify({ generatedAt: new Date().toISOString(), lang: feed.lang, digest, news }, null, 2),
+      JSON.stringify({ generatedAt: new Date().toISOString(), lang: feed.lang, summary, digest, news }, null, 2),
     );
     if (i < FEEDS.length - 1) await sleep(1500);
   }

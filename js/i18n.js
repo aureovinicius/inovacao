@@ -59,6 +59,7 @@ export const UI = {
     news_digest: 'Resumo do dia',
     news_latest: 'Últimas notícias',
     news_empty: 'As notícias aparecem aqui assim que o feed é atualizado.',
+    news_ai_note: 'Resumo gerado por IA a partir das manchetes do dia.',
     footer: 'Projeto educativo · dados de football-data.org. Não afiliado à FIFA.',
   },
   'en-US': {
@@ -111,6 +112,7 @@ export const UI = {
     news_digest: 'Daily digest',
     news_latest: 'Latest news',
     news_empty: 'News will appear here once the feed updates.',
+    news_ai_note: 'AI-generated summary based on the day’s headlines.',
     footer: 'Educational project · data from football-data.org. Not affiliated with FIFA.',
   },
   'es-MX': {
@@ -163,6 +165,7 @@ export const UI = {
     news_digest: 'Resumen del día',
     news_latest: 'Últimas noticias',
     news_empty: 'Las noticias aparecerán aquí cuando se actualice el feed.',
+    news_ai_note: 'Resumen generado por IA a partir de los titulares del día.',
     footer: 'Proyecto educativo · datos de football-data.org. No afiliado a la FIFA.',
   },
   'fr-CA': {
@@ -215,6 +218,7 @@ export const UI = {
     news_digest: 'Résumé du jour',
     news_latest: 'Dernières nouvelles',
     news_empty: 'Les nouvelles apparaîtront ici dès la mise à jour du fil.',
+    news_ai_note: 'Résumé généré par IA à partir des manchettes du jour.',
     footer: 'Projet éducatif · données de football-data.org. Non affilié à la FIFA.',
   },
 };

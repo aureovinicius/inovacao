@@ -303,11 +303,21 @@ async function renderNews() {
   const digest = data?.digest || [];
   const news = data?.news || [];
 
-  $('#news-digest').innerHTML = digest.length ? digest.map(d => `
-    <li class="digest-item">
-      <span class="digest-dot" aria-hidden="true"></span>
-      <div><strong>${esc(d.title)}</strong>${d.detail ? `<div class="digest-detail">${esc(d.detail)}</div>` : ''}</div>
-    </li>`).join('') : `<li class="empty">—</li>`;
+  if (data?.summary) {
+    // Síntese das manchetes gerada por IA.
+    $('#news-digest').innerHTML =
+      `<p class="digest-summary">${esc(data.summary)}</p>
+       <p class="digest-note">${t('news_ai_note')}</p>`;
+  } else {
+    // Fallback: resumo a partir dos nossos dados (contagem, resultados, líderes…).
+    $('#news-digest').innerHTML = digest.length
+      ? `<ul class="digest-list">${digest.map(d => `
+          <li class="digest-item">
+            <span class="digest-dot" aria-hidden="true"></span>
+            <div><strong>${esc(d.title)}</strong>${d.detail ? `<div class="digest-detail">${esc(d.detail)}</div>` : ''}</div>
+          </li>`).join('')}</ul>`
+      : `<p class="empty">—</p>`;
+  }
 
   $('#news-list').innerHTML = news.length ? news.map(n => `
     <a class="news-card" href="${esc(n.url)}" target="_blank" rel="noopener">
