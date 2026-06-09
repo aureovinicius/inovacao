@@ -234,6 +234,11 @@ main {
 .news-time { flex: none; }
 .news-headline { font-size: 14px; font-weight: 600; line-height: 1.35; }
 
+/* ---------- Calibração ---------- */
+.calib { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 18px; }
+.calib h3 { margin: 0 0 6px; font-size: 16px; }
+.calib-table { max-width: 360px; margin-top: 8px; }
+
 /* ---------- Bracket ---------- */
 .bracket-head { margin-bottom: 16px; }
 .bracket-head h2 { margin: 0 0 4px; }

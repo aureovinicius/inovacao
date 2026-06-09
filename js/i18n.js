@@ -65,6 +65,9 @@ export const UI = {
     odds_note: 'Grupos: cálculo exato (critérios FIFA). Mata-mata: tabela oficial 2026 (3ºs alocados aos grupos permitidos). Elo calculado do histórico de jogos das seleções.',
     odds_empty: 'Probabilidades ainda não disponíveis.',
     oc_elo: 'Força', oc_champion: 'Título', oc_final: 'Final', oc_semi: 'Semi', oc_advance: 'Avança', oc_wingroup: '1º do grupo',
+    cal_title: 'Calibração do modelo',
+    cal_note: 'Backtest histórico do modelo de partidas: quanto menor o Brier/Log-loss, melhor; "previsto" deve bater com "observado".',
+    cal_model: 'modelo', cal_baseline: 'base', cal_accuracy: 'Acurácia', cal_samples: 'jogos', cal_predicted: 'Previsto', cal_observed: 'Observado',
     footer: 'Projeto educativo · dados de football-data.org. Não afiliado à FIFA.',
   },
   'en-US': {
@@ -123,6 +126,9 @@ export const UI = {
     odds_note: 'Groups: exact (FIFA tiebreakers). Knockout: official 2026 bracket (thirds assigned to allowed groups). Elo computed from national-team match history.',
     odds_empty: 'Probabilities not available yet.',
     oc_elo: 'Strength', oc_champion: 'Title', oc_final: 'Final', oc_semi: 'Semis', oc_advance: 'Advance', oc_wingroup: 'Win group',
+    cal_title: 'Model calibration',
+    cal_note: 'Historical backtest of the match model: lower Brier/Log-loss is better; "predicted" should match "observed".',
+    cal_model: 'model', cal_baseline: 'base', cal_accuracy: 'Accuracy', cal_samples: 'matches', cal_predicted: 'Predicted', cal_observed: 'Observed',
     footer: 'Educational project · data from football-data.org. Not affiliated with FIFA.',
   },
   'es-MX': {
@@ -181,6 +187,9 @@ export const UI = {
     odds_note: 'Grupos: cálculo exacto (criterios FIFA). Eliminatorias: cuadro oficial 2026 (terceros asignados a los grupos permitidos). Elo calculado del historial de partidos de selecciones.',
     odds_empty: 'Probabilidades aún no disponibles.',
     oc_elo: 'Fuerza', oc_champion: 'Título', oc_final: 'Final', oc_semi: 'Semis', oc_advance: 'Avanza', oc_wingroup: '1º de grupo',
+    cal_title: 'Calibración del modelo',
+    cal_note: 'Backtest histórico del modelo de partidos: menor Brier/Log-loss es mejor; "previsto" debe coincidir con "observado".',
+    cal_model: 'modelo', cal_baseline: 'base', cal_accuracy: 'Precisión', cal_samples: 'partidos', cal_predicted: 'Previsto', cal_observed: 'Observado',
     footer: 'Proyecto educativo · datos de football-data.org. No afiliado a la FIFA.',
   },
   'fr-CA': {
@@ -239,6 +248,9 @@ export const UI = {
     odds_note: 'Groupes : calcul exact (critères FIFA). Éliminatoires : tableau officiel 2026 (3es affectés aux groupes autorisés). Elo calculé à partir de l’historique des matchs des sélections.',
     odds_empty: 'Probabilités pas encore disponibles.',
     oc_elo: 'Force', oc_champion: 'Titre', oc_final: 'Finale', oc_semi: 'Demies', oc_advance: 'Passe', oc_wingroup: '1er du groupe',
+    cal_title: 'Calibration du modèle',
+    cal_note: 'Backtest historique du modèle de matchs : un Brier/Log-loss plus bas est meilleur; « prévu » doit correspondre à « observé ».',
+    cal_model: 'modèle', cal_baseline: 'base', cal_accuracy: 'Précision', cal_samples: 'matchs', cal_predicted: 'Prévu', cal_observed: 'Observé',
     footer: 'Projet éducatif · données de football-data.org. Non affilié à la FIFA.',
   },
 };

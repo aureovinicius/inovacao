@@ -360,6 +360,44 @@ async function renderPredictions() {
     </tr>`).join('');
 }
 
+// ---------- Calibração do modelo ----------
+let CALIB; // cache
+async function renderCalibration() {
+  const el = $('#calibration');
+  if (!el) return;
+  if (CALIB === undefined) {
+    try {
+      const r = await fetch('data/calibration.json', { cache: 'no-store' });
+      CALIB = r.ok ? await r.json() : null;
+    } catch { CALIB = null; }
+  }
+  if (!CALIB) { el.innerHTML = ''; return; }
+  const m = CALIB.model, b = CALIB.baseline;
+  const cards = [
+    { v: m.brier.toFixed(3), l: `Brier · ${t('cal_baseline')} ${b.brier.toFixed(3)}` },
+    { v: m.logloss.toFixed(3), l: `Log-loss · ${t('cal_baseline')} ${b.logloss.toFixed(3)}` },
+    { v: `${(m.accuracy * 100).toFixed(1)}%`, l: t('cal_accuracy') },
+    { v: CALIB.evaluated.toLocaleString(lang), l: `${t('cal_samples')} (${CALIB.sinceYear}+)` },
+  ];
+  el.innerHTML = `
+    <h3>${t('cal_title')}</h3>
+    <p class="bracket-note">${t('cal_note')}</p>
+    <div class="stat-grid">
+      ${cards.map(c => `<div class="stat-card"><div class="value">${c.v}</div><div class="label">${c.l}</div></div>`).join('')}
+    </div>
+    <table class="data-table calib-table">
+      <thead><tr><th>${t('cal_predicted')}</th><th>${t('cal_observed')}</th><th>${t('cal_samples')}</th></tr></thead>
+      <tbody>
+        ${CALIB.bins.filter(x => x.n > 0).map(x => `
+          <tr>
+            <td>${(x.predicted * 100).toFixed(0)}%</td>
+            <td>${(x.observed * 100).toFixed(0)}%</td>
+            <td>${x.n.toLocaleString(lang)}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
 // ---------- Comparador ----------
 function teamStatsTable() {
   const map = {};
@@ -482,6 +520,7 @@ function renderAll() {
   renderAllMatches();
   renderNews();
   renderPredictions();
+  renderCalibration();
 }
 
 // ---------- Placar ao vivo ----------

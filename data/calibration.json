@@ -1,0 +1,92 @@
+{
+  "generatedAt": "2026-06-09T17:11:17.192Z",
+  "sinceYear": 2010,
+  "evaluated": 15790,
+  "model": {
+    "brier": 0.5270292136631929,
+    "logloss": 0.8968762020077394,
+    "accuracy": 0.5910069664344522
+  },
+  "baseline": {
+    "brier": 0.6334542950320486,
+    "logloss": 1.0505842012813806
+  },
+  "baseRates": {
+    "homeWin": 0.47834072197593414,
+    "draw": 0.23191893603546548,
+    "awayWin": 0.2897403419886004
+  },
+  "bins": [
+    {
+      "from": 0,
+      "to": 0.1,
+      "predicted": 0.041003202961560854,
+      "observed": 0.08711656441717791,
+      "n": 1630
+    },
+    {
+      "from": 0.1,
+      "to": 0.2,
+      "predicted": 0.15017107670054175,
+      "observed": 0.19290780141843972,
+      "n": 1410
+    },
+    {
+      "from": 0.2,
+      "to": 0.3,
+      "predicted": 0.25087298608146746,
+      "observed": 0.28588588588588587,
+      "n": 1665
+    },
+    {
+      "from": 0.3,
+      "to": 0.4,
+      "predicted": 0.35031954808133137,
+      "observed": 0.3761111111111111,
+      "n": 1800
+    },
+    {
+      "from": 0.4,
+      "to": 0.5,
+      "predicted": 0.45025788907625225,
+      "observed": 0.4441531200839014,
+      "n": 1907
+    },
+    {
+      "from": 0.5,
+      "to": 0.6,
+      "predicted": 0.5501782072172577,
+      "observed": 0.5506681514476615,
+      "n": 1796
+    },
+    {
+      "from": 0.6,
+      "to": 0.7,
+      "predicted": 0.6488379631799127,
+      "observed": 0.6280487804878049,
+      "n": 1640
+    },
+    {
+      "from": 0.7,
+      "to": 0.8,
+      "predicted": 0.749695252948793,
+      "observed": 0.7099023709902371,
+      "n": 1434
+    },
+    {
+      "from": 0.8,
+      "to": 0.9,
+      "predicted": 0.856952810131779,
+      "observed": 0.7883736120182887,
+      "n": 1531
+    },
+    {
+      "from": 0.9,
+      "to": 1,
+      "predicted": 0.9262389414047553,
+      "observed": 0.9160696008188332,
+      "n": 977
+    }
+  ],
+  "note": "Backtest walk-forward do modelo de partidas (Elo→Poisson). Brier/log-loss menores = melhor; previsto ≈ observado = bem calibrado."
+}
