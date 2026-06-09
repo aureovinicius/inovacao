@@ -226,38 +226,77 @@ function simulateGroup(teams, elo, played) {
   return rows; // [1º,2º,3º,4º]
 }
 
-// ----- Mata-mata por força (seeded) — APROXIMAÇÃO v1 -----
-function seedOrder(n) {
-  let arr = [1, 2];
-  while (arr.length < n) {
-    const len = arr.length * 2, next = [];
-    for (const s of arr) { next.push(s); next.push(len + 1 - s); }
-    arr = next;
-  }
-  return arr;
-}
-const KO_ORDER = seedOrder(32);
+// ----- Mata-mata: tabela OFICIAL da Copa 2026 (FIFA) -----
+// 16-avos = jogos 73–88. Slots: ['W',g]=vencedor do grupo g; ['R',g]=2º do grupo g;
+// ['T',jogo]=3º colocado alocado àquele jogo (dentre os grupos permitidos abaixo).
+const THIRD_SLOTS = [
+  { m: 74, allow: 'ABCDF' }, { m: 77, allow: 'CDFGH' }, { m: 79, allow: 'CEFHI' },
+  { m: 80, allow: 'EHIJK' }, { m: 81, allow: 'BEFIJ' }, { m: 82, allow: 'AEHIJ' },
+  { m: 85, allow: 'EFGIJ' }, { m: 87, allow: 'DEIJL' },
+];
+const R32 = [
+  [73, ['R', 'A'], ['R', 'B']], [74, ['W', 'E'], ['T', 74]], [75, ['W', 'F'], ['R', 'C']],
+  [76, ['W', 'C'], ['R', 'F']], [77, ['W', 'I'], ['T', 77]], [78, ['R', 'E'], ['R', 'I']],
+  [79, ['W', 'A'], ['T', 79]], [80, ['W', 'L'], ['T', 80]], [81, ['W', 'D'], ['T', 81]],
+  [82, ['W', 'G'], ['T', 82]], [83, ['R', 'K'], ['R', 'L']], [84, ['W', 'H'], ['R', 'J']],
+  [85, ['W', 'B'], ['T', 85]], [86, ['W', 'J'], ['R', 'H']], [87, ['W', 'K'], ['T', 87]],
+  [88, ['R', 'D'], ['R', 'G']],
+];
+// Árvore a partir das oitavas: [jogo, origemA, origemB]
+const TREE = [
+  [89, 74, 77], [90, 73, 75], [91, 76, 78], [92, 79, 80], [93, 83, 84], [94, 81, 82], [95, 86, 88], [96, 85, 87],
+  [97, 89, 90], [98, 93, 94], [99, 91, 92], [100, 95, 96],
+  [101, 97, 98], [102, 99, 100],
+  [104, 101, 102],
+];
+// Nível alcançado pelo VENCEDOR de cada jogo: 1=oitavas,2=quartas,3=semi,4=final,5=campeão
+const ROUND_LEVEL = m => m <= 88 ? 1 : m <= 96 ? 2 : m <= 100 ? 3 : m <= 102 ? 4 : 5;
 
-function simulateKnockout(qualified, elo) {
-  // qualified: array de teams (32). Semeia por Elo (1 = mais forte).
-  const seeded = [...qualified].sort((a, b) => elo[b.tla] - elo[a.tla]);
-  // posiciona no bracket: posição k recebe o seed KO_ORDER[k]
-  let bracket = KO_ORDER.map(seed => seeded[seed - 1]);
-  const reached = {}; // id -> rodada alcançada (5=campeão,4=final,3=semi,2=quartas,1=oitavas,0=R32)
-  qualified.forEach(t => { reached[t.id] = 0; });
-
-  let round = 0; // 0:R32 -> jogamos e sobreviventes sobem
-  while (bracket.length > 1) {
-    const next = [];
-    for (let i = 0; i < bracket.length; i += 2) {
-      const A = bracket[i], B = bracket[i + 1];
-      const w = Math.random() < expectedScore(elo[A.tla], elo[B.tla]) ? A : B;
-      next.push(w);
-      reached[w.id] = round + 1;
+// Aloca os 8 melhores terceiros aos 8 slots, respeitando os grupos permitidos (matching bipartido).
+function assignThirds(bestThirds) {
+  const n = THIRD_SLOTS.length;
+  const thirdForSlot = new Array(n).fill(-1);
+  const tryK = (i, seen) => {
+    for (let s = 0; s < n; s++) {
+      if (THIRD_SLOTS[s].allow.includes(bestThirds[i].group) && !seen[s]) {
+        seen[s] = true;
+        if (thirdForSlot[s] < 0 || tryK(thirdForSlot[s], seen)) { thirdForSlot[s] = i; return true; }
+      }
     }
-    bracket = next; round++;
+    return false;
+  };
+  for (let i = 0; i < bestThirds.length; i++) tryK(i, new Array(n).fill(false));
+  const byMatch = {};
+  for (let s = 0; s < n; s++) if (thirdForSlot[s] >= 0) byMatch[THIRD_SLOTS[s].m] = bestThirds[thirdForSlot[s]].team;
+  return byMatch;
+}
+
+function koWinner(A, B, elo) {
+  const ha = t => (HOSTS.has(t.name) ? HOME_ADV : 0); // sede joga em casa
+  return Math.random() < expectedScore(elo[A.tla] + ha(A), elo[B.tla] + ha(B)) ? A : B;
+}
+
+function simulateKnockout(winnersByG, runnersByG, bestThirds, elo) {
+  const thirdByMatch = assignThirds(bestThirds);
+  const resolve = slot => slot[0] === 'W' ? winnersByG[slot[1]]
+    : slot[0] === 'R' ? runnersByG[slot[1]] : thirdByMatch[slot[1]];
+
+  const reached = {};
+  const mark = (t, lvl) => { if (t) reached[t.id] = Math.max(reached[t.id] || 0, lvl); };
+  Object.values(winnersByG).forEach(t => { reached[t.id] = 0; });
+  Object.values(runnersByG).forEach(t => { reached[t.id] = 0; });
+  bestThirds.forEach(x => { reached[x.team.id] = 0; });
+
+  const wmatch = {};
+  for (const [m, a, b] of R32) {
+    const w = koWinner(resolve(a), resolve(b), elo);
+    wmatch[m] = w; mark(w, ROUND_LEVEL(m));
   }
-  return reached; // valores: 1=oitavas,2=quartas,3=semi,4=final,5=campeão
+  for (const [m, x, y] of TREE) {
+    const w = koWinner(wmatch[x], wmatch[y], elo);
+    wmatch[m] = w; mark(w, ROUND_LEVEL(m));
+  }
+  return reached;
 }
 
 // ----- Main -----
@@ -289,21 +328,20 @@ async function main() {
   allTeams.forEach(t => { acc[t.id] = { team: t, win: 0, fin: 0, sf: 0, qf: 0, r16: 0, adv: 0, top1: 0 }; });
 
   for (let s = 0; s < SIMS; s++) {
-    const winners = [], runners = [], thirds = [];
+    const winnersByG = {}, runnersByG = {}, thirds = [];
     for (const g of groupLetters) {
       const r = simulateGroup(groups[g], elo, played);
       acc[r[0].team.id].top1++;
       acc[r[0].team.id].adv++; acc[r[1].team.id].adv++;
-      winners.push(r[0].team); runners.push(r[1].team);
-      thirds.push({ team: r[2].team, pts: r[2].pts, gd: r[2].gf - r[2].ga, gf: r[2].gf });
+      winnersByG[g] = r[0].team; runnersByG[g] = r[1].team;
+      thirds.push({ team: r[2].team, group: g, pts: r[2].pts, gd: r[2].gf - r[2].ga, gf: r[2].gf });
     }
     // 8 melhores terceiros
     thirds.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || Math.random() - 0.5);
     const bestThirds = thirds.slice(0, 8);
     bestThirds.forEach(t => acc[t.team.id].adv++);
 
-    const qualified = [...winners, ...runners, ...bestThirds.map(t => t.team)];
-    const reached = simulateKnockout(qualified, elo);
+    const reached = simulateKnockout(winnersByG, runnersByG, bestThirds, elo);
     for (const [id, r] of Object.entries(reached)) {
       if (r >= 1) acc[id].r16++;
       if (r >= 2) acc[id].qf++;
@@ -331,7 +369,7 @@ async function main() {
     model: {
       ratings: eloFromHist ? 'elo_historico' : 'elo_semente_fallback',
       groupStage: 'exato (desempates FIFA: pts, saldo, gols, confronto direto)',
-      knockout: 'aproximação v1: chaveamento por força (seeded), não a tabela fixa oficial da FIFA',
+      knockout: 'tabela oficial FIFA 2026 (jogos 73–104); 3ºs alocados por matching respeitando os grupos permitidos por slot',
     },
     teams,
   };

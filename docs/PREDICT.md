@@ -39,9 +39,9 @@ No fim: `P(título) = vezes que foi campeã / 20.000`, e assim por diante.
 | Elo do histórico | calculado por nós (não importado) |
 | Fase de grupos + desempates FIFA | **exato** |
 | Seleção dos 8 melhores terceiros | exato (pontos, saldo, gols) |
-| **Chaveamento do mata-mata** | **aproximação v1**: tabela "por força" (seeded), e **não** a tabela fixa oficial da FIFA |
+| **Chaveamento do mata-mata** | **tabela oficial FIFA 2026** (jogos 73–104); os 8 terceiros são alocados aos slots por *matching* respeitando os grupos permitidos de cada jogo |
 
-A v2 substitui o chaveamento aproximado pela tabela oficial 2026 (cruzamentos fixos + alocação dos terceiros).
+Validação interna a cada execução: soma de "campeão" = 100%, soma de "avança" = 3200% (32 vagas), soma de "final" = 200% (2 finalistas).
 
 ## Como validar (próximos passos)
 - **Calibração**: dos jogos previstos a ~60%, ~60% se confirmaram?
