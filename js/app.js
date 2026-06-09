@@ -15,12 +15,28 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
 // ---------- Idioma ----------
 const LANG_CODES = LANGS.map(l => l.code);
+
+// Resolve um código de idioma do navegador (ex.: "es", "es-AR", "EN") para um suportado.
+function matchSupported(code) {
+  if (!code) return null;
+  const c = code.toLowerCase();
+  if (c.startsWith('pt')) return 'pt-BR';
+  if (c.startsWith('en')) return 'en-US';
+  if (c.startsWith('es')) return 'es-MX';
+  return null;
+}
+
 function detectLang() {
+  // 1) Preferência salva pelo usuário.
   const saved = localStorage.getItem('lang');
   if (saved && LANG_CODES.includes(saved)) return saved;
-  const nav = (navigator.language || 'pt-BR').toLowerCase();
-  if (nav.startsWith('en')) return 'en-US';
-  if (nav.startsWith('es')) return 'es-MX';
+  // 2) Lista de idiomas do navegador, em ordem de preferência.
+  const prefs = navigator.languages?.length ? navigator.languages : [navigator.language];
+  for (const p of prefs) {
+    const m = matchSupported(p);
+    if (m) return m;
+  }
+  // 3) Padrão.
   return 'pt-BR';
 }
 let lang = detectLang();
