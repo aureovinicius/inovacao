@@ -1,14 +1,39 @@
 {
-  "generatedAt": "2026-06-09T11:57:33.946Z",
+  "generatedAt": "2026-06-09T12:20:38.580Z",
   "lang": "en-US",
+  "summary": "As the 2026 FIFA World Cup approaches, media coverage focuses on comprehensive pre-tournament analysis including updated power rankings where the USMNT holds a steady position ahead of their opener against Paraguay and Portugal rises in the standings. Coverage also encompasses team rosters and schedules, stadium information, player rankings highlighting the tournament's top 50 competitors, and expert predictions on match outcomes and title contenders. Viewers can access all matches through streaming services like Fire TV as teams, including Norway's playfully costumed squad, prepare for competition.",
   "digest": [
     {
       "title": "3 days until the 2026 World Cup kicks off",
       "detail": "",
-      "publishedAt": "2026-06-09T11:57:33.334Z"
+      "publishedAt": "2026-06-09T12:20:35.769Z"
     }
   ],
   "news": [
+    {
+      "title": "World Cup 2026 Power Rankings, 48 hours out: Who is No. 1?",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQTlhtQS0xQnhadThlaC0xRkdEVkJTSHlIQ08xN1BNOVM4MUd1Y3FpSEJkeGVSbVkybU9tbVNpdDNLclBfYURjWERCMDhITDVET3JndGduQmtyV2EwNUVQRXpyMHdZMkhZWERlcmhkMWZJdmtuNnNKZ3A4cDUxZGNkZXYzYjc2SThaaVRSMWlWdlNjUnpSdEhRZWNtOGRSSFRiMFV0VjV4NGR5SHF6ajFkX0FkQVNnTGs?oc=5",
+      "source": "ESPN",
+      "publishedAt": "2026-06-09T07:27:00.000Z"
+    },
+    {
+      "title": "2026 World Cup: Team-by-team game schedules, rosters, predictions and everything else you need to know before kickoff",
+      "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxPRGhXNjh5bDFVVldlQW1najN3ZTJFcnRkVUhBenR3YnZiaHloaDlJLTJ1a3RSbmZzUFRub25NeDFBdlhjX2I4Ty1Ba3dsZEFVcUx2Zk9RZXIzVHFiR1cweC1UamNaM2xQTi05eDJmQVZ1VmlrWmhnbUVHc2pqT2lPWkhDa2c0b2I3UFdaanZ2dC1OQjVETmMzT196WkJSOGFUNVhWYjhCYThKcmpEUlNncWNHd2xZYnA1Y2UxY0lqajVhbkRpQnQyYzFzT1pEbmRPM1JiQ2ZvbkN5U01GNElDVHhGMVRrWjJpS2NDSlo4UTJ0b1I0MXgxeGZHSjJlQQ?oc=5",
+      "source": "Yahoo Sports",
+      "publishedAt": "2026-06-09T02:15:00.000Z"
+    },
+    {
+      "title": "How to watch every FIFA World Cup 2026™ match on Fire TV",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOUGpMRmloZlIxaUdJX2FhRG9LVmhOR3hGNXNVaGxkTnNfTGRaZFlNV1V6MjhQY1hZbVppazF4WXBBZUdTRDhDNElNdkVvdXd2ZmtsamhOT2xSYXJ1TjBpVUE2VHpyb3RwWFYxV3QyMTdCcEhQX2FqSHllRi02cEgwZ25hck9sc3Q0?oc=5",
+      "source": "About Amazon",
+      "publishedAt": "2026-06-08T15:06:53.000Z"
+    },
+    {
+      "title": "What to know about the 16 stadiums hosting 2026 World Cup matches",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQclFEZ3dFczVXYUFCTXF0NlFEN2ZyUGxHU0Y2T05qVmdFeDNReVloamFPV2s0cHczQmo2ZEtxN0d2VFVXUHhjZDZ0dHRDOUVhS0xhTXBlMk1DRTg2OGg2ZV8zYjBuWHVHemw5WEV4QWQycmRUTXM2WElWUk1QRnNfa1Z4Ym1BOWFhZndIb1NiZFBfY3c?oc=5",
+      "source": "AP News",
+      "publishedAt": "2026-06-08T10:00:00.000Z"
+    },
     {
       "title": "World Cup Rank: The 50 best players in the 2026 tournament",
       "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPcXV4Tk1pOGhVekdJR1B5a1EyOEdESzZyTnp6UVZYdVpBWDhiNXZXcTlRUVZNS1RfUGhvNTk2ay1Ba25zSWUwdVZkLTVDUTlKNjBxMWNSdFhyLTN1LUg4cE9heG1MSGF2QmJLZ0dSLUdlb21kVkNKcnBITm84TmhRUk40VzIxN0ZnQjhBNFpnWUpUaXNtd2xsUFpn?oc=5",
@@ -26,30 +51,6 @@
       "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPelZVVU0zQVhpN0VueUNkbWFDMUQ1RTZ6ZXBBR2FtTHk5cU1nUXRpclJWNkVEUUgweU10Ti1WRnNWX0ptV3JsbU52MTF0MFlYbFg0SG9kaU5kSTJjdjJGZlZmQU51WERqcWFQdHZDWlEyMS02OC10NDVDSVp1bEFwdFBFZ0V4Mm9WV1RoVl90ZzR0WUhpWFhtZVIxSTA1aXNiaXZvNEs4TXV6WmdLNFJQS3MzLWZ5d3pIQlFj?oc=5",
       "source": "CBS Sports",
       "publishedAt": "2026-06-08T15:26:26.000Z"
-    },
-    {
-      "title": "2026 World Cup: Team-by-team game schedules, rosters, predictions and everything else you need to know before kickoff",
-      "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxPRGhXNjh5bDFVVldlQW1najN3ZTJFcnRkVUhBenR3YnZiaHloaDlJLTJ1a3RSbmZzUFRub25NeDFBdlhjX2I4Ty1Ba3dsZEFVcUx2Zk9RZXIzVHFiR1cweC1UamNaM2xQTi05eDJmQVZ1VmlrWmhnbUVHc2pqT2lPWkhDa2c0b2I3UFdaanZ2dC1OQjVETmMzT196WkJSOGFUNVhWYjhCYThKcmpEUlNncWNHd2xZYnA1Y2UxY0lqajVhbkRpQnQyYzFzT1pEbmRPM1JiQ2ZvbkN5U01GNElDVHhGMVRrWjJpS2NDSlo4UTJ0b1I0MXgxeGZHSjJlQQ?oc=5",
-      "source": "Yahoo Sports",
-      "publishedAt": "2026-06-09T02:15:00.000Z"
-    },
-    {
-      "title": "What to know about the 16 stadiums hosting 2026 World Cup matches",
-      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQclFEZ3dFczVXYUFCTXF0NlFEN2ZyUGxHU0Y2T05qVmdFeDNReVloamFPV2s0cHczQmo2ZEtxN0d2VFVXUHhjZDZ0dHRDOUVhS0xhTXBlMk1DRTg2OGg2ZV8zYjBuWHVHemw5WEV4QWQycmRUTXM2WElWUk1QRnNfa1Z4Ym1BOWFhZndIb1NiZFBfY3c?oc=5",
-      "source": "AP News",
-      "publishedAt": "2026-06-08T10:00:00.000Z"
-    },
-    {
-      "title": "How to watch every FIFA World Cup 2026™ match on Fire TV",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOUGpMRmloZlIxaUdJX2FhRG9LVmhOR3hGNXNVaGxkTnNfTGRaZFlNV1V6MjhQY1hZbVppazF4WXBBZUdTRDhDNElNdkVvdXd2ZmtsamhOT2xSYXJ1TjBpVUE2VHpyb3RwWFYxV3QyMTdCcEhQX2FqSHllRi02cEgwZ25hck9sc3Q0?oc=5",
-      "source": "About Amazon",
-      "publishedAt": "2026-06-08T15:06:53.000Z"
-    },
-    {
-      "title": "World Cup 2026 Power Rankings, 48 hours out: Who is No. 1?",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQTlhtQS0xQnhadThlaC0xRkdEVkJTSHlIQ08xN1BNOVM4MUd1Y3FpSEJkeGVSbVkybU9tbVNpdDNLclBfYURjWERCMDhITDVET3JndGduQmtyV2EwNUVQRXpyMHdZMkhZWERlcmhkMWZJdmtuNnNKZ3A4cDUxZGNkZXYzYjc2SThaaVRSMWlWdlNjUnpSdEhRZWNtOGRSSFRiMFV0VjV4NGR5SHF6ajFkX0FkQVNnTGs?oc=5",
-      "source": "ESPN",
-      "publishedAt": "2026-06-09T07:27:00.000Z"
     },
     {
       "title": "Who Will Win the 2026 Soccer World Cup?",
