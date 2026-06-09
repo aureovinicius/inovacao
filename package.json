@@ -1,11 +1,16 @@
 {
   "name": "copa-2026-stats",
   "version": "0.1.0",
-  "description": "Dashboard interativo de estatísticas da Copa do Mundo FIFA 2026",
+  "description": "Dashboard interativo de estatísticas da Copa do Mundo FIFA 2026 (PWA)",
   "type": "module",
   "scripts": {
     "fetch": "node scripts/fetch-data.mjs",
-    "serve": "node --version >/dev/null && python3 -m http.server 8000"
+    "news": "node scripts/fetch-news.mjs",
+    "calibrate": "node scripts/calibrate.mjs",
+    "predict": "node scripts/predict.mjs",
+    "icons": "node scripts/gen-icons.mjs",
+    "build": "rm -rf _site && mkdir -p _site && cp -r index.html manifest.json sw.js css js data icons _site/ && touch _site/.nojekyll",
+    "serve": "python3 -m http.server 8000"
   },
   "license": "MIT"
 }

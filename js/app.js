@@ -599,3 +599,10 @@ async function init() {
 }
 
 init();
+
+// Registra o service worker (PWA) — instalável e offline.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
