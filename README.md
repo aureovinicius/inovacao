@@ -36,10 +36,11 @@ A [football-data.org](https://www.football-data.org/) **não pode ser chamada di
 2. No GitHub do repositório: **Settings → Secrets and variables → Actions → New repository secret**
    - Nome: `FOOTBALL_DATA_TOKEN`
    - Valor: a chave recebida por e-mail
-3. **Ative o GitHub Pages:** Settings → Pages → Branch `main` (ou a branch do projeto), pasta `/root`.
-4. Pronto. O workflow `.github/workflows/update-data.yml` roda todo dia às 09:00 UTC e também pode ser disparado manualmente em **Actions → Atualizar dados da Copa 2026 → Run workflow**.
+3. **(Opcional) resumo por IA:** crie o secret `ANTHROPIC_API_KEY` (mesmo caminho do passo 2) para o resumo das notícias ser gerado pela Claude API. Sem ele, usa-se o resumo dos dados.
+4. **Ative o GitHub Pages via Actions:** Settings → Pages → **Source: GitHub Actions**.
+5. Pronto. O workflow `.github/workflows/update-data.yml` **gera os dados e publica o site no Pages a cada 2h** (e a cada push na `main`), **sem commitar dados** — o histórico do git fica limpo. Também roda manualmente em **Actions → Run workflow**.
 
-> Enquanto o token não estiver configurado, o site usa os **dados de exemplo** já versionados em `/data`, então tudo funciona de cara.
+> O workflow não escreve no repositório: os dados são gerados a cada deploy e servidos a partir do artefato publicado. Os JSON em `/data` versionados servem como exemplo/fallback para rodar localmente.
 
 ## Rodar localmente
 

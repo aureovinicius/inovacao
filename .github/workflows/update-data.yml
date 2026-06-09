@@ -1,15 +1,28 @@
-name: Atualizar dados da Copa 2026
+name: Publicar Copa 2026 (dados + site no Pages)
+
+# Gera os dados (football-data.org + notícias) e publica o site direto no GitHub Pages,
+# SEM commitar nada no repositório — o histórico do git fica limpo (só commits de código).
+# Requer: Settings → Pages → Source = "GitHub Actions".
 
 on:
   schedule:
     - cron: '0 */2 * * *'   # a cada 2 horas (UTC)
-  workflow_dispatch:        # permite rodar manualmente pelo painel do GitHub
+  workflow_dispatch:        # permite rodar manualmente
+  push:
+    branches: [main]        # republica a cada mudança de código
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita deploys concorrentes; não cancela um deploy em andamento.
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,14 +41,24 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/fetch-news.mjs
 
-      - name: Commitar atualizações (se houver)
+      - name: Montar o site (apenas arquivos públicos)
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain data/)" ]; then
-            git add data/
-            git commit -m "chore: atualização diária dos dados da Copa 2026"
-            git push
-          else
-            echo "Nenhuma mudança nos dados."
-          fi
+          mkdir -p _site
+          cp -r index.html css js data _site/
+          touch _site/.nojekyll
+
+      - name: Upload do artefato do Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
