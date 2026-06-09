@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-09T16:32:42.867Z",
+  "generatedAt": "2026-06-09T16:49:50.590Z",
   "sims": 20000,
   "model": {
-    "ratings": "elo_historico",
-    "groupStage": "exato (desempates FIFA: pts, saldo, gols, confronto direto)",
-    "knockout": "tabela oficial FIFA 2026 (jogos 73–104); 3ºs alocados por matching respeitando os grupos permitidos por slot"
+    "ratings": "elo_historico + jogos da Copa (Elo ao vivo)",
+    "groupStage": "exato (desempates FIFA: pts, saldo, gols, confronto direto); resultados já ocorridos são fixados",
+    "knockout": "tabela oficial FIFA 2026 (jogos 73–104); 3ºs por matching nos grupos permitidos; jogos já decididos são travados"
   },
   "teams": [
     {
@@ -15,12 +15,12 @@
       "group": "H",
       "elo": 2211,
       "pChampion": 25.9,
-      "pFinal": 37.7,
-      "pSemi": 51.3,
-      "pQuarter": 62.4,
+      "pFinal": 37.6,
+      "pSemi": 51,
+      "pQuarter": 61.7,
       "pR16": 80.7,
       "pAdvance": 99.9,
-      "pWinGroup": 85.3
+      "pWinGroup": 85.6
     },
     {
       "id": 762,
@@ -29,11 +29,11 @@
       "crest": "https://crests.football-data.org/762.png",
       "group": "J",
       "elo": 2178,
-      "pChampion": 18.8,
-      "pFinal": 30.5,
-      "pSemi": 43.3,
-      "pQuarter": 58.3,
-      "pR16": 72,
+      "pChampion": 18.5,
+      "pFinal": 30.2,
+      "pSemi": 43.6,
+      "pQuarter": 58.5,
+      "pR16": 72.1,
       "pAdvance": 99.7,
       "pWinGroup": 87
     },
@@ -44,13 +44,13 @@
       "crest": "https://crests.football-data.org/773.svg",
       "group": "I",
       "elo": 2121,
-      "pChampion": 11,
-      "pFinal": 19.3,
-      "pSemi": 35.5,
-      "pQuarter": 52.5,
-      "pR16": 76.3,
+      "pChampion": 10.9,
+      "pFinal": 19,
+      "pSemi": 34.9,
+      "pQuarter": 52.1,
+      "pR16": 76,
       "pAdvance": 98.1,
-      "pWinGroup": 68.7
+      "pWinGroup": 69.4
     },
     {
       "id": 770,
@@ -60,12 +60,12 @@
       "group": "L",
       "elo": 2084,
       "pChampion": 6.8,
-      "pFinal": 13.8,
-      "pSemi": 25.6,
-      "pQuarter": 42.5,
-      "pR16": 70.7,
+      "pFinal": 14.1,
+      "pSemi": 25.9,
+      "pQuarter": 42.6,
+      "pR16": 69.8,
       "pAdvance": 98.9,
-      "pWinGroup": 67
+      "pWinGroup": 66.4
     },
     {
       "id": 818,
@@ -76,11 +76,11 @@
       "elo": 2053,
       "pChampion": 4.6,
       "pFinal": 10,
-      "pSemi": 18.5,
-      "pQuarter": 35.5,
-      "pR16": 63.2,
-      "pAdvance": 95.8,
-      "pWinGroup": 50.3
+      "pSemi": 18.6,
+      "pQuarter": 35.9,
+      "pR16": 64.6,
+      "pAdvance": 96.1,
+      "pWinGroup": 50.4
     },
     {
       "id": 764,
@@ -89,13 +89,13 @@
       "crest": "https://crests.football-data.org/764.svg",
       "group": "C",
       "elo": 2057,
-      "pChampion": 4.3,
-      "pFinal": 9.3,
-      "pSemi": 19.8,
-      "pQuarter": 36.5,
-      "pR16": 60.2,
-      "pAdvance": 97.5,
-      "pWinGroup": 57.9
+      "pChampion": 4.4,
+      "pFinal": 9.6,
+      "pSemi": 20.2,
+      "pQuarter": 36.6,
+      "pR16": 59.8,
+      "pAdvance": 97.3,
+      "pWinGroup": 57.6
     },
     {
       "id": 769,
@@ -106,11 +106,11 @@
       "elo": 1966,
       "pChampion": 3.6,
       "pFinal": 8.6,
-      "pSemi": 19.2,
-      "pQuarter": 37.5,
-      "pR16": 68.7,
-      "pAdvance": 98.5,
-      "pWinGroup": 70.4
+      "pSemi": 18.7,
+      "pQuarter": 37,
+      "pR16": 68.1,
+      "pAdvance": 98.4,
+      "pWinGroup": 70.8
     },
     {
       "id": 765,
@@ -119,13 +119,13 @@
       "crest": "https://crests.football-data.org/765.svg",
       "group": "K",
       "elo": 2036,
-      "pChampion": 3,
-      "pFinal": 7.3,
-      "pSemi": 15.2,
-      "pQuarter": 30.7,
-      "pR16": 59.6,
-      "pAdvance": 94.6,
-      "pWinGroup": 43.3
+      "pChampion": 3.4,
+      "pFinal": 7.9,
+      "pSemi": 15.8,
+      "pQuarter": 31.2,
+      "pR16": 59.7,
+      "pAdvance": 94.4,
+      "pWinGroup": 43.5
     },
     {
       "id": 791,
@@ -134,12 +134,12 @@
       "crest": "https://crests.football-data.org/791.svg",
       "group": "E",
       "elo": 2016,
-      "pChampion": 2.7,
-      "pFinal": 6.6,
-      "pSemi": 16.1,
-      "pQuarter": 31.1,
-      "pR16": 62.9,
-      "pAdvance": 97.5,
+      "pChampion": 2.9,
+      "pFinal": 7.1,
+      "pSemi": 16.5,
+      "pQuarter": 31.4,
+      "pR16": 63.3,
+      "pAdvance": 97.8,
       "pWinGroup": 48
     },
     {
@@ -149,13 +149,13 @@
       "crest": "https://crests.football-data.org/759.svg",
       "group": "E",
       "elo": 2010,
-      "pChampion": 2.3,
-      "pFinal": 6,
-      "pSemi": 15.2,
-      "pQuarter": 30.4,
-      "pR16": 61.1,
-      "pAdvance": 97.6,
-      "pWinGroup": 45.7
+      "pChampion": 2.4,
+      "pFinal": 6.1,
+      "pSemi": 14.8,
+      "pQuarter": 29.5,
+      "pR16": 61.5,
+      "pAdvance": 97.5,
+      "pWinGroup": 45.8
     },
     {
       "id": 8601,
@@ -165,12 +165,12 @@
       "group": "F",
       "elo": 2010,
       "pChampion": 2.3,
-      "pFinal": 5.4,
-      "pSemi": 13.5,
-      "pQuarter": 28.4,
-      "pR16": 50.2,
-      "pAdvance": 95.7,
-      "pWinGroup": 48.8
+      "pFinal": 5.3,
+      "pSemi": 13.4,
+      "pQuarter": 28.3,
+      "pR16": 50.4,
+      "pAdvance": 95.3,
+      "pWinGroup": 47.8
     },
     {
       "id": 766,
@@ -179,13 +179,13 @@
       "crest": "https://crests.football-data.org/766.svg",
       "group": "F",
       "elo": 2000,
-      "pChampion": 2,
-      "pFinal": 4.9,
-      "pSemi": 12.3,
-      "pQuarter": 26.7,
-      "pR16": 48.2,
-      "pAdvance": 94.8,
-      "pWinGroup": 45.2
+      "pChampion": 1.8,
+      "pFinal": 4.7,
+      "pSemi": 12.4,
+      "pQuarter": 27,
+      "pR16": 48.7,
+      "pAdvance": 94.6,
+      "pWinGroup": 46
     },
     {
       "id": 815,
@@ -195,12 +195,12 @@
       "group": "C",
       "elo": 1990,
       "pChampion": 1.5,
-      "pFinal": 4.4,
-      "pSemi": 11.4,
-      "pQuarter": 25.1,
-      "pR16": 47.4,
-      "pAdvance": 92.6,
-      "pWinGroup": 33.4
+      "pFinal": 4.1,
+      "pSemi": 11.3,
+      "pQuarter": 24.8,
+      "pR16": 47.2,
+      "pAdvance": 92.2,
+      "pWinGroup": 33.7
     },
     {
       "id": 828,
@@ -211,26 +211,11 @@
       "elo": 1899,
       "pChampion": 1.5,
       "pFinal": 4.3,
-      "pSemi": 11,
-      "pQuarter": 29.1,
-      "pR16": 62.8,
-      "pAdvance": 98.9,
+      "pSemi": 11.3,
+      "pQuarter": 29.3,
+      "pR16": 64,
+      "pAdvance": 99,
       "pWinGroup": 53.1
-    },
-    {
-      "id": 8872,
-      "name": "Norway",
-      "tla": "NOR",
-      "crest": "https://crests.football-data.org/813.svg",
-      "group": "I",
-      "elo": 1972,
-      "pChampion": 1.3,
-      "pFinal": 3.6,
-      "pSemi": 9.7,
-      "pQuarter": 21.9,
-      "pR16": 45.5,
-      "pAdvance": 84.2,
-      "pWinGroup": 20.3
     },
     {
       "id": 803,
@@ -240,12 +225,12 @@
       "group": "D",
       "elo": 1969,
       "pChampion": 1.3,
-      "pFinal": 3.8,
-      "pSemi": 9.2,
-      "pQuarter": 23.9,
-      "pR16": 49.7,
-      "pAdvance": 81,
-      "pWinGroup": 36.1
+      "pFinal": 3.5,
+      "pSemi": 8.7,
+      "pQuarter": 24.4,
+      "pR16": 50,
+      "pAdvance": 81.2,
+      "pWinGroup": 37.4
     },
     {
       "id": 805,
@@ -255,12 +240,27 @@
       "group": "G",
       "elo": 1955,
       "pChampion": 1.2,
-      "pFinal": 3.4,
-      "pSemi": 8.5,
-      "pQuarter": 25.6,
-      "pR16": 55,
+      "pFinal": 3.7,
+      "pSemi": 8.6,
+      "pQuarter": 25.8,
+      "pR16": 55.4,
       "pAdvance": 92.7,
-      "pWinGroup": 52.1
+      "pWinGroup": 52.3
+    },
+    {
+      "id": 8872,
+      "name": "Norway",
+      "tla": "NOR",
+      "crest": "https://crests.football-data.org/813.svg",
+      "group": "I",
+      "elo": 1972,
+      "pChampion": 1.1,
+      "pFinal": 3.4,
+      "pSemi": 9.4,
+      "pQuarter": 21.7,
+      "pR16": 45.1,
+      "pAdvance": 84,
+      "pWinGroup": 20
     },
     {
       "id": 799,
@@ -271,11 +271,11 @@
       "elo": 1962,
       "pChampion": 1.1,
       "pFinal": 3.3,
-      "pSemi": 8.2,
-      "pQuarter": 18.6,
-      "pR16": 46.3,
-      "pAdvance": 93.1,
-      "pWinGroup": 25.8
+      "pSemi": 8.5,
+      "pQuarter": 18.5,
+      "pR16": 46.1,
+      "pAdvance": 93.3,
+      "pWinGroup": 26.5
     },
     {
       "id": 758,
@@ -285,12 +285,12 @@
       "group": "H",
       "elo": 1964,
       "pChampion": 1,
-      "pFinal": 3.4,
-      "pSemi": 8.2,
-      "pQuarter": 17.3,
-      "pR16": 32.6,
-      "pAdvance": 95.1,
-      "pWinGroup": 14.2
+      "pFinal": 3.2,
+      "pSemi": 8.3,
+      "pQuarter": 17.1,
+      "pR16": 32,
+      "pAdvance": 94.7,
+      "pWinGroup": 13.9
     },
     {
       "id": 788,
@@ -301,26 +301,26 @@
       "elo": 1947,
       "pChampion": 1,
       "pFinal": 3.3,
-      "pSemi": 9.2,
-      "pQuarter": 25.5,
-      "pR16": 59.4,
+      "pSemi": 9.4,
+      "pQuarter": 25.7,
+      "pR16": 59.7,
       "pAdvance": 98.4,
       "pWinGroup": 45.5
     },
     {
-      "id": 771,
-      "name": "United States",
-      "tla": "USA",
-      "crest": "https://crests.football-data.org/usa.svg",
+      "id": 761,
+      "name": "Paraguay",
+      "tla": "PAR",
+      "crest": "https://crests.football-data.org/761.svg",
       "group": "D",
-      "elo": 1845,
-      "pChampion": 0.5,
-      "pFinal": 1.5,
-      "pSemi": 4.4,
-      "pQuarter": 13.4,
-      "pR16": 34.7,
-      "pAdvance": 67.6,
-      "pWinGroup": 22.4
+      "elo": 1908,
+      "pChampion": 0.4,
+      "pFinal": 1.2,
+      "pSemi": 4,
+      "pQuarter": 12.9,
+      "pR16": 33.3,
+      "pAdvance": 65.8,
+      "pWinGroup": 20.7
     },
     {
       "id": 840,
@@ -330,42 +330,27 @@
       "group": "G",
       "elo": 1894,
       "pChampion": 0.4,
-      "pFinal": 1.4,
-      "pSemi": 4.2,
-      "pQuarter": 15,
-      "pR16": 41.6,
-      "pAdvance": 84.4,
-      "pWinGroup": 31.4
+      "pFinal": 1.3,
+      "pSemi": 4,
+      "pQuarter": 14.8,
+      "pR16": 40.6,
+      "pAdvance": 84.6,
+      "pWinGroup": 31.2
     },
     {
-      "id": 772,
-      "name": "South Korea",
-      "tla": "KOR",
-      "crest": "https://crests.football-data.org/772.png",
-      "group": "A",
-      "elo": 1883,
+      "id": 771,
+      "name": "United States",
+      "tla": "USA",
+      "crest": "https://crests.football-data.org/usa.svg",
+      "group": "D",
+      "elo": 1845,
       "pChampion": 0.4,
       "pFinal": 1.2,
       "pSemi": 4.1,
-      "pQuarter": 14.2,
-      "pR16": 39.3,
-      "pAdvance": 84.1,
-      "pWinGroup": 20.3
-    },
-    {
-      "id": 761,
-      "name": "Paraguay",
-      "tla": "PAR",
-      "crest": "https://crests.football-data.org/761.svg",
-      "group": "D",
-      "elo": 1908,
-      "pChampion": 0.3,
-      "pFinal": 1.4,
-      "pSemi": 4,
-      "pQuarter": 12.9,
-      "pR16": 33.4,
-      "pAdvance": 66,
-      "pWinGroup": 21.4
+      "pQuarter": 13.5,
+      "pR16": 35.1,
+      "pAdvance": 67.7,
+      "pWinGroup": 22.1
     },
     {
       "id": 804,
@@ -375,12 +360,12 @@
       "group": "I",
       "elo": 1908,
       "pChampion": 0.3,
-      "pFinal": 1.1,
-      "pSemi": 4,
-      "pQuarter": 12.3,
-      "pR16": 30.6,
-      "pAdvance": 69.5,
-      "pWinGroup": 10
+      "pFinal": 1.3,
+      "pSemi": 4.2,
+      "pQuarter": 12.4,
+      "pR16": 30.5,
+      "pAdvance": 69.2,
+      "pWinGroup": 9.7
     },
     {
       "id": 779,
@@ -389,12 +374,27 @@
       "crest": "https://crests.football-data.org/779.svg",
       "group": "D",
       "elo": 1902,
-      "pChampion": 0.2,
+      "pChampion": 0.3,
       "pFinal": 1.1,
-      "pSemi": 3.8,
-      "pQuarter": 11.9,
-      "pR16": 32.3,
-      "pAdvance": 64.4,
+      "pSemi": 3.4,
+      "pQuarter": 11.7,
+      "pR16": 32,
+      "pAdvance": 64.5,
+      "pWinGroup": 19.7
+    },
+    {
+      "id": 772,
+      "name": "South Korea",
+      "tla": "KOR",
+      "crest": "https://crests.football-data.org/772.png",
+      "group": "A",
+      "elo": 1883,
+      "pChampion": 0.3,
+      "pFinal": 1.3,
+      "pSemi": 4.4,
+      "pQuarter": 14.7,
+      "pR16": 39.3,
+      "pAdvance": 84.5,
       "pWinGroup": 20.1
     },
     {
@@ -405,12 +405,12 @@
       "group": "J",
       "elo": 1893,
       "pChampion": 0.2,
-      "pFinal": 0.8,
-      "pSemi": 2.7,
-      "pQuarter": 8.1,
-      "pR16": 19.3,
-      "pAdvance": 69.2,
-      "pWinGroup": 7.1
+      "pFinal": 0.9,
+      "pSemi": 2.6,
+      "pQuarter": 7.9,
+      "pR16": 19.2,
+      "pAdvance": 68.7,
+      "pWinGroup": 6.6
     },
     {
       "id": 778,
@@ -421,11 +421,11 @@
       "elo": 1873,
       "pChampion": 0.1,
       "pFinal": 0.6,
-      "pSemi": 2,
-      "pQuarter": 6.8,
-      "pR16": 16.5,
-      "pAdvance": 63,
-      "pWinGroup": 4.9
+      "pSemi": 1.9,
+      "pQuarter": 6.7,
+      "pR16": 16.9,
+      "pAdvance": 63.2,
+      "pWinGroup": 5.4
     },
     {
       "id": 8873,
@@ -437,9 +437,9 @@
       "pChampion": 0.1,
       "pFinal": 0.4,
       "pSemi": 1.8,
-      "pQuarter": 6.2,
-      "pR16": 19,
-      "pAdvance": 63.7,
+      "pQuarter": 6.4,
+      "pR16": 19.4,
+      "pAdvance": 64,
       "pWinGroup": 7.9
     },
     {
@@ -451,41 +451,11 @@
       "elo": 1838,
       "pChampion": 0.1,
       "pFinal": 0.4,
-      "pSemi": 1.5,
-      "pQuarter": 6.2,
-      "pR16": 20.7,
-      "pAdvance": 70.5,
-      "pWinGroup": 7
-    },
-    {
-      "id": 8070,
-      "name": "Uzbekistan",
-      "tla": "UZB",
-      "crest": "https://crests.football-data.org/8070.png",
-      "group": "K",
-      "elo": 1821,
-      "pChampion": 0.1,
-      "pFinal": 0.3,
-      "pSemi": 1.1,
-      "pQuarter": 3.6,
-      "pR16": 13.4,
-      "pAdvance": 47.9,
-      "pWinGroup": 4.6
-    },
-    {
-      "id": 798,
-      "name": "Czechia",
-      "tla": "CZE",
-      "crest": "https://crests.football-data.org/798.svg",
-      "group": "A",
-      "elo": 1802,
-      "pChampion": 0.1,
-      "pFinal": 0.3,
-      "pSemi": 1.2,
-      "pQuarter": 6.6,
-      "pR16": 23.1,
-      "pAdvance": 65.7,
-      "pWinGroup": 8.3
+      "pSemi": 1.4,
+      "pQuarter": 6.1,
+      "pR16": 19.9,
+      "pAdvance": 69.6,
+      "pWinGroup": 6.9
     },
     {
       "id": 1935,
@@ -494,13 +464,43 @@
       "crest": "https://crests.football-data.org/787.svg",
       "group": "E",
       "elo": 1809,
+      "pChampion": 0.1,
+      "pFinal": 0.3,
+      "pSemi": 1.5,
+      "pQuarter": 6.3,
+      "pR16": 21.1,
+      "pAdvance": 66.6,
+      "pWinGroup": 6
+    },
+    {
+      "id": 8070,
+      "name": "Uzbekistan",
+      "tla": "UZB",
+      "crest": "https://crests.football-data.org/8070.png",
+      "group": "K",
+      "elo": 1821,
+      "pChampion": 0,
+      "pFinal": 0.3,
+      "pSemi": 1.1,
+      "pQuarter": 3.7,
+      "pR16": 13.2,
+      "pAdvance": 47.5,
+      "pWinGroup": 4.3
+    },
+    {
+      "id": 798,
+      "name": "Czechia",
+      "tla": "CZE",
+      "crest": "https://crests.football-data.org/798.svg",
+      "group": "A",
+      "elo": 1802,
       "pChampion": 0,
       "pFinal": 0.2,
-      "pSemi": 1.2,
-      "pQuarter": 6,
-      "pR16": 20.8,
-      "pAdvance": 66.8,
-      "pWinGroup": 6.1
+      "pSemi": 1.4,
+      "pQuarter": 6.6,
+      "pR16": 22.2,
+      "pAdvance": 64.8,
+      "pWinGroup": 8.2
     },
     {
       "id": 825,
@@ -510,12 +510,12 @@
       "group": "G",
       "elo": 1797,
       "pChampion": 0,
-      "pFinal": 0.1,
-      "pSemi": 0.9,
-      "pQuarter": 4.8,
-      "pR16": 19.9,
-      "pAdvance": 61.2,
-      "pWinGroup": 11.8
+      "pFinal": 0.2,
+      "pSemi": 0.8,
+      "pQuarter": 4.7,
+      "pR16": 19.8,
+      "pAdvance": 60.9,
+      "pWinGroup": 11.7
     },
     {
       "id": 8049,
@@ -526,10 +526,10 @@
       "elo": 1769,
       "pChampion": 0,
       "pFinal": 0.1,
-      "pSemi": 0.3,
-      "pQuarter": 1.7,
-      "pR16": 5.6,
-      "pAdvance": 29.7,
+      "pSemi": 0.4,
+      "pQuarter": 1.6,
+      "pR16": 5.9,
+      "pAdvance": 31,
       "pWinGroup": 1
     },
     {
@@ -542,9 +542,9 @@
       "pChampion": 0,
       "pFinal": 0,
       "pSemi": 0.4,
-      "pQuarter": 2.2,
-      "pR16": 8.9,
-      "pAdvance": 42.3,
+      "pQuarter": 2,
+      "pR16": 9,
+      "pAdvance": 41.9,
       "pWinGroup": 3.6
     },
     {
@@ -556,10 +556,10 @@
       "elo": 1762,
       "pChampion": 0,
       "pFinal": 0,
-      "pSemi": 0.2,
-      "pQuarter": 1.2,
-      "pR16": 5.8,
-      "pAdvance": 28.1,
+      "pSemi": 0.3,
+      "pQuarter": 1.4,
+      "pR16": 6.3,
+      "pAdvance": 28.6,
       "pWinGroup": 1.8
     },
     {
@@ -572,10 +572,10 @@
       "pChampion": 0,
       "pFinal": 0,
       "pSemi": 0.2,
-      "pQuarter": 1.1,
-      "pR16": 4.5,
-      "pAdvance": 19.1,
-      "pWinGroup": 1
+      "pQuarter": 0.9,
+      "pR16": 4.4,
+      "pAdvance": 19,
+      "pWinGroup": 0.9
     },
     {
       "id": 802,
@@ -585,12 +585,12 @@
       "group": "F",
       "elo": 1741,
       "pChampion": 0,
-      "pFinal": 0.1,
+      "pFinal": 0,
       "pSemi": 0.3,
       "pQuarter": 1.4,
-      "pR16": 6.7,
-      "pAdvance": 33.7,
-      "pWinGroup": 2.4
+      "pR16": 6.6,
+      "pAdvance": 34.2,
+      "pWinGroup": 2.6
     },
     {
       "id": 783,
@@ -603,9 +603,9 @@
       "pFinal": 0,
       "pSemi": 0.2,
       "pQuarter": 1.3,
-      "pR16": 8.5,
-      "pAdvance": 35.5,
-      "pWinGroup": 4.7
+      "pR16": 8.1,
+      "pAdvance": 35.8,
+      "pWinGroup": 4.8
     },
     {
       "id": 836,
@@ -618,9 +618,9 @@
       "pFinal": 0,
       "pSemi": 0.1,
       "pQuarter": 0.5,
-      "pR16": 2.8,
-      "pAdvance": 16.4,
-      "pWinGroup": 0.8
+      "pR16": 2.6,
+      "pAdvance": 16.7,
+      "pWinGroup": 0.9
     },
     {
       "id": 801,
@@ -633,9 +633,9 @@
       "pFinal": 0,
       "pSemi": 0.1,
       "pQuarter": 0.8,
-      "pR16": 4.3,
-      "pAdvance": 33.2,
-      "pWinGroup": 0.4
+      "pR16": 4.5,
+      "pAdvance": 33,
+      "pWinGroup": 0.3
     },
     {
       "id": 774,
@@ -648,9 +648,9 @@
       "pFinal": 0,
       "pSemi": 0.1,
       "pQuarter": 0.7,
-      "pR16": 4,
-      "pAdvance": 20.6,
-      "pWinGroup": 0.9
+      "pR16": 4.1,
+      "pAdvance": 21,
+      "pWinGroup": 1
     },
     {
       "id": 1930,
@@ -662,9 +662,9 @@
       "pChampion": 0,
       "pFinal": 0,
       "pSemi": 0,
-      "pQuarter": 0.3,
-      "pR16": 2.1,
-      "pAdvance": 20.6,
+      "pQuarter": 0.4,
+      "pR16": 2.3,
+      "pAdvance": 20.3,
       "pWinGroup": 0.2
     },
     {
@@ -678,9 +678,9 @@
       "pFinal": 0,
       "pSemi": 0.1,
       "pQuarter": 0.9,
-      "pR16": 5.9,
-      "pAdvance": 37.2,
-      "pWinGroup": 1
+      "pR16": 5.8,
+      "pAdvance": 37.8,
+      "pWinGroup": 1.1
     },
     {
       "id": 763,
@@ -694,7 +694,7 @@
       "pSemi": 0,
       "pQuarter": 0.1,
       "pR16": 0.9,
-      "pAdvance": 8.7,
+      "pAdvance": 9.1,
       "pWinGroup": 0.2
     },
     {
@@ -708,8 +708,8 @@
       "pFinal": 0,
       "pSemi": 0,
       "pQuarter": 0.1,
-      "pR16": 1,
-      "pAdvance": 8,
+      "pR16": 0.9,
+      "pAdvance": 8.2,
       "pWinGroup": 0.1
     },
     {
@@ -722,9 +722,9 @@
       "pChampion": 0,
       "pFinal": 0,
       "pSemi": 0,
-      "pQuarter": 0.2,
-      "pR16": 2,
-      "pAdvance": 18.4,
+      "pQuarter": 0.3,
+      "pR16": 2.1,
+      "pAdvance": 18.5,
       "pWinGroup": 0.3
     }
   ]

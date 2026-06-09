@@ -43,6 +43,14 @@ No fim: `P(título) = vezes que foi campeã / 20.000`, e assim por diante.
 
 Validação interna a cada execução: soma de "campeão" = 100%, soma de "avança" = 3200% (32 vagas), soma de "final" = 200% (2 finalistas).
 
+## Atualização automática durante a Copa
+O cron roda a cada 2h. A cada execução:
+- **Resultados de grupo já ocorridos** são fixados (só o que falta é simulado).
+- **Jogos do mata-mata já decididos** são travados (param de ser sorteados).
+- O **Elo absorve os jogos já disputados** da própria Copa (por cima do histórico) — "Elo ao vivo".
+
+Assim as probabilidades refletem fielmente o que já aconteceu, do primeiro jogo à final, sem intervenção manual.
+
 ## Como validar (próximos passos)
 - **Calibração**: dos jogos previstos a ~60%, ~60% se confirmaram?
 - **Brier score / log-loss** contra um palpite-base.

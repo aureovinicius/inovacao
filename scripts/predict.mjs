@@ -179,6 +179,49 @@ function playedGroupResults(matches) {
   return map;
 }
 
+// Resultados já decididos do mata-mata: chave "idMenor-idMaior" -> id do vencedor.
+function finishedKnockout(matches) {
+  const map = {};
+  (matches?.matches || []).forEach(m => {
+    if (m.status !== 'FINISHED' || m.group || m.stage === 'GROUP_STAGE') return;
+    const h = m.homeTeam?.id, a = m.awayTeam?.id;
+    if (h == null || a == null) return;
+    let win = null;
+    const w = m.score?.winner;
+    if (w === 'HOME_TEAM') win = h;
+    else if (w === 'AWAY_TEAM') win = a;
+    else {
+      const gh = m.score?.fullTime?.home, ga = m.score?.fullTime?.away;
+      if (gh != null && ga != null && gh !== ga) win = gh > ga ? h : a;
+    }
+    if (win != null) map[`${Math.min(h, a)}-${Math.max(h, a)}`] = win;
+  });
+  return map;
+}
+
+// Ajusta o Elo (por cima do histórico) com os jogos FINISHED da própria Copa — "Elo ao vivo".
+function applyTournamentResults(elo, matches) {
+  let n = 0;
+  (matches?.matches || []).forEach(m => {
+    if (m.status !== 'FINISHED') return;
+    const h = m.homeTeam, a = m.awayTeam;
+    const gh = m.score?.fullTime?.home, ga = m.score?.fullTime?.away;
+    if (!h?.tla || !a?.tla || gh == null || ga == null) return;
+    if (elo[h.tla] == null || elo[a.tla] == null) return;
+    const ha = HOSTS.has(h.name) ? HOME_ADV : 0;
+    const Rh = elo[h.tla], Ra = elo[a.tla];
+    const Eh = expectedScore(Rh + ha, Ra);
+    const Wh = gh > ga ? 1 : gh === ga ? 0.5 : 0;
+    const gd = Math.abs(gh - ga);
+    const G = gd <= 1 ? 1 : gd === 2 ? 1.5 : (11 + gd) / 8;
+    const K = 60 * G; // peso de Copa do Mundo
+    elo[h.tla] = Math.round(Rh + K * (Wh - Eh));
+    elo[a.tla] = Math.round(Ra + K * ((1 - Wh) - (1 - Eh)));
+    n++;
+  });
+  if (n) console.log(`✓ Elo ajustado com ${n} jogo(s) já disputado(s) da Copa`);
+}
+
 // ----- Simulação de um grupo -----
 function simulateGroup(teams, elo, played) {
   const rows = teams.map(t => ({
@@ -271,12 +314,15 @@ function assignThirds(bestThirds) {
   return byMatch;
 }
 
-function koWinner(A, B, elo) {
+function koWinner(A, B, elo, finishedKO) {
+  // Se o confronto já foi decidido na vida real, trava o vencedor.
+  const real = finishedKO?.[`${Math.min(A.id, B.id)}-${Math.max(A.id, B.id)}`];
+  if (real != null) return real === A.id ? A : B;
   const ha = t => (HOSTS.has(t.name) ? HOME_ADV : 0); // sede joga em casa
   return Math.random() < expectedScore(elo[A.tla] + ha(A), elo[B.tla] + ha(B)) ? A : B;
 }
 
-function simulateKnockout(winnersByG, runnersByG, bestThirds, elo) {
+function simulateKnockout(winnersByG, runnersByG, bestThirds, elo, finishedKO) {
   const thirdByMatch = assignThirds(bestThirds);
   const resolve = slot => slot[0] === 'W' ? winnersByG[slot[1]]
     : slot[0] === 'R' ? runnersByG[slot[1]] : thirdByMatch[slot[1]];
@@ -289,11 +335,11 @@ function simulateKnockout(winnersByG, runnersByG, bestThirds, elo) {
 
   const wmatch = {};
   for (const [m, a, b] of R32) {
-    const w = koWinner(resolve(a), resolve(b), elo);
+    const w = koWinner(resolve(a), resolve(b), elo, finishedKO);
     wmatch[m] = w; mark(w, ROUND_LEVEL(m));
   }
   for (const [m, x, y] of TREE) {
-    const w = koWinner(wmatch[x], wmatch[y], elo);
+    const w = koWinner(wmatch[x], wmatch[y], elo, finishedKO);
     wmatch[m] = w; mark(w, ROUND_LEVEL(m));
   }
   return reached;
@@ -320,8 +366,10 @@ async function main() {
   const eloFromHist = await computeEloFromHistory(teamsByAlias);
   const elo = {};
   for (const t of allTeams) elo[t.tla] = (eloFromHist?.[t.tla]) ?? SEED_ELO[t.tla] ?? ELO_BASE;
+  applyTournamentResults(elo, matches); // Elo "ao vivo": absorve jogos já disputados da Copa
 
-  const played = playedGroupResults(matches);
+  const played = playedGroupResults(matches);   // resultados de grupo (fixados na simulação)
+  const finKO = finishedKnockout(matches);       // jogos do mata-mata já decididos (travados)
 
   // acumuladores
   const acc = {};
@@ -341,7 +389,7 @@ async function main() {
     const bestThirds = thirds.slice(0, 8);
     bestThirds.forEach(t => acc[t.team.id].adv++);
 
-    const reached = simulateKnockout(winnersByG, runnersByG, bestThirds, elo);
+    const reached = simulateKnockout(winnersByG, runnersByG, bestThirds, elo, finKO);
     for (const [id, r] of Object.entries(reached)) {
       if (r >= 1) acc[id].r16++;
       if (r >= 2) acc[id].qf++;
@@ -367,9 +415,9 @@ async function main() {
     generatedAt: new Date().toISOString(),
     sims: SIMS,
     model: {
-      ratings: eloFromHist ? 'elo_historico' : 'elo_semente_fallback',
-      groupStage: 'exato (desempates FIFA: pts, saldo, gols, confronto direto)',
-      knockout: 'tabela oficial FIFA 2026 (jogos 73–104); 3ºs alocados por matching respeitando os grupos permitidos por slot',
+      ratings: (eloFromHist ? 'elo_historico' : 'elo_semente_fallback') + ' + jogos da Copa (Elo ao vivo)',
+      groupStage: 'exato (desempates FIFA: pts, saldo, gols, confronto direto); resultados já ocorridos são fixados',
+      knockout: 'tabela oficial FIFA 2026 (jogos 73–104); 3ºs por matching nos grupos permitidos; jogos já decididos são travados',
     },
     teams,
   };
