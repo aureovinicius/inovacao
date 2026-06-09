@@ -23,6 +23,9 @@ jobs:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: node scripts/fetch-data.mjs
 
+      - name: Gerar notícias (RSS + resumo do dia)
+        run: node scripts/fetch-news.mjs
+
       - name: Commitar atualizações (se houver)
         run: |
           git config user.name  "github-actions[bot]"

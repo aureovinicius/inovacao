@@ -32,6 +32,7 @@
 
   <nav class="tabs" role="tablist">
     <button class="tab is-active" data-view="overview" data-i18n="tab_overview" role="tab">Visão geral</button>
+    <button class="tab" data-view="news" data-i18n="tab_news" role="tab">Notícias</button>
     <button class="tab" data-view="scorers" data-i18n="tab_scorers" role="tab">Artilharia</button>
     <button class="tab" data-view="standings" data-i18n="tab_standings" role="tab">Classificação</button>
     <button class="tab" data-view="bracket" data-i18n="tab_bracket" role="tab">Chaveamento</button>
@@ -50,6 +51,18 @@
       <div class="panel">
         <h2 data-i18n="top5">Top 5 artilheiros</h2>
         <ol id="mini-scorers" class="mini-rank"></ol>
+      </div>
+    </section>
+
+    <!-- NOTÍCIAS -->
+    <section class="view" data-view="news">
+      <div class="panel">
+        <h2 data-i18n="news_digest">Resumo do dia</h2>
+        <ul id="news-digest" class="digest-list"></ul>
+      </div>
+      <div class="panel">
+        <h2 data-i18n="news_latest">Últimas notícias</h2>
+        <div id="news-list" class="news-list"></div>
       </div>
     </section>
 

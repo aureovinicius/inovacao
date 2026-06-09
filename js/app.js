@@ -92,6 +92,20 @@ function isSameDay(iso, ref) {
   return d.getFullYear() === ref.getFullYear() && d.getMonth() === ref.getMonth() && d.getDate() === ref.getDate();
 }
 
+const esc = (s = '') => String(s).replace(/[&<>"']/g, c =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// Tempo relativo nativo no idioma atual ("há 2 h", "2 hours ago", "il y a 2 h"…).
+function relTime(iso) {
+  if (!iso) return '';
+  const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
+  if (Math.abs(mins) < 60) return rtf.format(-mins, 'minute');
+  const hrs = Math.round(mins / 60);
+  if (Math.abs(hrs) < 24) return rtf.format(-hrs, 'hour');
+  return rtf.format(-Math.round(hrs / 24), 'day');
+}
+
 // ---------- Renderização ----------
 function renderMeta() {
   const meta = DATA.meta || {};
@@ -275,6 +289,36 @@ function renderBracket() {
   $('#third-place').innerHTML = `<h3>${t('bracket_third')}</h3>${bracketMatch(third)}`;
 }
 
+// ---------- Notícias ----------
+const NEWS = {}; // cache por idioma
+async function renderNews() {
+  let data = NEWS[lang];
+  if (data === undefined) {
+    try {
+      const res = await fetch(`data/news.${lang}.json`, { cache: 'no-store' });
+      data = res.ok ? await res.json() : null;
+    } catch { data = null; }
+    NEWS[lang] = data;
+  }
+  const digest = data?.digest || [];
+  const news = data?.news || [];
+
+  $('#news-digest').innerHTML = digest.length ? digest.map(d => `
+    <li class="digest-item">
+      <span class="digest-dot" aria-hidden="true"></span>
+      <div><strong>${esc(d.title)}</strong>${d.detail ? `<div class="digest-detail">${esc(d.detail)}</div>` : ''}</div>
+    </li>`).join('') : `<li class="empty">—</li>`;
+
+  $('#news-list').innerHTML = news.length ? news.map(n => `
+    <a class="news-card" href="${esc(n.url)}" target="_blank" rel="noopener">
+      <div class="news-meta">
+        <span class="news-source">${esc(n.source || '')}</span>
+        <span class="news-time">${relTime(n.publishedAt)}</span>
+      </div>
+      <div class="news-headline">${esc(n.title)}</div>
+    </a>`).join('') : `<p class="empty">${t('news_empty')}</p>`;
+}
+
 // ---------- Comparador ----------
 function teamStatsTable() {
   const map = {};
@@ -395,6 +439,7 @@ function renderAll() {
   renderBracket();
   renderCompareControls();
   renderAllMatches();
+  renderNews();
 }
 
 // ---------- Navegação ----------
