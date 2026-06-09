@@ -23,6 +23,7 @@ function matchSupported(code) {
   if (c.startsWith('pt')) return 'pt-BR';
   if (c.startsWith('en')) return 'en-US';
   if (c.startsWith('es')) return 'es-MX';
+  if (c.startsWith('fr')) return 'fr-CA';
   return null;
 }
 
