@@ -1,0 +1,489 @@
+{
+  "competition": "Copa do Mundo 2026",
+  "edition": 2026,
+  "teamCount": 48,
+  "source": "football-data.org + Elo histórico (projeto Copa 2026)",
+  "generatedAt": "2026-06-10T22:19:22.562Z",
+  "teams": [
+    {
+      "id": 798,
+      "name": "Czechia",
+      "tla": "CZE",
+      "crest": "https://crests.football-data.org/798.svg",
+      "group": "A",
+      "elo": 1802,
+      "clubColors": "Red / White / Blue",
+      "coach": "Miroslav Koubek"
+    },
+    {
+      "id": 769,
+      "name": "Mexico",
+      "tla": "MEX",
+      "crest": "https://crests.football-data.org/769.svg",
+      "group": "A",
+      "elo": 1966,
+      "clubColors": "Green / White / Red",
+      "coach": "Javier Aguirre"
+    },
+    {
+      "id": 774,
+      "name": "South Africa",
+      "tla": "RSA",
+      "crest": "https://crests.football-data.org/9396.svg",
+      "group": "A",
+      "elo": 1664,
+      "clubColors": "Gold / Green / Black",
+      "coach": "Hugo Broos"
+    },
+    {
+      "id": 772,
+      "name": "South Korea",
+      "tla": "KOR",
+      "crest": "https://crests.football-data.org/772.png",
+      "group": "A",
+      "elo": 1883,
+      "clubColors": "Red / White / Blue",
+      "coach": "Myungbo Hong"
+    },
+    {
+      "id": 1060,
+      "name": "Bosnia-Herzegovina",
+      "tla": "BIH",
+      "crest": "https://crests.football-data.org/bosnia.svg",
+      "group": "B",
+      "elo": 1637,
+      "clubColors": "White / Blue",
+      "coach": "Sergej Barbarez"
+    },
+    {
+      "id": 828,
+      "name": "Canada",
+      "tla": "CAN",
+      "crest": "https://crests.football-data.org/canada.svg",
+      "group": "B",
+      "elo": 1899,
+      "clubColors": null,
+      "coach": "Jesse Marsch"
+    },
+    {
+      "id": 8030,
+      "name": "Qatar",
+      "tla": "QAT",
+      "crest": "https://crests.football-data.org/8030.svg",
+      "group": "B",
+      "elo": 1573,
+      "clubColors": "Maroon / White",
+      "coach": "Julen Lopetegui"
+    },
+    {
+      "id": 788,
+      "name": "Switzerland",
+      "tla": "SUI",
+      "crest": "https://crests.football-data.org/788.svg",
+      "group": "B",
+      "elo": 1947,
+      "clubColors": "Red / White",
+      "coach": "Murat Yakin"
+    },
+    {
+      "id": 764,
+      "name": "Brazil",
+      "tla": "BRA",
+      "crest": "https://crests.football-data.org/764.svg",
+      "group": "C",
+      "elo": 2057,
+      "clubColors": "Yellow / Green / Blue",
+      "coach": "Carlo Ancelotti"
+    },
+    {
+      "id": 836,
+      "name": "Haiti",
+      "tla": "HAI",
+      "crest": "https://crests.football-data.org/haiti.svg",
+      "group": "C",
+      "elo": 1699,
+      "clubColors": "Blue / White / Red",
+      "coach": "Sébastien Bernard Henri Clément"
+    },
+    {
+      "id": 815,
+      "name": "Morocco",
+      "tla": "MAR",
+      "crest": "https://crests.football-data.org/morocco.svg",
+      "group": "C",
+      "elo": 1990,
+      "clubColors": "Red / Green",
+      "coach": "Mohamed Ouahbi"
+    },
+    {
+      "id": 8873,
+      "name": "Scotland",
+      "tla": "SCO",
+      "crest": "https://crests.football-data.org/814.svg",
+      "group": "C",
+      "elo": 1849,
+      "clubColors": "Navy Blue / White",
+      "coach": "Steve Clarke"
+    },
+    {
+      "id": 779,
+      "name": "Australia",
+      "tla": "AUS",
+      "crest": "https://crests.football-data.org/779.svg",
+      "group": "D",
+      "elo": 1902,
+      "clubColors": "Gold / Green",
+      "coach": "Tony Popovic"
+    },
+    {
+      "id": 761,
+      "name": "Paraguay",
+      "tla": "PAR",
+      "crest": "https://crests.football-data.org/761.svg",
+      "group": "D",
+      "elo": 1908,
+      "clubColors": "Red / White / Blue",
+      "coach": "Gustavo Alfaro"
+    },
+    {
+      "id": 803,
+      "name": "Turkey",
+      "tla": "TUR",
+      "crest": "https://crests.football-data.org/803.svg",
+      "group": "D",
+      "elo": 1969,
+      "clubColors": "Red / White",
+      "coach": "Vincenzo Montella"
+    },
+    {
+      "id": 771,
+      "name": "United States",
+      "tla": "USA",
+      "crest": "https://crests.football-data.org/usa.svg",
+      "group": "D",
+      "elo": 1845,
+      "clubColors": "White / Navy Blue / Red",
+      "coach": "Mauricio Pochettino"
+    },
+    {
+      "id": 9460,
+      "name": "Curaçao",
+      "tla": "CUW",
+      "crest": "https://crests.football-data.org/curacao.svg",
+      "group": "E",
+      "elo": 1604,
+      "clubColors": null,
+      "coach": "Dick"
+    },
+    {
+      "id": 791,
+      "name": "Ecuador",
+      "tla": "ECU",
+      "crest": "https://crests.football-data.org/791.svg",
+      "group": "E",
+      "elo": 2016,
+      "clubColors": "Yellow / Blue / Red",
+      "coach": "Sebastián Beccacece"
+    },
+    {
+      "id": 759,
+      "name": "Germany",
+      "tla": "GER",
+      "crest": "https://crests.football-data.org/759.svg",
+      "group": "E",
+      "elo": 2010,
+      "clubColors": "White / Black",
+      "coach": "Julian Nagelsmann"
+    },
+    {
+      "id": 1935,
+      "name": "Ivory Coast",
+      "tla": "CIV",
+      "crest": "https://crests.football-data.org/787.svg",
+      "group": "E",
+      "elo": 1809,
+      "clubColors": "Orange / Green / White",
+      "coach": "Emerse Faé"
+    },
+    {
+      "id": 766,
+      "name": "Japan",
+      "tla": "JPN",
+      "crest": "https://crests.football-data.org/766.svg",
+      "group": "F",
+      "elo": 2000,
+      "clubColors": "Blue / White",
+      "coach": "Hajime Moriyasu"
+    },
+    {
+      "id": 8601,
+      "name": "Netherlands",
+      "tla": "NED",
+      "crest": "https://crests.football-data.org/8601.svg",
+      "group": "F",
+      "elo": 2010,
+      "clubColors": "Orange / White / Blue",
+      "coach": "Ronald Koeman"
+    },
+    {
+      "id": 792,
+      "name": "Sweden",
+      "tla": "SWE",
+      "crest": "https://crests.football-data.org/792.svg",
+      "group": "F",
+      "elo": 1765,
+      "clubColors": "Yellow / Blue",
+      "coach": "Graham Potter"
+    },
+    {
+      "id": 802,
+      "name": "Tunisia",
+      "tla": "TUN",
+      "crest": "https://crests.football-data.org/tunisia.svg",
+      "group": "F",
+      "elo": 1741,
+      "clubColors": "White / Red",
+      "coach": "Sabri Lamouchi"
+    },
+    {
+      "id": 805,
+      "name": "Belgium",
+      "tla": "BEL",
+      "crest": "https://crests.football-data.org/805.svg",
+      "group": "G",
+      "elo": 1955,
+      "clubColors": "Red / Black / Yellow",
+      "coach": "Rudi García"
+    },
+    {
+      "id": 825,
+      "name": "Egypt",
+      "tla": "EGY",
+      "crest": "https://crests.football-data.org/825.svg",
+      "group": "G",
+      "elo": 1797,
+      "clubColors": "Red / White / Black",
+      "coach": "Hossam Hassan"
+    },
+    {
+      "id": 840,
+      "name": "Iran",
+      "tla": "IRN",
+      "crest": "https://crests.football-data.org/iran.svg",
+      "group": "G",
+      "elo": 1894,
+      "clubColors": "White / Green / Red",
+      "coach": "Amir Ghalenoei"
+    },
+    {
+      "id": 783,
+      "name": "New Zealand",
+      "tla": "NZL",
+      "crest": "https://crests.football-data.org/783.svg",
+      "group": "G",
+      "elo": 1721,
+      "clubColors": "White / Black",
+      "coach": "Darren Bazeley"
+    },
+    {
+      "id": 1930,
+      "name": "Cape Verde Islands",
+      "tla": "CPV",
+      "crest": "https://crests.football-data.org/cape_verde.svg",
+      "group": "H",
+      "elo": 1644,
+      "clubColors": "Blue / White / Red",
+      "coach": "Bubista"
+    },
+    {
+      "id": 801,
+      "name": "Saudi Arabia",
+      "tla": "KSA",
+      "crest": "https://crests.football-data.org/saudi_arabia.svg",
+      "group": "H",
+      "elo": 1692,
+      "clubColors": "White / Green",
+      "coach": "Giorgios"
+    },
+    {
+      "id": 760,
+      "name": "Spain",
+      "tla": "ESP",
+      "crest": "https://crests.football-data.org/760.svg",
+      "group": "H",
+      "elo": 2211,
+      "clubColors": "Red / Blue / Yellow",
+      "coach": "Luis de la Fuente"
+    },
+    {
+      "id": 758,
+      "name": "Uruguay",
+      "tla": "URY",
+      "crest": "https://crests.football-data.org/758.svg",
+      "group": "H",
+      "elo": 1964,
+      "clubColors": "Sky Blue / White / Black",
+      "coach": "Marcelo Bielsa"
+    },
+    {
+      "id": 773,
+      "name": "France",
+      "tla": "FRA",
+      "crest": "https://crests.football-data.org/773.svg",
+      "group": "I",
+      "elo": 2121,
+      "clubColors": "Blue / White / Red",
+      "coach": "Didier Deschamps"
+    },
+    {
+      "id": 8062,
+      "name": "Iraq",
+      "tla": "IRQ",
+      "crest": "https://crests.football-data.org/iraq.svg",
+      "group": "I",
+      "elo": 1749,
+      "clubColors": "White / Green",
+      "coach": "Graham Arnold"
+    },
+    {
+      "id": 8872,
+      "name": "Norway",
+      "tla": "NOR",
+      "crest": "https://crests.football-data.org/813.svg",
+      "group": "I",
+      "elo": 1972,
+      "clubColors": "Red / White / Navy Blue",
+      "coach": "Ståle Solbakken"
+    },
+    {
+      "id": 804,
+      "name": "Senegal",
+      "tla": "SEN",
+      "crest": "https://crests.football-data.org/senegal.svg",
+      "group": "I",
+      "elo": 1908,
+      "clubColors": "White / Green",
+      "coach": null
+    },
+    {
+      "id": 778,
+      "name": "Algeria",
+      "tla": "ALG",
+      "crest": "https://crests.football-data.org/algeria.svg",
+      "group": "J",
+      "elo": 1873,
+      "clubColors": "White / Green",
+      "coach": "Vladimir Petković"
+    },
+    {
+      "id": 762,
+      "name": "Argentina",
+      "tla": "ARG",
+      "crest": "https://crests.football-data.org/762.png",
+      "group": "J",
+      "elo": 2178,
+      "clubColors": "Sky Blue / White / Black",
+      "coach": "Lionel Scaloni"
+    },
+    {
+      "id": 816,
+      "name": "Austria",
+      "tla": "AUT",
+      "crest": "https://crests.football-data.org/816.svg",
+      "group": "J",
+      "elo": 1893,
+      "clubColors": "Red / White / Black",
+      "coach": "Ralf Rangnick"
+    },
+    {
+      "id": 8049,
+      "name": "Jordan",
+      "tla": "JOR",
+      "crest": "https://crests.football-data.org/8049.png",
+      "group": "J",
+      "elo": 1769,
+      "clubColors": "Red / White",
+      "coach": null
+    },
+    {
+      "id": 818,
+      "name": "Colombia",
+      "tla": "COL",
+      "crest": "https://crests.football-data.org/818.svg",
+      "group": "K",
+      "elo": 2053,
+      "clubColors": "Yellow / Red / Blue",
+      "coach": "Néstor Lorenzo"
+    },
+    {
+      "id": 1934,
+      "name": "Congo DR",
+      "tla": "COD",
+      "crest": "https://crests.football-data.org/congo_dr.svg",
+      "group": "K",
+      "elo": 1762,
+      "clubColors": "Blue / Yellow / Red",
+      "coach": "Sébastien Desabre"
+    },
+    {
+      "id": 765,
+      "name": "Portugal",
+      "tla": "POR",
+      "crest": "https://crests.football-data.org/765.svg",
+      "group": "K",
+      "elo": 2036,
+      "clubColors": "Red / Green",
+      "coach": "Roberto Martínez"
+    },
+    {
+      "id": 8070,
+      "name": "Uzbekistan",
+      "tla": "UZB",
+      "crest": "https://crests.football-data.org/8070.png",
+      "group": "K",
+      "elo": 1821,
+      "clubColors": "White / Blue / Green",
+      "coach": "Fabio Cannavaro"
+    },
+    {
+      "id": 799,
+      "name": "Croatia",
+      "tla": "CRO",
+      "crest": "https://crests.football-data.org/799.svg",
+      "group": "L",
+      "elo": 1962,
+      "clubColors": "Red / White / Blue",
+      "coach": "Zlatko Dalić"
+    },
+    {
+      "id": 770,
+      "name": "England",
+      "tla": "ENG",
+      "crest": "https://crests.football-data.org/770.svg",
+      "group": "L",
+      "elo": 2084,
+      "clubColors": "White / Red / Navy Blue",
+      "coach": "Thomas Tuchel"
+    },
+    {
+      "id": 763,
+      "name": "Ghana",
+      "tla": "GHA",
+      "crest": "https://crests.football-data.org/ghana.svg",
+      "group": "L",
+      "elo": 1625,
+      "clubColors": "White / Black",
+      "coach": "Carlos Queiroz"
+    },
+    {
+      "id": 1836,
+      "name": "Panama",
+      "tla": "PAN",
+      "crest": "https://crests.football-data.org/panama.svg",
+      "group": "L",
+      "elo": 1838,
+      "clubColors": "Red / White / Navy Blue",
+      "coach": "Thomas Christiansen"
+    }
+  ]
+}
