@@ -40,16 +40,11 @@ Sem configurar nada, o jogo roda 100% offline (Mestre no modo pré-escrito).
 ## Ligar o Mestre (Claude API) — opcional
 
 A IA fica atrás de um Cloudflare Worker para a chave nunca ir ao navegador.
+**Guia completo:** [`worker/README.md`](worker/README.md). Resumo:
 
-1. **Crie o Worker** com o código de [`worker/mestre-proxy.js`](worker/mestre-proxy.js).
-2. No painel do Worker, configure os secrets/vars:
-   - `ANTHROPIC_API_KEY` (secret) — sua chave da Claude API.
-   - `MODELO_LANCE` / `MODELO_CENA` (opcional) — padrão `claude-haiku-4-5`.
-   - `ORIGENS_PERMITIDAS` (opcional) — ex.: `https://SEU-USER.github.io`.
-3. Pegue a URL do Worker e cole em [`js/config.js`](js/config.js):
-   ```js
-   export const MESTRE_PROXY_URL = 'https://SEU-WORKER.workers.dev';
-   ```
+1. Na pasta `worker/`: `npx wrangler login` → `npx wrangler secret put ANTHROPIC_API_KEY` → `npx wrangler deploy`.
+2. Cole a URL do Worker em [`js/config.js`](js/config.js) (`MESTRE_PROXY_URL`).
+3. Trave custo: `ORIGENS_PERMITIDAS` no `wrangler.toml`, *spend limit* na Anthropic e (opcional) rate-limit por KV.
 
 ### Alavancas de custo (já embutidas)
 

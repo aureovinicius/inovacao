@@ -1,0 +1,25 @@
+# Configuração do Cloudflare Worker "Mestre" de Crônicas da Copa.
+# Deploy:  npx wrangler deploy   (a partir desta pasta worker/)
+#
+# A chave da Claude NÃO vai aqui — é um secret:
+#   npx wrangler secret put ANTHROPIC_API_KEY
+
+name = "cronicas-mestre"
+main = "mestre-proxy.js"
+compatibility_date = "2026-06-01"
+
+# Variáveis não-secretas (pode editar à vontade).
+[vars]
+MODELO_LANCE = "claude-haiku-4-5"
+MODELO_CENA  = "claude-haiku-4-5"
+# Em produção, troque "*" pela origem do seu site para travar chamadas de fora.
+# Ex.: "https://aureovinicius.github.io" ou seu domínio do gamecup no Pages.
+ORIGENS_PERMITIDAS = "*"
+RL_POR_MINUTO = "30"
+
+# (Opcional) Rate-limit por IP via KV. Crie o namespace e cole o id abaixo:
+#   npx wrangler kv namespace create RATE_LIMIT
+# Depois descomente:
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT"
+# id = "COLE_AQUI_O_ID_DO_NAMESPACE"
