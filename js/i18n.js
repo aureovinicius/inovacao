@@ -73,6 +73,7 @@ export const UI = {
     cal_note: 'Backtest histórico do modelo de partidas: quanto menor o Brier/Log-loss, melhor; "previsto" deve bater com "observado".',
     cal_model: 'modelo', cal_baseline: 'base', cal_accuracy: 'Acurácia', cal_samples: 'jogos', cal_predicted: 'Previsto', cal_observed: 'Observado',
     footer: 'Projeto educativo · dados de football-data.org. Não afiliado à FIFA.',
+    privacy_link: 'Política de privacidade',
   },
   'en-US': {
     title: 'Painel da Copa · 2026',
@@ -138,6 +139,7 @@ export const UI = {
     cal_note: 'Historical backtest of the match model: lower Brier/Log-loss is better; "predicted" should match "observed".',
     cal_model: 'model', cal_baseline: 'base', cal_accuracy: 'Accuracy', cal_samples: 'matches', cal_predicted: 'Predicted', cal_observed: 'Observed',
     footer: 'Educational project · data from football-data.org. Not affiliated with FIFA.',
+    privacy_link: 'Privacy policy',
   },
   'es-MX': {
     title: 'Painel da Copa · 2026',
@@ -203,6 +205,7 @@ export const UI = {
     cal_note: 'Backtest histórico del modelo de partidos: menor Brier/Log-loss es mejor; "previsto" debe coincidir con "observado".',
     cal_model: 'modelo', cal_baseline: 'base', cal_accuracy: 'Precisión', cal_samples: 'partidos', cal_predicted: 'Previsto', cal_observed: 'Observado',
     footer: 'Proyecto educativo · datos de football-data.org. No afiliado a la FIFA.',
+    privacy_link: 'Política de privacidad',
   },
   'fr-CA': {
     title: 'Painel da Copa · 2026',
@@ -268,6 +271,7 @@ export const UI = {
     cal_note: 'Backtest historique du modèle de matchs : un Brier/Log-loss plus bas est meilleur; « prévu » doit correspondre à « observé ».',
     cal_model: 'modèle', cal_baseline: 'base', cal_accuracy: 'Précision', cal_samples: 'matchs', cal_predicted: 'Prévu', cal_observed: 'Observé',
     footer: 'Projet éducatif · données de football-data.org. Non affilié à la FIFA.',
+    privacy_link: 'Politique de confidentialité',
   },
 };
 
