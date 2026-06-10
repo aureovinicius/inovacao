@@ -32,6 +32,10 @@ const HOME_ADV = 70;       // bônus Elo de mando (só para país-sede jogando e
 const ELO_PER_GOAL = 170;  // ~170 pontos de Elo ≈ 1 gol de diferença esperada
 const AVG_TOTAL_GOALS = 2.6;
 const HOSTS = new Set(['United States', 'Mexico', 'Canada']);
+// No mata-mata, Canadá e México NÃO jogam mais em casa: eles só sediam jogos na
+// fase de grupos. Os EUA seguem sediando do mata-mata até a final, então só eles
+// mantêm o bônus de mando a partir dos 16-avos.
+const KO_HOSTS = new Set(['United States']);
 // Tempering: encolhe a diferença de força na hora de prever (calibrado em calibrate.mjs).
 // Lido de data/calibration.json no main; este é só o fallback.
 let ELO_SHRINK = 0.85;
@@ -211,7 +215,10 @@ function applyTournamentResults(elo, matches) {
     const gh = m.score?.fullTime?.home, ga = m.score?.fullTime?.away;
     if (!h?.tla || !a?.tla || gh == null || ga == null) return;
     if (elo[h.tla] == null || elo[a.tla] == null) return;
-    const ha = HOSTS.has(h.name) ? HOME_ADV : 0;
+    // No grupo, os três sedes jogam em casa; no mata-mata, só os EUA.
+    const isGroup = !!m.group || m.stage === 'GROUP_STAGE';
+    const hosts = isGroup ? HOSTS : KO_HOSTS;
+    const ha = hosts.has(h.name) ? HOME_ADV : 0;
     const Rh = elo[h.tla], Ra = elo[a.tla];
     const Eh = expectedScore(Rh + ha, Ra);
     const Wh = gh > ga ? 1 : gh === ga ? 0.5 : 0;
@@ -321,7 +328,7 @@ function koWinner(A, B, elo, finishedKO) {
   // Se o confronto já foi decidido na vida real, trava o vencedor.
   const real = finishedKO?.[`${Math.min(A.id, B.id)}-${Math.max(A.id, B.id)}`];
   if (real != null) return real === A.id ? A : B;
-  const ha = t => (HOSTS.has(t.name) ? HOME_ADV : 0); // sede joga em casa
+  const ha = t => (KO_HOSTS.has(t.name) ? HOME_ADV : 0); // no mata-mata, só os EUA jogam em casa
   const diff = (elo[A.tla] - elo[B.tla]) * ELO_SHRINK + ha(A) - ha(B); // com tempering
   return Math.random() < 1 / (1 + 10 ** (-diff / 400)) ? A : B;
 }
