@@ -10,14 +10,14 @@ formulário de "Segurança dos dados".
 
 | Item | Valor |
 |---|---|
-| **Package name / applicationId** | `com.copa2026.stats` |
+| **Package name / applicationId** | `br.com.aureovinicius.copa` |
 | **URL do PWA (TWA)** | `https://aureovinicius.com.br/copa/` |
 | **Manifest** | `https://aureovinicius.com.br/copa/manifest.json` |
 | **Host verificado (Digital Asset Links)** | `aureovinicius.com.br` |
 
 > O `package_name` precisa ser **idêntico** em três lugares: na Play Console, no
-> `assetlinks.json` e no `applicationId` que o PWABuilder/Bubblewrap gerar. Se
-> quiser trocar (ex.: `br.com.aureovinicius.copa`), troque nos três.
+> `assetlinks.json` e no `applicationId` que o PWABuilder/Bubblewrap gerar.
+> ⚠️ Ele é **imutável** depois da 1ª publicação na Play — confira antes de enviar.
 
 ---
 
