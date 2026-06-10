@@ -9,7 +9,7 @@
     "calibrate": "node scripts/calibrate.mjs",
     "predict": "node scripts/predict.mjs",
     "icons": "node scripts/gen-icons.mjs",
-    "build": "rm -rf _site && mkdir -p _site && cp -r index.html manifest.json sw.js css js data icons _site/ && touch _site/.nojekyll",
+    "build": "rm -rf _site && mkdir -p _site && cp -r index.html manifest.json sw.js CNAME css js data icons _site/ && touch _site/.nojekyll",
     "serve": "python3 -m http.server 8000"
   },
   "license": "MIT"

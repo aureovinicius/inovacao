@@ -50,7 +50,7 @@ jobs:
       - name: Montar o site (apenas arquivos públicos)
         run: |
           mkdir -p _site
-          cp -r index.html manifest.json sw.js css js data icons _site/
+          cp -r index.html manifest.json sw.js CNAME css js data icons _site/
           touch _site/.nojekyll
 
       - name: Upload do artefato do Pages
