@@ -5,7 +5,7 @@
 //   - css/js/ícones:    stale-while-revalidate (instantâneo + atualiza em 2º plano)
 //   - cross-origin:     rede, com cache de imagens (escudos)
 // Troque a VERSION ao publicar mudanças de código para renovar o cache.
-const VERSION = 'copa2026-v1';
+const VERSION = 'copa2026-v2';
 const SHELL = [
   './', './index.html', './css/style.css',
   './js/app.js', './js/i18n.js', './js/config.js',
