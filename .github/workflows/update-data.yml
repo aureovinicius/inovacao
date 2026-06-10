@@ -47,10 +47,12 @@ jobs:
       - name: Calcular probabilidades (Elo + Monte Carlo)
         run: node scripts/predict.mjs
 
-      - name: Montar o site (apenas arquivos públicos)
+      - name: Montar o site em /copa (deploy via Actions)
         run: |
-          mkdir -p _site
-          cp -r index.html manifest.json sw.js CNAME css js data icons _site/
+          mkdir -p _site/copa
+          cp -r index.html manifest.json sw.js css js data icons _site/copa/
+          cp CNAME _site/CNAME
+          printf '<!doctype html><html lang="pt-br"><meta charset="utf-8"><title>Copa 2026</title><meta http-equiv="refresh" content="0; url=copa/"><link rel="canonical" href="copa/"><body style="background:#0c1118;color:#e8eef5;font-family:system-ui;text-align:center;padding:48px"><a href="copa/" style="color:#1db954">Copa 2026 \xe2\x86\x92</a>' > _site/index.html
           touch _site/.nojekyll
 
       - name: Upload do artefato do Pages
