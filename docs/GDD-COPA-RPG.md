@@ -292,8 +292,8 @@ usuários avançados, sem custo para você.
 
 ### 8.5 Tom da narração (prompt de persona — rascunho)
 
-> "Você é o mestre de uma mesa de RPG sobre futebol e também locutor apaixonado. Narre em
-> português brasileiro, no presente, em 2–4 frases. Use o apelido do personagem. Misture
+> "Você é o mestre de uma mesa de RPG sobre futebol e também locutor apaixonado. Narre
+> no idioma indicado em `lang` (pt-BR, en-US, es-MX ou fr-CA), no presente, em 2–4 frases. Use o apelido do personagem. Misture
 > emoção de rádio (anos compatíveis com a edição da Copa) com consequência de RPG: todo
 > sucesso planta a próxima ameaça, toda falha planta uma chance de redenção. Nunca decida
 > resultados — eles chegam prontos no campo `resultado`. Jamais quebre o tom para falar
@@ -337,63 +337,74 @@ usuários avançados, sem custo para você.
 
 ---
 
-## 11. Arquitetura Técnica (reaproveitando o projeto)
+## 11. Arquitetura Técnica (app separado, reaproveitando padrões do dashboard)
+
+> **Decisão (§14):** o jogo é um **repo/PWA próprio**, com app Android próprio via
+> Capacitor. Ele **consome** os dados publicados pelo dashboard (URL do GitHub Pages)
+> em vez de viver dentro dele; copia os padrões que já funcionam lá (vanilla JS, i18n,
+> Worker como proxy de segredo).
 
 ```
-copa/ (repo atual)
-├── game/                      ← novo: o jogo (mesma filosofia: vanilla JS, sem build)
-│   ├── index.html             tela do jogo (PWA própria ou rota do app atual)
-│   ├── js/
-│   │   ├── engine/            simulação da partida (determinística, seed)
-│   │   │   ├── match.js       eventos minuto a minuto
-│   │   │   ├── dice.js        d20, modificadores, críticos
-│   │   │   └── ratings.js     forças (importa lógica do scripts/predict.mjs)
-│   │   ├── rpg/
-│   │   │   ├── character.js   ficha, classes, XP, traços
-│   │   │   ├── campaign.js    estado da campanha + "diário" p/ a IA
-│   │   │   └── achievements.js
-│   │   ├── narrator/
-│   │   │   ├── claude.js      cliente do Worker (streaming, retry, fila)
-│   │   │   └── templates.js   fallback offline
-│   │   └── ui/                feed da partida, dado animado, telas
-│   ├── data/
-│   │   ├── editions/          1930.json, 1950.json, … (seleções e formatos históricos)
-│   │   └── achievements.json
-│   └── css/
+copa-rpg/ (repo novo)
+├── index.html                 PWA do jogo (manifest, sw.js — mesmo padrão do dashboard)
+├── js/
+│   ├── engine/                simulação da partida (determinística, seed)
+│   │   ├── match.js           eventos minuto a minuto
+│   │   ├── dice.js            d20, modificadores, críticos
+│   │   └── ratings.js         forças (lógica portada do scripts/predict.mjs do dashboard)
+│   ├── rpg/
+│   │   ├── character.js       ficha, classes, XP, traços
+│   │   ├── campaign.js        estado da campanha + "diário" p/ a IA
+│   │   └── achievements.js
+│   ├── narrator/
+│   │   ├── claude.js          cliente do Worker (streaming, retry, fila)
+│   │   └── templates.js       fallback offline (por idioma)
+│   ├── i18n.js                pt-BR · en-US · es-MX · fr-CA (padrão portado do dashboard)
+│   └── ui/                    feed da partida, dado animado, telas
+├── data/
+│   ├── editions/              1930.json, 1950.json, … (seleções e formatos históricos)
+│   └── achievements.json
+├── css/
 ├── worker/
-│   ├── live-proxy.js          (existente)
-│   └── narrator-proxy.js      ← novo: proxy da Claude API (secret + rate-limit + schema)
-└── data/teams.json …          (existente — alimenta a edição 2026)
+│   └── narrator-proxy.js      proxy da Claude API (secret + rate-limit + validação de schema)
+└── capacitor.config.json      app Android próprio
 ```
 
+- **Dados de 2026:** consumidos em runtime da URL publicada do dashboard
+  (`.../data/teams.json` etc.), com snapshot local como fallback — os dois projetos
+  ficam desacoplados.
 - **Saves:** `localStorage`/IndexedDB (campanha, hall de lendas, conquistas). Export/import
   JSON para backup. Sem backend de contas no MVP.
-- **Sem framework**, coerente com o resto do repo; o dado animado e o feed são DOM puro.
-- **Capacitor** já configurado no projeto → o jogo entra no mesmo app Android.
+- **Sem framework**, mesma filosofia do dashboard; o dado animado e o feed são DOM puro.
+- **i18n desde o dia 1**: strings da UI nos 4 idiomas; a narração da IA recebe `lang`
+  como parâmetro do prompt (mesma persona, mesmo custo).
 
 ---
 
 ## 12. Roadmap Proposto
 
-### Fase 0 — Protótipo de mesa (1 partida, sem IA)
-Engine da partida + d20 + 1 classe (Atacante) + intervenções com textos fixos.
-**Critério:** uma partida completa divertida *mesmo sem IA*. Se isso não for divertido, a IA não salva.
+> **Ajuste (§14):** com a decisão de IA no MVP, as antigas Fases 0 e 1 viram a **Fase 1
+> (MVP)** única. O critério "a partida diverte mesmo sem IA" continua como marco interno
+> dela (testável desligando o narrador), não como fase separada.
 
-### Fase 1 — O Mestre entra na mesa
-Worker proxy + chamadas de intervenção e pós-jogo com structured outputs + streaming +
-fallback de templates. **Critério:** narração com memória dentro de uma partida.
+### Fase 1 — MVP: uma partida com Mestre (repo novo)
+Setup do repo + i18n (4 idiomas) + engine da partida + d20 animado + 1 classe (Atacante)
++ Worker proxy da Claude API + intervenções e pós-jogo com structured outputs + streaming
++ fallback de templates.
+**Critérios:** (a) a partida diverte com o narrador desligado; (b) narração com memória
+dentro da partida, nos 4 idiomas.
 
 ### Fase 2 — Campanha completa
 Copa 1970 (16 seleções) jogável do início ao fim: pré-jogo, entre-jogos, XP/treino,
 epílogo, ~20 conquistas. **Critério:** alguém termina a campanha e quer contar a história.
 
 ### Fase 3 — Níveis e classes
-Todas as edições (1930→2026), todas as classes incl. Técnico, ~60 conquistas, Hall das
-Lendas, card compartilhável.
+Todas as edições (1930→2026, com 2026 puxando dados reais do dashboard), todas as classes
+incl. Técnico, ~60 conquistas, Hall das Lendas, card compartilhável.
 
 ### Fase 4 — Polimento e lançamento
 Balanceamento de CDs e custos, sons, modo diário, BYOK opcional, publicação na Play
-Store (Capacitor) e no GitHub Pages.
+Store (Capacitor, app próprio) e no GitHub Pages.
 
 ---
 
@@ -410,9 +421,27 @@ Store (Capacitor) e no GitHub Pages.
 
 ---
 
-## 14. Questões em aberto (para decidirmos antes da Fase 0)
+## 14. Decisões tomadas
 
-1. O jogo vive **dentro do app atual** (nova aba "Jogar") ou como **app/URL separado**?
-2. Narração com IA já no MVP público, ou lançar Fase 0 como demo "modo clássico"?
-3. Idiomas: só pt-BR no início, ou aproveitar o i18n existente (en/es/fr) desde já?
-4. Nome final do jogo 🙂
+| Questão | Decisão | Consequência no plano |
+|---|---|---|
+| App ou aba do dashboard? | ✅ **App separado** (repo/PWA próprio, app Android próprio via Capacitor) | O jogo consome os dados publicados pelo dashboard (`teams.json` etc. via URL do Pages) em vez de compartilhar o código; o Worker narrador vive no projeto do jogo |
+| IA no MVP? | ✅ **Sim** | Fases 0 e 1 se fundem: o MVP já nasce com o Mestre (Worker proxy + structured outputs + fallback de templates). O gate de diversão da engine continua valendo como marco interno |
+| Idiomas | ✅ **Multilíngue desde o início** (pt-BR, en-US, es-MX, fr-CA — mesmos do dashboard) | UI com i18n desde a Fase 0 (reaproveitar abordagem do `js/i18n.js`); a narração da IA recebe o idioma como parâmetro do prompt — custo igual, mesma persona |
+| Nome final | 🔶 Em escolha — candidatos abaixo | — |
+
+### 14.1 Candidatos a nome
+
+Critérios: funcionar (ou traduzir bem) nos 4 idiomas, evitar marcas da FIFA
+("World Cup"/"Copa do Mundo" no título é risco), ser curto e buscável.
+
+| Candidato | Nos 4 idiomas | Por quê |
+|---|---|---|
+| **Crônicas da Copa** | Cup Chronicles · Crónicas del Mundial · Chroniques du Mondial | Casa com o epílogo do jogo (a "crônica da campanha"); identidade narrativa forte |
+| **Roll & Gol** | igual em todos | Trocadilho universal: *roll* (dado) + gol/goal; brandável, mecânica no nome |
+| **Golaço!** | igual em todos | Palavra reconhecida mundialmente; curto e gritável |
+| **Lendas da Copa** | Cup Legends · Leyendas del Mundial · Légendes du Mondial | O título de trabalho; foca na fantasia central (virar lenda) |
+| **D20 Futebol** | D20 Football · D20 Fútbol · D20 Foot | Direto ao público de RPG; nicho, mas inconfundível |
+| **Mundial d20** | igual em todos ("Mundial/Mondial" é compreendido nos 4) | Híbrido: a competição + o dado |
+| **Camisa Pesada** | The Heavy Shirt · La Camiseta Pesada · Le Maillot Lourd | Evoca o drama/peso da seleção; mais poético, tradução menos natural em en |
+| **Prorrogação** | Extra Time · Tiempo Extra · Prolongation | Curto e dramático; menos descritivo do jogo |
