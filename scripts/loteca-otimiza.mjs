@@ -16,6 +16,9 @@
 //   node scripts/loteca-otimiza.mjs --max           # aposta de probabilidade máxima
 //   node scripts/loteca-otimiza.mjs --probs         # só a tabela de probabilidades
 //   node scripts/loteca-otimiza.mjs --bet 1=1X2,2=2,4=1X2,...   # avalia uma marcação sua
+//   node scripts/loteca-otimiza.mjs --complemento 1=1X,2=2,... [orçamento]
+//        # dada uma aposta já feita, acha a melhor 2ª aposta (maximiza a chance de
+//        # QUALQUER uma ser premiada). Orçamento em reais; padrão = custo da 1ª.
 //
 // Os jogos do concurso são lidos de data/loteca.json se existir; senão, usa o
 // concurso 1255 (Copa da Loteca) embutido abaixo. Em data/loteca.json:
@@ -145,6 +148,108 @@ function evaluate(games, markings) {
   return { combos, P14: covprod, Pprem: premiadaProb(covprod, invsum, games.length), cov };
 }
 
+// ----- Duas apostas: probabilidade de QUALQUER uma ser premiada -----
+// Distribuição conjunta exata do nº de erros de A e de B (truncado em 2, pois só
+// importa erros ≤ 1). Estado plano: idx = erA*3 + erB (erA,erB ∈ {0,1,≥2}).
+// Por jogo, o resultado real cai em 1 de 4 categorias: cobre ambos / só A / só B /
+// nenhum — e isso incrementa os contadores de erro de quem NÃO cobriu.
+function jointDist(games, Acols, Bcols) {
+  let dist = new Float64Array(9); dist[0] = 1; // (0,0)
+  for (let i = 0; i < games.length; i++) {
+    let pbb = 0, pa = 0, pb = 0, pn = 0;
+    for (const k of ORDER) {
+      const pk = games[i].p[k];
+      const inA = Acols[i].includes(k), inB = Bcols[i].includes(k);
+      if (inA && inB) pbb += pk; else if (inA) pa += pk; else if (inB) pb += pk; else pn += pk;
+    }
+    const nd = new Float64Array(9);
+    for (let erA = 0; erA < 3; erA++) for (let erB = 0; erB < 3; erB++) {
+      const v = dist[erA * 3 + erB]; if (!v) continue;
+      const a1 = Math.min(erA + 1, 2), b1 = Math.min(erB + 1, 2);
+      nd[erA * 3 + erB] += v * pbb;   // ambos cobrem
+      nd[erA * 3 + b1] += v * pa;     // só A cobre → B erra
+      nd[a1 * 3 + erB] += v * pb;     // só B cobre → A erra
+      nd[a1 * 3 + b1] += v * pn;      // nenhum cobre → ambos erram
+    }
+    dist = nd;
+  }
+  return dist;
+}
+function unionStats(games, Acols, Bcols) {
+  const d = jointDist(games, Acols, Bcols);
+  const at = (a, b) => d[a * 3 + b];
+  let Apr = 0, Bpr = 0, both = 0;
+  for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) {
+    if (a <= 1) Apr += at(a, b);
+    if (b <= 1) Bpr += at(a, b);
+    if (a <= 1 && b <= 1) both += at(a, b);
+  }
+  const union = Apr + Bpr - both;
+  let A14 = 0, B14 = 0; for (let b = 0; b < 3; b++) A14 += at(0, b); for (let a = 0; a < 3; a++) B14 += at(a, 0);
+  const union14 = A14 + B14 - at(0, 0);
+  return { union, union14, Apr, Bpr };
+}
+
+// Acha o melhor COMPLEMENTO a uma aposta já feita (Acols), até maxCombos.
+// Para tratabilidade, jogos simples do complemento ficam no favorito; duplos/triplos
+// podem cobrir qualquer combinação de colunas (inclusive as que A não cobre).
+function optimizeComplement(games, Acols, maxCombos) {
+  const n = games.length;
+  // opções por jogo: favorito(1) + 3 duplos + triplo, cada uma com (colunas, tamanho)
+  const PAIRS = [['1', 'X'], ['1', '2'], ['X', '2']];
+  const optsByGame = games.map(g => {
+    const fav = ORDER.map(k => ({ k, p: g.p[k] })).sort((a, b) => b.p - a.p)[0].k;
+    return [[[fav], 1], ...PAIRS.map(pr => [pr, 2]), [['1', 'X', '2'], 3]];
+  });
+  const choice = new Array(n).fill(null);
+  const bufs = Array.from({ length: n + 1 }, () => new Float64Array(9)); // 1 buffer por profundidade
+  let best = null;
+  (function dfs(i, combos, dist) {
+    if (i === n) {
+      let Apr = 0, Bpr = 0, both = 0;
+      for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) {
+        const v = dist[a * 3 + b];
+        if (a <= 1) Apr += v; if (b <= 1) Bpr += v; if (a <= 1 && b <= 1) both += v;
+      }
+      const union = Apr + Bpr - both;
+      if (!best || union > best.union) best = { union, Bpr, combos, cols: choice.slice() };
+      return;
+    }
+    const opts = optsByGame[i], nd = bufs[i + 1];
+    for (let o = 0; o < opts.length; o++) {
+      const cols = opts[o][0], sz = opts[o][1];
+      const nc = combos * sz; if (nc > maxCombos) continue;
+      let pbb = 0, pa = 0, pb = 0, pn = 0;
+      for (const k of ORDER) {
+        const pk = games[i].p[k];
+        const inA = Acols[i].includes(k), inB = cols.includes(k);
+        if (inA && inB) pbb += pk; else if (inA) pa += pk; else if (inB) pb += pk; else pn += pk;
+      }
+      nd.fill(0);
+      for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) {
+        const v = dist[a * 3 + b]; if (!v) continue;
+        const a1 = a < 2 ? a + 1 : 2, b1 = b < 2 ? b + 1 : 2;
+        nd[a * 3 + b] += v * pbb; nd[a * 3 + b1] += v * pa; nd[a1 * 3 + b] += v * pb; nd[a1 * 3 + b1] += v * pn;
+      }
+      choice[i] = cols; dfs(i + 1, nc, nd);
+    }
+    choice[i] = null;
+  })(0, 1, (() => { bufs[0][0] = 1; return bufs[0]; })());
+  return best;
+}
+
+// Converte "1=1X,2=2,..." em colunas por jogo (default = favorito).
+function parseMarkings(str, games) {
+  const m = games.map(g => [ORDER.map(k => ({ k, p: g.p[k] })).sort((a, b) => b.p - a.p)[0].k]);
+  for (const part of str.split(',')) {
+    const [j, cols] = part.split('=');
+    const idx = parseInt(j, 10) - 1;
+    if (idx >= 0 && idx < m.length && cols)
+      m[idx] = cols.toUpperCase().split('').filter(k => ORDER.includes(k));
+  }
+  return m;
+}
+
 // ----- Util de exibição -----
 const NAME_PT = {
   Brazil: 'Brasil', Morocco: 'Marrocos', Haiti: 'Haiti', Scotland: 'Escócia',
@@ -220,16 +325,34 @@ async function main() {
 
   // --bet 1=1X2,2=2,...  (avalia marcação do usuário)
   if (arg === '--bet' && args[1]) {
-    const markings = new Array(games.length).fill(null).map(() => ['1']);
-    for (const part of args[1].split(',')) {
-      const [j, cols] = part.split('=');
-      const idx = parseInt(j, 10) - 1;
-      markings[idx] = cols.toUpperCase().split('').filter(k => ORDER.includes(k));
-    }
     printProbs(games);
-    const res = evaluate(games, markings);
+    const res = evaluate(games, parseMarkings(args[1], games));
     console.log(`\n🎯 Sua marcação: ${res.combos} combinações · R$ ${(price * res.combos).toLocaleString('pt-BR')}`);
     console.log(`   P(premiada 13/14) = ${(res.Pprem * 100).toFixed(2)}% (${oneIn(res.Pprem)})  |  P(14) = ${(res.P14 * 100).toFixed(3)}% (${oneIn(res.P14)})`);
+    return;
+  }
+
+  // --complemento "1=1X,2=2,..." [orçamento]  -> melhor 2ª aposta dado o bilhete já feito
+  if (arg === '--complemento' && args[1]) {
+    const Acols = parseMarkings(args[1], games);
+    const A = evaluate(games, Acols);
+    const budget = args[2] && !Number.isNaN(Number(args[2])) ? Number(args[2]) : A.combos * price;
+    const maxCombos = Math.min(MAX_COMBOS, Math.floor(budget / price));
+    const best = optimizeComplement(games, Acols, maxCombos);
+    const Bcols = best.cols;
+    const B = evaluate(games, Bcols);
+    const u = unionStats(games, Acols, Bcols);
+    console.log(`\n🎟️  Aposta já feita (A): ${A.combos} comb · R$ ${(A.combos * price).toLocaleString('pt-BR')} · P(premiada)=${(A.Pprem * 100).toFixed(2)}%`);
+    console.log(`🎯 Melhor COMPLEMENTO (B) até R$ ${budget.toLocaleString('pt-BR')}: ${B.combos} comb · R$ ${(B.combos * price).toLocaleString('pt-BR')} · P(premiada)=${(B.Pprem * 100).toFixed(2)}%`);
+    console.log(`\n   ⇒ A ∪ B: P(premiada 13/14) = ${(u.union * 100).toFixed(2)}% (${oneIn(u.union)})   P(14 acertos) = ${(u.union14 * 100).toFixed(3)}% (${oneIn(u.union14)})`);
+    console.log(`   (A sozinha: ${(A.Pprem * 100).toFixed(2)}% → ganho de +${((u.union - A.Pprem) * 100).toFixed(2)} ponto(s) com a 2ª aposta)\n`);
+    console.log('   Jogo                                A        B (complemento)');
+    console.log('   ' + '─'.repeat(60));
+    games.forEach((g, i) => {
+      const diff = JSON.stringify([...Acols[i]].sort()) !== JSON.stringify([...Bcols[i]].sort());
+      const tag = { 1: 'simples', 2: 'DUPLO', 3: 'TRIPLO' }[Bcols[i].length];
+      console.log(`   J${String(i + 1).padStart(2)} ${(pt(g.casa) + ' x ' + pt(g.fora)).padEnd(30)} [${Acols[i].join('').padEnd(3)}]   [${Bcols[i].join('').padEnd(3)}] ${tag}${diff ? '  ← difere' : ''}`);
+    });
     return;
   }
 
@@ -259,7 +382,7 @@ async function main() {
     printBet(games, optimize(games, maxCombos), `Faixa R$ ${reais}`);
   }
   printBet(games, optimize(games, MAX_COMBOS), 'PROBABILIDADE MÁXIMA (limite Loteca)');
-  console.log('\nDica: `node scripts/loteca-otimiza.mjs <orçamento>` para qualquer valor; `--bet 1=1X2,...` para avaliar a sua.');
+  console.log('\nDica: `<orçamento>` para qualquer valor · `--bet 1=1X2,...` avalia a sua · `--complemento 1=1X2,...` acha a melhor 2ª aposta.');
 }
 
 main().catch(err => { console.error('Erro:', err.message); process.exit(1); });
