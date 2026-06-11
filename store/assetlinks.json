@@ -5,8 +5,8 @@
       "namespace": "android_app",
       "package_name": "br.com.aureovinicius.copa",
       "sha256_cert_fingerprints": [
-        "REPLACE_WITH_APP_SIGNING_SHA256",
-        "REPLACE_WITH_UPLOAD_KEY_SHA256"
+        "DE:AA:A8:E8:F9:05:16:2A:6F:4A:D0:3A:E5:FF:0A:77:FB:93:18:70:4B:4B:34:29:F1:F6:7A:63:B4:5E:41:F2",
+        "REPLACE_WITH_PLAY_APP_SIGNING_SHA256"
       ]
     }
   }
