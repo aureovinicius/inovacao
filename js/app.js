@@ -561,7 +561,6 @@ function renderAll() {
   renderNews();
   renderPredictions();
   renderCalibration();
-  refreshInstallText();
 }
 
 // ---------- Placar ao vivo ----------
@@ -628,70 +627,8 @@ function initTabs() {
   });
 }
 
-// ---------- Banner de instalação (PWA) ----------
-let deferredInstallPrompt = null;
-let installMode = null; // 'prompt' (Android/Chrome) | 'ios' (Safari) | null
-
-const installState = {
-  standalone: () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true,
-  ios: () => /iphone|ipad|ipod/i.test(navigator.userAgent) && !/crios|fxios|edgios/i.test(navigator.userAgent),
-  dismissed: () => localStorage.getItem('installDismissed') === '1',
-};
-
-function refreshInstallText() {
-  const sub = $('#install-banner-sub');
-  if (sub && installMode) sub.textContent = t(installMode === 'ios' ? 'install_ios' : 'install_sub');
-}
-function showInstallBanner(mode) {
-  const b = $('#install-banner');
-  if (!b) return;
-  installMode = mode;
-  const accept = $('#install-accept');
-  if (accept) accept.hidden = (mode !== 'prompt');
-  refreshInstallText();
-  b.hidden = false;
-}
-function hideInstallBanner() {
-  installMode = null;
-  const b = $('#install-banner');
-  if (b) b.hidden = true;
-}
-function setupInstallBanner() {
-  const dismiss = $('#install-dismiss');
-  if (dismiss) dismiss.addEventListener('click', () => {
-    localStorage.setItem('installDismissed', '1');
-    hideInstallBanner();
-  });
-  const accept = $('#install-accept');
-  if (accept) accept.addEventListener('click', async () => {
-    if (!deferredInstallPrompt) return;
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt = null;
-    hideInstallBanner();
-  });
-
-  // Android/Chrome/Edge: o navegador avisa que o app é instalável.
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredInstallPrompt = e;
-    if (!installState.standalone() && !installState.dismissed()) showInstallBanner('prompt');
-  });
-  window.addEventListener('appinstalled', () => {
-    deferredInstallPrompt = null;
-    localStorage.setItem('installDismissed', '1');
-    hideInstallBanner();
-  });
-
-  // iOS Safari não dispara beforeinstallprompt → mostra a dica de "Adicionar à Tela de Início".
-  if (installState.ios() && !installState.standalone() && !installState.dismissed()) {
-    showInstallBanner('ios');
-  }
-}
-
 // ---------- Boot ----------
 async function init() {
-  setupInstallBanner();
   await loadData();
   renderAll();
   initTabs();
