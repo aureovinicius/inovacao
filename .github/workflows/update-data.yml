@@ -31,20 +31,27 @@ jobs:
         with:
           node-version: 24
 
+      # As etapas de dados NÃO bloqueiam o deploy: se a API/rede falhar, o site
+      # (código) ainda publica com os dados que houver. Evita que um rate-limit da
+      # football-data trave a publicação de correções do app.
       - name: Buscar dados da football-data.org
+        continue-on-error: true
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: node scripts/fetch-data.mjs
 
       - name: Gerar notícias (RSS + resumo por IA)
+        continue-on-error: true
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/fetch-news.mjs
 
       - name: Calibrar o modelo (backtest histórico + tempering)
+        continue-on-error: true
         run: node scripts/calibrate.mjs
 
       - name: Calcular probabilidades (Elo + Monte Carlo)
+        continue-on-error: true
         run: node scripts/predict.mjs
 
       - name: Montar o site (arquivos públicos)
