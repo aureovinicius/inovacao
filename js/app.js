@@ -606,6 +606,27 @@ function setLiveStatus(on) {
   if (on) el.innerHTML = `<span class="live-dot" aria-hidden="true"></span>${t('live')} · ${t('updated')} ${new Date().toLocaleTimeString(lang)}`;
 }
 
+// "Progresso" de um jogo: status (encerrado > ao vivo > agendado) + total de gols.
+function matchProgress(m) {
+  const rank = { FINISHED: 3, AWARDED: 3, IN_PLAY: 2, PAUSED: 2, SUSPENDED: 1 }[m?.status] ?? 0;
+  const ft = m?.score?.fullTime || {};
+  return [rank, (ft.home || 0) + (ft.away || 0)];
+}
+// Funde os jogos do poll ao vivo com os atuais SEM regredir: por jogo, mantém a
+// versão com lastUpdated mais novo (e, em empate, a de maior progresso). Evita que
+// um snapshot atrasado do proxy apague um placar já conhecido (ex.: 1×0 → 0×0).
+function mergeMatches(prev, next) {
+  const byId = new Map((prev || []).map(m => [m.id, m]));
+  return (next || []).map(n => {
+    const p = byId.get(n.id);
+    if (!p) return n;
+    const tn = Date.parse(n.lastUpdated), tp = Date.parse(p.lastUpdated);
+    if (!Number.isNaN(tn) && !Number.isNaN(tp) && tn !== tp) return tn > tp ? n : p;
+    const [nr, ng] = matchProgress(n), [pr, pg] = matchProgress(p);
+    return (nr > pr || (nr === pr && ng >= pg)) ? n : p;
+  });
+}
+
 async function pollLive() {
   if (!LIVE_PROXY_URL || document.visibilityState !== 'visible' || !inBrtWindow() || !inLiveWindow()) {
     setLiveStatus(false);
@@ -616,6 +637,7 @@ async function pollLive() {
     if (!res.ok) return;
     const data = await res.json();
     if (!data?.matches) return;
+    data.matches = mergeMatches(DATA.matches?.matches, data.matches); // nunca regride placares
     DATA.matches = data;
     renderSummary();
     renderToday();
