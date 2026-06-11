@@ -23,7 +23,7 @@ os.makedirs(OUT, exist_ok=True)
 # Legendas por imagem, na ordem dos arquivos (01, 02, 03, ...).
 CAPTIONS = [
     "Tudo da Copa num só painel",
-    "Probabilidades por um modelo próprio",
+    "Veja as chances do seu país ser campeão",
     "Classificação dos 12 grupos",
     "Resumo diário das notícias por IA",
     "Calendário completo, filtro por fase",
