@@ -667,22 +667,27 @@ function matchProgress(m) {
   const ft = m?.score?.fullTime || {};
   return [rank, (ft.home || 0) + (ft.away || 0)];
 }
-// Funde os jogos do poll ao vivo com os atuais SEM regredir. O PROGRESSO manda:
-// nunca reduz o status (encerrado>ao vivo>agendado) nem o nº de gols. O lastUpdated
-// só desempata quando o progresso é igual (minuto, cartões…). Necessário porque a
-// football-data, num jogo ao vivo, atualiza o lastUpdated a cada minuto mesmo sem
-// gol — então um snapshot atrasado de 0×0 pode vir com timestamp mais novo que o 1×0.
+// Funde os jogos do poll ao vivo com os atuais SEM regredir e SEM perder jogos.
+// - Mantém a UNIÃO: um jogo que existe só no conjunto atual não some se o poll vier
+//   parcial/vazio (senão a classificação zeraria).
+// - Invariante mais forte: o nº de GOLS nunca diminui (nem se uma fonte atrasada
+//   disser que o jogo "terminou 0×0"). Depois o status só avança; lastUpdated
+//   desempata progresso igual.
+function pickMatch(p, n) {
+  const [nr, ng] = matchProgress(n), [pr, pg] = matchProgress(p);
+  if (ng !== pg) return ng > pg ? n : p;
+  if (nr !== pr) return nr > pr ? n : p;
+  const tn = Date.parse(n.lastUpdated), tp = Date.parse(p.lastUpdated);
+  return (Number.isNaN(tn) || Number.isNaN(tp) || tn >= tp) ? n : p;
+}
 function mergeMatches(prev, next) {
-  const byId = new Map((prev || []).map(m => [m.id, m]));
-  return (next || []).map(n => {
+  const byId = new Map();
+  for (const m of (prev || [])) byId.set(m.id, m);
+  for (const n of (next || [])) {
     const p = byId.get(n.id);
-    if (!p) return n;
-    const [nr, ng] = matchProgress(n), [pr, pg] = matchProgress(p);
-    if (nr !== pr) return nr > pr ? n : p;   // status mais avançado vence
-    if (ng !== pg) return ng > pg ? n : p;   // mais gols vence (nunca regride)
-    const tn = Date.parse(n.lastUpdated), tp = Date.parse(p.lastUpdated);
-    return (Number.isNaN(tn) || Number.isNaN(tp) || tn >= tp) ? n : p; // empate → mais novo
-  });
+    byId.set(n.id, p ? pickMatch(p, n) : n);
+  }
+  return [...byId.values()];
 }
 
 const scorersTotal = (list) => (list || []).reduce((s, x) => s + (x.goals || 0), 0);

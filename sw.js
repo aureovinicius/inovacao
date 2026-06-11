@@ -1,11 +1,10 @@
 // Service worker da PWA Copa 2026.
-// Estratégia mista: app shell rápido/offline + dados sempre frescos.
-//   - Navegação (HTML): network-first → cache (offline)
-//   - data/*.json:      network-first → cache (placar/probabilidades sempre atuais)
-//   - css/js/ícones:    stale-while-revalidate (instantâneo + atualiza em 2º plano)
-//   - cross-origin:     rede, com cache de imagens (escudos)
-// Troque a VERSION ao publicar mudanças de código para renovar o cache.
-const VERSION = 'copa2026-v11';
+// Estratégia: NETWORK-FIRST para tudo do próprio site (HTML, JS, CSS, JSON, bandeiras)
+// — código e dados mais novos chegam sempre que houver rede; o cache só serve OFFLINE.
+// Isso evita o app rodar uma versão antiga de JS guardada em cache (causa de bugs
+// "que não somem mesmo após o deploy"). Imagens externas (se houver) ficam em cache.
+// Troque a VERSION ao publicar mudanças de código.
+const VERSION = 'copa2026-v12';
 const SHELL = [
   './', './index.html', './css/style.css',
   './js/app.js', './js/i18n.js', './js/config.js', './js/flags.js',
@@ -34,35 +33,19 @@ self.addEventListener('fetch', (e) => {
 
   if (sameOrigin && url.pathname.endsWith('/sw.js')) return; // não interceptar o próprio SW
 
-  // Navegação (HTML) — network-first
-  if (req.mode === 'navigate') {
-    e.respondWith(
-      fetch(req).then((r) => { putCache('./index.html', r); return r; })
-        .catch(() => caches.match('./index.html').then((r) => r || caches.match('./')))
-    );
-    return;
-  }
-
-  // Dados — network-first (sempre tenta o mais novo)
-  if (sameOrigin && url.pathname.includes('/data/')) {
-    e.respondWith(
-      fetch(req).then((r) => { putCache(req, r); return r; }).catch(() => caches.match(req))
-    );
-    return;
-  }
-
-  // Estáticos same-origin — stale-while-revalidate
+  // Tudo do próprio site — NETWORK-FIRST (fresco online; cache só como fallback offline).
   if (sameOrigin) {
     e.respondWith(
-      caches.match(req).then((cached) => {
-        const net = fetch(req).then((r) => { putCache(req, r); return r; }).catch(() => cached);
-        return cached || net;
-      })
+      fetch(req)
+        .then((r) => { putCache(req, r); return r; })
+        .catch(() => caches.match(req).then((c) =>
+          c || (req.mode === 'navigate' ? caches.match('./index.html').then((h) => h || caches.match('./')) : undefined)
+        ))
     );
     return;
   }
 
-  // Cross-origin (escudos, proxy ao vivo) — rede, com cache de imagens
+  // Cross-origin (ex.: escudos externos) — rede, com cache de imagens.
   e.respondWith(
     fetch(req).then((r) => { if (r.ok && req.destination === 'image') putCache(req, r); return r; })
       .catch(() => caches.match(req))
