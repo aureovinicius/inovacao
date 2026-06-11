@@ -1,12 +1,15 @@
 {
   "name": "Painel da Copa · 2026",
   "short_name": "Painel da Copa",
+  "id": "/copa/",
   "description": "Estatísticas, placar ao vivo, notícias e probabilidades da Copa do Mundo 2026.",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
   "orientation": "portrait",
   "lang": "pt-BR",
+  "categories": ["sports", "news"],
+  "prefer_related_applications": false,
   "background_color": "#0c1118",
   "theme_color": "#0c1118",
   "icons": [
