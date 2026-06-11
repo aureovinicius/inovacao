@@ -180,9 +180,20 @@ function renderSummary() {
   ).join('');
 }
 
+// Ao vivo: em jogo (IN_PLAY/PAUSED) OU já passou do horário de início e ainda não
+// terminou. Cobre o atraso da football-data em trocar TIMED→IN_PLAY, fazendo o
+// placar 0×0 aparecer já no apito inicial (e não só quando sai o 1º gol).
+function isLive(m) {
+  if (m.status === 'IN_PLAY' || m.status === 'PAUSED') return true;
+  if (m.status === 'TIMED' || m.status === 'SCHEDULED') {
+    return new Date(m.utcDate).getTime() <= Date.now();
+  }
+  return false;
+}
+
 function matchHTML(m) {
   const ft = m.score?.fullTime || {};
-  const live = m.status === 'IN_PLAY' || m.status === 'PAUSED';
+  const live = isLive(m);
   const finished = m.status === 'FINISHED';
   let center;
   if (finished || live) {
@@ -272,7 +283,7 @@ function bracketMatch(m) {
   const done = m.status === 'FINISHED';
   const hw = m.score?.winner === 'HOME_TEAM';
   const aw = m.score?.winner === 'AWAY_TEAM';
-  const sc = (v) => done ? `<span class="bs">${v ?? 0}</span>` : '';
+  const sc = (v) => (done || isLive(m)) ? `<span class="bs">${v ?? 0}</span>` : '';
   return `<div class="bm">
     <div class="bm-row">${bracketTeam(m.homeTeam, hw)}${sc(ft.home)}</div>
     <div class="bm-row">${bracketTeam(m.awayTeam, aw)}${sc(ft.away)}</div>
