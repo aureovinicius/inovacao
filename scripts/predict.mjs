@@ -28,7 +28,9 @@ const SIMS = Number(process.env.PREDICT_SIMS || 20000);
 
 // ----- Parâmetros do modelo (ajustáveis/validáveis) -----
 const ELO_BASE = 1500;
-const HOME_ADV = 70;       // bônus Elo de mando (só para país-sede jogando em casa)
+const HOME_ADV = 80;       // bônus Elo de mando (só para país-sede jogando em casa).
+                           // Afinado por backtest (2010+, ~15,8k jogos): 80 minimiza
+                           // log-loss/Brier e calibra os favoritos de mando (vs 70).
 const ELO_PER_GOAL = 170;  // ~170 pontos de Elo ≈ 1 gol de diferença esperada
 const AVG_TOTAL_GOALS = 2.6;
 const HOSTS = new Set(['United States', 'Mexico', 'Canada']);
