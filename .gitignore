@@ -3,3 +3,5 @@ node_modules/
 # Projetos nativos gerados pelo Capacitor (criados localmente)
 /android/
 /ios/
+# Entradas locais do gerador de capturas (as versões emolduradas ficam versionadas)
+store/shots/raw/
