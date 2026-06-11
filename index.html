@@ -180,6 +180,17 @@
     <p><a class="footer-link" href="privacy.html" data-i18n="privacy_link">Política de privacidade</a></p>
   </footer>
 
+  <!-- Banner de instalação do PWA (aparece no Android/Chrome e no iOS Safari) -->
+  <div id="install-banner" class="install-banner" hidden>
+    <img class="install-banner-icon" src="icons/icon-192.png" alt="">
+    <div class="install-banner-text">
+      <strong data-i18n="install_title">Instalar o app</strong>
+      <span id="install-banner-sub"></span>
+    </div>
+    <button id="install-accept" class="install-banner-btn" data-i18n="install_btn" hidden>Instalar</button>
+    <button id="install-dismiss" class="install-banner-x" aria-label="Fechar">&times;</button>
+  </div>
+
   <script src="js/app.js" type="module"></script>
 </body>
 </html>
