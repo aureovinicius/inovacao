@@ -612,18 +612,21 @@ function matchProgress(m) {
   const ft = m?.score?.fullTime || {};
   return [rank, (ft.home || 0) + (ft.away || 0)];
 }
-// Funde os jogos do poll ao vivo com os atuais SEM regredir: por jogo, mantém a
-// versão com lastUpdated mais novo (e, em empate, a de maior progresso). Evita que
-// um snapshot atrasado do proxy apague um placar já conhecido (ex.: 1×0 → 0×0).
+// Funde os jogos do poll ao vivo com os atuais SEM regredir. O PROGRESSO manda:
+// nunca reduz o status (encerrado>ao vivo>agendado) nem o nº de gols. O lastUpdated
+// só desempata quando o progresso é igual (minuto, cartões…). Necessário porque a
+// football-data, num jogo ao vivo, atualiza o lastUpdated a cada minuto mesmo sem
+// gol — então um snapshot atrasado de 0×0 pode vir com timestamp mais novo que o 1×0.
 function mergeMatches(prev, next) {
   const byId = new Map((prev || []).map(m => [m.id, m]));
   return (next || []).map(n => {
     const p = byId.get(n.id);
     if (!p) return n;
-    const tn = Date.parse(n.lastUpdated), tp = Date.parse(p.lastUpdated);
-    if (!Number.isNaN(tn) && !Number.isNaN(tp) && tn !== tp) return tn > tp ? n : p;
     const [nr, ng] = matchProgress(n), [pr, pg] = matchProgress(p);
-    return (nr > pr || (nr === pr && ng >= pg)) ? n : p;
+    if (nr !== pr) return nr > pr ? n : p;   // status mais avançado vence
+    if (ng !== pg) return ng > pg ? n : p;   // mais gols vence (nunca regride)
+    const tn = Date.parse(n.lastUpdated), tp = Date.parse(p.lastUpdated);
+    return (Number.isNaN(tn) || Number.isNaN(tp) || tn >= tp) ? n : p; // empate → mais novo
   });
 }
 
