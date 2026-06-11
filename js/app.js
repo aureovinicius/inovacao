@@ -66,7 +66,13 @@ async function loadData() {
 // ---------- Helpers ----------
 function crest(team) {
   const url = team?.crest || '';
-  return url ? `<img class="crest" src="${url}" alt="" loading="lazy">` : '<span class="crest"></span>';
+  const tla = (team?.tla || team?.name || '').slice(0, 3).toUpperCase();
+  // Sem URL → mostra a sigla. Com URL → se a imagem do escudo falhar (CDN
+  // bloqueado por antivírus/firewall, offline, etc.), cai para a sigla em vez
+  // de ficar em branco. Escudos vêm de crests.football-data.org como <img>.
+  if (!url) return `<span class="crest-fallback">${tla}</span>`;
+  return `<img class="crest" src="${url}" alt="" loading="lazy" decoding="async"`
+    + ` onerror="this.onerror=null;this.outerHTML='<span class=crest-fallback>${tla}</span>'">`;
 }
 
 function teamCell(team, align = '') {
@@ -532,7 +538,7 @@ function renderLangSwitcher() {
   const box = $('#lang-switcher');
   box.innerHTML = LANGS.map(l =>
     `<button class="lang-btn ${l.code === lang ? 'is-active' : ''}" data-lang="${l.code}" title="${l.code}">
-       <img class="lang-flag" src="https://flagcdn.com/${l.cc}.svg" alt="" width="20" height="14" loading="lazy"><span class="lang-label">${l.label}</span>
+       <img class="lang-flag" src="https://flagcdn.com/${l.cc}.svg" alt="" width="20" height="14" loading="lazy" onerror="this.onerror=null;this.style.display='none'"><span class="lang-label">${l.label}</span>
      </button>`
   ).join('');
   $$('.lang-btn', box).forEach(btn => {
