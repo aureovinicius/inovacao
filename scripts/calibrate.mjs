@@ -16,8 +16,7 @@ const RESULTS_CSV_URL = process.env.RESULTS_CSV_URL
 const EVAL_SINCE = Number(process.env.CALIB_SINCE || 2010); // só avalia jogos a partir deste ano
 
 // Parâmetros idênticos ao predict.mjs
-// HOME_ADV afinado por backtest (2010+, ~15,8k jogos): 80 minimiza log-loss/Brier (vs 70).
-const ELO_BASE = 1500, HOME_ADV = 80, ELO_PER_GOAL = 170, AVG_TOTAL_GOALS = 2.6;
+const ELO_BASE = 1500, HOME_ADV = 70, ELO_PER_GOAL = 170, AVG_TOTAL_GOALS = 2.6;
 function tournamentWeight(t = '') {
   const s = t.toLowerCase();
   if (s.includes('world cup') && !s.includes('qualif')) return 60;

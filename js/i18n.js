@@ -1,11 +1,13 @@
 // Internacionalização: pt-BR, en-US, es-MX, fr-CA.
 // UI = textos da interface. TEAMS = nomes das seleções por sigla (TLA).
 
+// `cc` = código do país (ISO-3166 alpha-2) p/ a bandeira em SVG (flagcdn).
+// Evita emoji de bandeira, que NÃO renderiza no Windows (fonte sem esses glifos).
 export const LANGS = [
-  { code: 'pt-BR', flag: '🇧🇷', label: 'PT' },
-  { code: 'en-US', flag: '🇺🇸', label: 'EN' },
-  { code: 'es-MX', flag: '🇲🇽', label: 'ES' },
-  { code: 'fr-CA', flag: '🇨🇦', label: 'FR' },
+  { code: 'pt-BR', cc: 'br', label: 'PT' },
+  { code: 'en-US', cc: 'us', label: 'EN' },
+  { code: 'es-MX', cc: 'mx', label: 'ES' },
+  { code: 'fr-CA', cc: 'ca', label: 'FR' },
 ];
 
 export const UI = {

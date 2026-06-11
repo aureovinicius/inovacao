@@ -532,7 +532,7 @@ function renderLangSwitcher() {
   const box = $('#lang-switcher');
   box.innerHTML = LANGS.map(l =>
     `<button class="lang-btn ${l.code === lang ? 'is-active' : ''}" data-lang="${l.code}" title="${l.code}">
-       <span class="lang-flag">${l.flag}</span><span class="lang-label">${l.label}</span>
+       <img class="lang-flag" src="https://flagcdn.com/${l.cc}.svg" alt="" width="20" height="14" loading="lazy"><span class="lang-label">${l.label}</span>
      </button>`
   ).join('');
   $$('.lang-btn', box).forEach(btn => {
