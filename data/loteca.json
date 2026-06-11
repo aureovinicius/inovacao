@@ -1,0 +1,21 @@
+{
+  "concurso": 1255,
+  "pricePerCombo": 2,
+  "_doc": "Jogos da Copa da Loteca. 'casa'/'fora' devem casar com o nome em predictions.json. Use scripts/loteca-otimiza.mjs para otimizar a aposta.",
+  "jogos": [
+    { "casa": "Brazil", "fora": "Morocco" },
+    { "casa": "Haiti", "fora": "Scotland" },
+    { "casa": "Germany", "fora": "Curaçao" },
+    { "casa": "Netherlands", "fora": "Japan" },
+    { "casa": "Ivory Coast", "fora": "Ecuador" },
+    { "casa": "Sweden", "fora": "Tunisia" },
+    { "casa": "Spain", "fora": "Cape Verde Islands" },
+    { "casa": "Belgium", "fora": "Egypt" },
+    { "casa": "Saudi Arabia", "fora": "Uruguay" },
+    { "casa": "France", "fora": "Senegal" },
+    { "casa": "Iraq", "fora": "Norway" },
+    { "casa": "Argentina", "fora": "Algeria" },
+    { "casa": "Portugal", "fora": "Congo DR" },
+    { "casa": "England", "fora": "Croatia" }
+  ]
+}
