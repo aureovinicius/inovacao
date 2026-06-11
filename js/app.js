@@ -165,7 +165,7 @@ function startCountdown() {
 function renderSummary() {
   const matches = allMatches();
   const played = matches.filter(m => m.status === 'FINISHED');
-  const goals = played.reduce((s, m) => s + (m.score?.fullTime?.home ?? 0) + (m.score?.fullTime?.away ?? 0), 0);
+  const goals = played.reduce((s, m) => { const sc = matchScore(m); return s + (sc ? sc.home + sc.away : 0); }, 0);
   const teams = DATA.teams?.teams?.length || DATA.meta?.totalTeams || 48;
   const avg = played.length ? (goals / played.length).toFixed(2) : '0.00';
 
@@ -192,14 +192,18 @@ function isLive(m) {
 }
 
 function matchHTML(m) {
-  const ft = m.score?.fullTime || {};
   const live = isLive(m);
   const finished = m.status === 'FINISHED';
+  const sc = matchScore(m);
   let center;
-  if (finished || live) {
-    center = `<div class="score">${ft.home ?? 0} : ${ft.away ?? 0}</div>` +
+  if (sc) {                       // tem placar (do /matches ou derivado da classificação)
+    center = `<div class="score">${sc.home} : ${sc.away}</div>` +
       (live ? `<div class="badge-live">${t('live')}</div>` : `<div class="stage">${stageLabel(m.stage)}</div>`);
-  } else {
+  } else if (live) {              // ao vivo, mas o tier grátis ainda não dá o placar
+    center = `<div class="badge-live">${t('live')}</div><div class="stage">${m.group ? groupLabel(m.group) : stageLabel(m.stage)}</div>`;
+  } else if (finished) {          // encerrado sem placar disponível
+    center = `<div class="score">–</div><div class="stage">${stageLabel(m.stage)}</div>`;
+  } else {                        // agendado
     center = `<div class="time">${fmtTime(m.utcDate)}</div><div class="stage">${m.group ? groupLabel(m.group) : stageLabel(m.stage)}</div>`;
   }
   return `<div class="match">
@@ -237,74 +241,49 @@ function renderScorers() {
   ).join('') || `<tr><td colspan="7" class="empty">${t('no_scorers')}</td></tr>`;
 }
 
-// Classificação dos grupos COMPUTADA a partir dos jogos (mesma fonte do placar),
-// para a tabela ficar SEMPRE coerente com os resultados — inclusive ao vivo.
-// Conta jogos encerrados e ao vivo COM placar real (ignora agendados/sem placar).
-function computeGroupStandings(matches) {
-  const groups = new Map(); // "GROUP_X" -> Map(teamId -> row)
-  const rowFor = (g, team) => {
-    if (!groups.has(g)) groups.set(g, new Map());
-    const tbl = groups.get(g);
-    let r = tbl.get(team.id);
-    if (!r) {
-      r = { team, points: 0, playedGames: 0, won: 0, draw: 0, lost: 0,
-            goalsFor: 0, goalsAgainst: 0, goalDifference: 0, h2h: {} };
-      tbl.set(team.id, r);
+// Mapa id-do-time -> linha da classificação (tabela TOTAL da API /standings).
+function standingsById() {
+  const map = {};
+  (DATA.standings?.standings || []).filter(s => s.type === 'TOTAL').forEach(s => {
+    (s.table || []).forEach(r => { if (r.team?.id != null) map[r.team.id] = r; });
+  });
+  return map;
+}
+
+// Placar de um jogo. No tier grátis da football-data o /matches costuma vir SEM
+// placar (fullTime null mesmo com status FINISHED). Então:
+//  1) usa o placar do /matches quando existir;
+//  2) senão, para jogo de GRUPO já encerrado, DERIVA da classificação quando é
+//     inequívoco (cada time jogou só 1 vez → seus gols pró/contra = os deste jogo).
+// Retorna {home, away} ou null se não dá para saber.
+function matchScore(m) {
+  const ft = m.score?.fullTime || {};
+  if (ft.home != null && ft.away != null) return { home: ft.home, away: ft.away };
+  if (m.status === 'FINISHED' && m.group && m.homeTeam?.id != null && m.awayTeam?.id != null) {
+    const map = standingsById();
+    const h = map[m.homeTeam.id], a = map[m.awayTeam.id];
+    if (h && a && h.playedGames === 1 && a.playedGames === 1 &&
+        h.goalsFor === a.goalsAgainst && h.goalsAgainst === a.goalsFor) {
+      return { home: h.goalsFor, away: h.goalsAgainst };
     }
-    return r;
-  };
-  // 1) Elenco: todos os times de cada grupo (mesmo sem ter jogado ainda).
-  for (const m of matches) {
-    if (m.stage !== 'GROUP_STAGE' || !m.group) continue;
-    if (m.homeTeam?.id != null) rowFor(m.group, m.homeTeam);
-    if (m.awayTeam?.id != null) rowFor(m.group, m.awayTeam);
   }
-  // 2) Resultados: encerrados ou ao vivo, desde que haja placar de verdade.
-  for (const m of matches) {
-    if (m.stage !== 'GROUP_STAGE' || !m.group) continue;
-    const ft = m.score?.fullTime || {};
-    const hasScore = ft.home != null && ft.away != null;
-    if (!hasScore || !(m.status === 'FINISHED' || isLive(m))) continue;
-    const H = rowFor(m.group, m.homeTeam), A = rowFor(m.group, m.awayTeam);
-    H.playedGames++; A.playedGames++;
-    H.goalsFor += ft.home; H.goalsAgainst += ft.away;
-    A.goalsFor += ft.away; A.goalsAgainst += ft.home;
-    if (ft.home > ft.away) { H.won++; A.lost++; H.points += 3; H.h2h[A.team.id] = (H.h2h[A.team.id] || 0) + 3; }
-    else if (ft.home < ft.away) { A.won++; H.lost++; A.points += 3; A.h2h[H.team.id] = (A.h2h[H.team.id] || 0) + 3; }
-    else { H.draw++; A.draw++; H.points++; A.points++; H.h2h[A.team.id] = (H.h2h[A.team.id] || 0) + 1; A.h2h[H.team.id] = (A.h2h[H.team.id] || 0) + 1; }
-  }
-  // 3) Ordena cada grupo (pts, saldo, gols pró, confronto direto, nome).
-  const out = {};
-  for (const g of [...groups.keys()].sort()) {
-    const rows = [...groups.get(g).values()];
-    rows.forEach(r => { r.goalDifference = r.goalsFor - r.goalsAgainst; });
-    rows.sort((a, b) =>
-      b.points - a.points ||
-      b.goalDifference - a.goalDifference ||
-      b.goalsFor - a.goalsFor ||
-      (b.h2h[a.team.id] || 0) - (a.h2h[b.team.id] || 0) ||
-      teamName(a.team).localeCompare(teamName(b.team), lang));
-    rows.forEach((r, i) => { r.position = i + 1; });
-    out[g] = rows;
-  }
-  return out;
+  return null;
 }
 
 function renderStandings() {
-  const standings = computeGroupStandings(allMatches());
-  const letters = Object.keys(standings);
+  const groups = (DATA.standings?.standings || []).filter(s => s.type === 'TOTAL' && s.group);
   const el = $('#groups-container');
-  if (!letters.length) {
+  if (!groups.length) {
     el.innerHTML = `<p class="empty">${t('standings_empty')}</p>`;
     return;
   }
-  el.innerHTML = letters.map(g => `
+  el.innerHTML = groups.map(g => `
     <div class="group-card">
-      <h3>${groupLabel(g)}</h3>
+      <h3>${groupLabel(g.group)}</h3>
       <table>
         <thead><tr><th>#</th><th>${t('th_team')}</th><th>${t('th_p')}</th><th>${t('th_j')}</th><th>${t('th_sg')}</th></tr></thead>
         <tbody>
-          ${standings[g].map(r => `
+          ${g.table.map(r => `
             <tr class="${r.position <= 2 ? 'qualify' : ''}">
               <td>${r.position}</td>
               <td class="team-name">${teamCell(r.team)}</td>
@@ -333,14 +312,13 @@ function bracketTeam(team, isWinner) {
 
 function bracketMatch(m) {
   if (!m) return `<div class="bm pending">${bracketTeam(null)}${bracketTeam(null)}</div>`;
-  const ft = m.score?.fullTime || {};
-  const done = m.status === 'FINISHED';
   const hw = m.score?.winner === 'HOME_TEAM';
   const aw = m.score?.winner === 'AWAY_TEAM';
-  const sc = (v) => (done || isLive(m)) ? `<span class="bs">${v ?? 0}</span>` : '';
+  const score = matchScore(m);
+  const sc = (v) => score ? `<span class="bs">${v}</span>` : '';
   return `<div class="bm">
-    <div class="bm-row">${bracketTeam(m.homeTeam, hw)}${sc(ft.home)}</div>
-    <div class="bm-row">${bracketTeam(m.awayTeam, aw)}${sc(ft.away)}</div>
+    <div class="bm-row">${bracketTeam(m.homeTeam, hw)}${sc(score?.home)}</div>
+    <div class="bm-row">${bracketTeam(m.awayTeam, aw)}${sc(score?.away)}</div>
   </div>`;
 }
 
@@ -476,17 +454,16 @@ async function renderCalibration() {
 // ---------- Comparador ----------
 function teamStatsTable() {
   const map = {};
-  // Mesma fonte da classificação: computado dos jogos (coerente e ao vivo).
-  for (const rows of Object.values(computeGroupStandings(allMatches()))) {
-    for (const r of rows) {
+  (DATA.standings?.standings || []).filter(s => s.type === 'TOTAL').forEach(s => {
+    (s.table || []).forEach(r => {
       map[r.team.id] = {
         team: r.team,
         points: r.points, played: r.playedGames,
         won: r.won, draw: r.draw, lost: r.lost,
         goalsFor: r.goalsFor, goalsAgainst: r.goalsAgainst, gd: r.goalDifference,
       };
-    }
-  }
+    });
+  });
   return map;
 }
 
@@ -691,6 +668,8 @@ function mergeMatches(prev, next) {
 }
 
 const scorersTotal = (list) => (list || []).reduce((s, x) => s + (x.goals || 0), 0);
+const standingsPlayed = (d) => ((d?.standings || []).filter(s => s.type === 'TOTAL')
+  .reduce((n, s) => n + (s.table || []).reduce((m, r) => m + (r.playedGames || 0), 0), 0));
 
 async function pollLive() {
   if (!LIVE_PROXY_URL || document.visibilityState !== 'visible' || !inBrtWindow() || !inLiveWindow()) {
@@ -698,39 +677,44 @@ async function pollLive() {
     return;
   }
   const base = LIVE_PROXY_URL.replace(/\/$/, '');
+  const getJSON = async (path) => { const r = await fetch(`${base}${path}`, { cache: 'no-store' }); return r.ok ? r.json() : null; };
   let touched = false;
-  // Jogos — fonte da verdade do placar E da classificação (computada dos jogos).
-  try {
-    const res = await fetch(`${base}/matches`, { cache: 'no-store' });
-    if (res.ok) {
-      const data = await res.json();
-      if (data?.matches) {
-        data.matches = mergeMatches(DATA.matches?.matches, data.matches); // nunca regride
-        DATA.matches = data;
-        renderSummary();
-        renderToday();
-        renderAllMatches();
-        renderStandings();          // classificação ao vivo, coerente com os jogos
-        renderBracket();
-        renderCompareControls();
-        startCountdown();
-        touched = true;
-      }
-    }
-  } catch { /* mantém os dados atuais */ }
-  // Artilharia — só atualiza se não regredir (total de gols não diminui).
-  try {
-    const res = await fetch(`${base}/scorers`, { cache: 'no-store' });
-    if (res.ok) {
-      const data = await res.json();
-      if (data?.scorers && scorersTotal(data.scorers) >= scorersTotal(DATA.scorers?.scorers)) {
-        DATA.scorers = data;
-        renderScorers();
-        touched = true;
-      }
-    }
-  } catch { /* mantém os dados atuais */ }
-  if (touched) setLiveStatus(true);
+  // Busca as três fontes em paralelo (no tier grátis o placar real vem de
+  // /standings e /scorers; o /matches dá status e o calendário).
+  const [matches, standings, scorers] = await Promise.all([
+    getJSON('/matches').catch(() => null),
+    getJSON('/standings').catch(() => null),
+    getJSON('/scorers').catch(() => null),
+  ]);
+
+  // Classificação — fonte de verdade dos resultados. Só atualiza se não regredir
+  // (total de jogos disputados não diminui).
+  if (standings?.standings && standingsPlayed(standings) >= standingsPlayed(DATA.standings)) {
+    DATA.standings = standings; touched = true;
+  }
+  // Artilharia — só atualiza se o total de gols não diminuir.
+  if (scorers?.scorers && scorersTotal(scorers.scorers) >= scorersTotal(DATA.scorers?.scorers)) {
+    DATA.scorers = scorers; touched = true;
+  }
+  // Jogos — status/calendário; placar quando a API der (merge nunca regride).
+  if (matches?.matches) {
+    matches.matches = mergeMatches(DATA.matches?.matches, matches.matches);
+    DATA.matches = matches; touched = true;
+  }
+
+  if (touched) {
+    renderSummary();
+    renderToday();
+    renderAllMatches();
+    renderStandings();
+    renderScorers();
+    renderBracket();
+    renderCompareControls();
+    startCountdown();
+    setLiveStatus(true);
+  } else {
+    setLiveStatus(true);
+  }
 }
 
 function startLivePolling() {
