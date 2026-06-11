@@ -1,0 +1,36 @@
+<pt-BR>
+Primeira versão do Painel da Copa · 2026! 🏆
+• Placar ao vivo e jogos de hoje
+• Classificação dos 12 grupos e chaveamento da fase final
+• Artilharia e comparador de seleções
+• Probabilidades de título por um modelo estatístico próprio, recalibrado a cada rodada
+• Resumo diário das notícias por IA
+• 4 idiomas, funciona offline e atualiza sozinho
+</pt-BR>
+<en-US>
+First release of Painel da Copa · 2026! 🏆
+• Live scores and today's matches
+• Standings for all 12 groups and the knockout bracket
+• Top scorers and team comparison
+• Title probabilities from an in-house statistical model, recalibrated every round
+• AI daily news summary
+• 4 languages, works offline, updates itself
+</en-US>
+<es-MX>
+¡Primera versión de Painel da Copa · 2026! 🏆
+• Marcadores en vivo y partidos de hoy
+• Posiciones de los 12 grupos y la llave de eliminatorias
+• Goleadores y comparador de selecciones
+• Probabilidades de título con un modelo estadístico propio, recalibrado en cada ronda
+• Resumen diario de noticias con IA
+• 4 idiomas, funciona sin conexión y se actualiza solo
+</es-MX>
+<fr-CA>
+Première version de Painel da Copa · 2026! 🏆
+• Scores en direct et matchs du jour
+• Classements des 12 groupes et tableau de la phase finale
+• Meilleurs buteurs et comparateur d'équipes
+• Probabilités de titre par un modèle statistique maison, recalibré à chaque tour
+• Résumé quotidien de l'actualité par IA
+• 4 langues, hors ligne, mise à jour automatique
+</fr-CA>
