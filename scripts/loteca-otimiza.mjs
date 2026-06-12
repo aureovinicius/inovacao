@@ -295,7 +295,8 @@ function printBet(games, res, title) {
 // ----- Main -----
 async function main() {
   // Elo + tempering
-  const preds = JSON.parse(await readFile(join(DATA_DIR, 'predictions.json'), 'utf8'));
+  const predFile = process.env.PRED_FILE || 'predictions.json'; // PRED_FILE=predictions-v2.json p/ a base 1970+
+  const preds = JSON.parse(await readFile(join(DATA_DIR, predFile), 'utf8'));
   const elo = Object.fromEntries(preds.teams.map(t => [t.name, t.elo]));
   try {
     const calib = JSON.parse(await readFile(join(DATA_DIR, 'calibration.json'), 'utf8'));
