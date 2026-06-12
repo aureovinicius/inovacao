@@ -25,6 +25,10 @@ const DATA_DIR = join(__dirname, '..', 'data');
 const RESULTS_CSV_URL = process.env.RESULTS_CSV_URL
   || 'https://raw.githubusercontent.com/martj42/international_results/master/results.csv';
 const SIMS = Number(process.env.PREDICT_SIMS || 20000);
+// Base de Elo alternativa: se ELO_SOURCE_FILE estiver setado, usa o Elo desse JSON
+// (ex.: data/elo-1970-custom.json) em vez de calcular do histórico. OUT define o arquivo de saída.
+const ELO_SOURCE = process.env.ELO_SOURCE_FILE || '';
+const OUT_FILE = process.env.PREDICT_OUT || 'predictions.json';
 
 // ----- Parâmetros do modelo (ajustáveis/validáveis) -----
 const ELO_BASE = 1500;
@@ -151,6 +155,24 @@ async function computeEloFromHistory(teamsByAlias) {
     else elo[tla] = SEED_ELO[tla] ?? ELO_BASE;
   }
   console.log(`✓ Elo do histórico: ${matched}/${Object.keys(teamsByAlias).length} seleções casadas`);
+  return elo;
+}
+
+// Lê o Elo de uma base externa (ex.: data/elo-1970-custom.json) e casa com as 48
+// seleções por alias/grafia. Retorna { TLA: elo } (null quando não encontrado).
+async function eloFromFile(path, teamsByAlias) {
+  let data;
+  try { data = JSON.parse(await readFile(path, 'utf8')); }
+  catch (err) { console.warn(`⚠ Base de Elo "${path}" indisponível (${err.message}).`); return null; }
+  const ratings = new Map((data.teams || []).map(t => [norm(t.name), Math.round(t.elo)]));
+  const elo = {}; let matched = 0;
+  for (const [tla, names] of Object.entries(teamsByAlias)) {
+    let r = null;
+    for (const cand of names) { if (ratings.has(cand)) { r = ratings.get(cand); break; } }
+    if (r != null) matched++;
+    elo[tla] = r;
+  }
+  console.log(`✓ Elo da base "${path}": ${matched}/${Object.keys(teamsByAlias).length} casadas`);
   return elo;
 }
 
@@ -369,9 +391,11 @@ async function main() {
   for (const t of allTeams) {
     teamsByAlias[t.tla] = (ALIASES[t.name] || [norm(t.name)]).map(norm);
   }
-  const eloFromHist = await computeEloFromHistory(teamsByAlias);
+  // Fonte do Elo: base externa (v2) se ELO_SOURCE setado; senão o histórico (v1).
+  const eloBase = ELO_SOURCE ? await eloFromFile(ELO_SOURCE, teamsByAlias)
+                             : await computeEloFromHistory(teamsByAlias);
   const elo = {};
-  for (const t of allTeams) elo[t.tla] = (eloFromHist?.[t.tla]) ?? SEED_ELO[t.tla] ?? ELO_BASE;
+  for (const t of allTeams) elo[t.tla] = (eloBase?.[t.tla]) ?? SEED_ELO[t.tla] ?? ELO_BASE;
   applyTournamentResults(elo, matches); // Elo "ao vivo": absorve jogos já disputados da Copa
 
   const played = playedGroupResults(matches);   // resultados de grupo (fixados na simulação)
@@ -420,16 +444,17 @@ async function main() {
   const out = {
     generatedAt: new Date().toISOString(),
     sims: SIMS,
+    version: ELO_SOURCE ? 'v2' : 'v1',
     model: {
       tempering: ELO_SHRINK,
-      ratings: (eloFromHist ? 'elo_historico' : 'elo_semente_fallback') + ' + jogos da Copa (Elo ao vivo)',
+      ratings: (ELO_SOURCE ? `base alternativa (${ELO_SOURCE})` : (eloBase ? 'elo_historico' : 'elo_semente_fallback')) + ' + jogos da Copa (Elo ao vivo)',
       groupStage: 'exato (desempates FIFA: pts, saldo, gols, confronto direto); resultados já ocorridos são fixados',
       knockout: 'tabela oficial FIFA 2026 (jogos 73–104); 3ºs por matching nos grupos permitidos; jogos já decididos são travados',
     },
     teams,
   };
-  await writeFile(join(DATA_DIR, 'predictions.json'), JSON.stringify(out, null, 2));
-  console.log(`✓ data/predictions.json (${SIMS} simulações) — favorito: ${teams[0].name} ${teams[0].pChampion}%`);
+  await writeFile(join(DATA_DIR, OUT_FILE), JSON.stringify(out, null, 2));
+  console.log(`✓ data/${OUT_FILE} (${SIMS} simulações) — favorito: ${teams[0].name} ${teams[0].pChampion}%`);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });

@@ -381,16 +381,31 @@ async function renderNews() {
 }
 
 // ---------- Probabilidades (modelo preditivo) ----------
-let PREDICTIONS; // cache
-async function renderPredictions() {
-  if (PREDICTIONS === undefined) {
+// v1 = base padrão (data/predictions.json); v2 = base alternativa 1970+ (predictions-v2.json).
+const PRED_FILES = { v1: 'data/predictions.json', v2: 'data/predictions-v2.json' };
+const PRED_CACHE = {}; // versão -> dados
+let oddsVer = 'v1';
+
+async function loadPredictions(ver) {
+  if (PRED_CACHE[ver] === undefined) {
     try {
-      const r = await fetch('data/predictions.json', { cache: 'no-store' });
-      PREDICTIONS = r.ok ? await r.json() : null;
-    } catch { PREDICTIONS = null; }
+      const r = await fetch(PRED_FILES[ver], { cache: 'no-store' });
+      PRED_CACHE[ver] = r.ok ? await r.json() : null;
+    } catch { PRED_CACHE[ver] = null; }
   }
+  return PRED_CACHE[ver];
+}
+
+async function renderPredictions() {
+  // botões v1/v2
+  $$('#odds-version .ver-btn').forEach(btn => {
+    btn.classList.toggle('is-active', btn.dataset.ver === oddsVer);
+    btn.onclick = () => { if (oddsVer !== btn.dataset.ver) { oddsVer = btn.dataset.ver; renderPredictions(); } };
+  });
+  let data = await loadPredictions(oddsVer);
+  if (!data && oddsVer === 'v2') data = await loadPredictions('v1'); // v2 ainda não publicada → cai no v1
   const tb = $('#odds-table tbody');
-  const teams = PREDICTIONS?.teams || [];
+  const teams = data?.teams || [];
   if (!teams.length) {
     tb.innerHTML = `<tr><td colspan="9" class="empty">${t('odds_empty')}</td></tr>`;
     return;

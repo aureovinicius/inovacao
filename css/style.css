@@ -86,6 +86,16 @@ a { color: var(--accent); }
 .lang-btn.is-active { background: var(--green); color: #06240f; }
 .lang-flag { width: 20px; height: 14px; object-fit: cover; border-radius: 2px; display: block; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.15); }
 
+/* Seletor de versão (v1/v2) na aba Probabilidades */
+.odds-version { display: inline-flex; gap: 6px; margin: 4px 0 14px; }
+.ver-btn {
+  background: transparent; border: 1px solid var(--border, #2a3442); color: var(--muted);
+  padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.ver-btn:hover { color: var(--text); }
+.ver-btn.is-active { background: var(--green); color: #06240f; border-color: var(--green); }
+
 /* ---------- Tabs ---------- */
 .tabs {
   display: flex;

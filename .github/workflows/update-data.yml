@@ -54,6 +54,17 @@ jobs:
         continue-on-error: true
         run: node scripts/predict.mjs
 
+      - name: Base de Elo alternativa (1970+, pesos por confederação)
+        continue-on-error: true
+        run: node scripts/elo-custom.mjs
+
+      - name: Probabilidades v2 (base alternativa)
+        continue-on-error: true
+        env:
+          ELO_SOURCE_FILE: data/elo-1970-custom.json
+          PREDICT_OUT: predictions-v2.json
+        run: node scripts/predict.mjs
+
       - name: Montar o site (arquivos públicos)
         run: |
           mkdir -p _site
