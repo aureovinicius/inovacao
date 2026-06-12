@@ -761,9 +761,22 @@ async function init() {
 
 init();
 
-// Registra o service worker (PWA) — instalável e offline.
+// Registra o service worker (PWA) — instalável e offline — e AUTO-ATUALIZA:
+// quando um SW novo assume o controle (houve deploy), recarrega a página uma vez,
+// já com network-first puxando código e dados frescos. Não recarrega na 1ª visita.
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('sw.js');
+      // só auto-recarrega em ATUALIZAÇÃO (já havia um SW controlando esta página)
+      if (navigator.serviceWorker.controller) {
+        let reloading = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (reloading) return; reloading = true; window.location.reload();
+        });
+      }
+      reg.update?.();                                   // checa atualização ao abrir
+      setInterval(() => reg.update?.(), 30 * 60 * 1000); // e a cada 30 min
+    } catch { /* SW indisponível — segue sem PWA */ }
   });
 }

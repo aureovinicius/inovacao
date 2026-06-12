@@ -4,7 +4,7 @@
 // Isso evita o app rodar uma versão antiga de JS guardada em cache (causa de bugs
 // "que não somem mesmo após o deploy"). Imagens externas (se houver) ficam em cache.
 // Troque a VERSION ao publicar mudanças de código.
-const VERSION = 'copa2026-v15';
+const VERSION = 'copa2026-v16';
 const SHELL = [
   './', './index.html', './css/style.css',
   './js/app.js', './js/i18n.js', './js/config.js', './js/flags.js',
