@@ -1,0 +1,1682 @@
+{
+  "generatedAt": "2026-06-12T16:42:15.087Z",
+  "since": 1970,
+  "homeAdv": 70,
+  "weights": {
+    "FIFA World Cup": 60,
+    "UEFA Euro": 50,
+    "Copa América": 50,
+    "FIFA World Cup qualification": 50,
+    "UEFA Euro qualification": 40,
+    "Copa América qualification": 40,
+    "African Cup of Nations": 40,
+    "UEFA Nations League": 40,
+    "CONCACAF Nations League": 40,
+    "Gold Cup": 40,
+    "AFC Asian Cup": 40,
+    "Friendly": 20
+  },
+  "jogos": 41447,
+  "teams": [
+    {
+      "name": "Spain",
+      "elo": 2184,
+      "played": 601
+    },
+    {
+      "name": "Argentina",
+      "elo": 2141,
+      "played": 663
+    },
+    {
+      "name": "France",
+      "elo": 2090,
+      "played": 608
+    },
+    {
+      "name": "England",
+      "elo": 2070,
+      "played": 645
+    },
+    {
+      "name": "Brazil",
+      "elo": 2037,
+      "played": 746
+    },
+    {
+      "name": "Colombia",
+      "elo": 2022,
+      "played": 555
+    },
+    {
+      "name": "Ecuador",
+      "elo": 2006,
+      "played": 510
+    },
+    {
+      "name": "Portugal",
+      "elo": 1997,
+      "played": 539
+    },
+    {
+      "name": "Germany",
+      "elo": 1981,
+      "played": 693
+    },
+    {
+      "name": "Netherlands",
+      "elo": 1980,
+      "played": 576
+    },
+    {
+      "name": "Japan",
+      "elo": 1970,
+      "played": 683
+    },
+    {
+      "name": "Norway",
+      "elo": 1962,
+      "played": 552
+    },
+    {
+      "name": "Mexico",
+      "elo": 1957,
+      "played": 832
+    },
+    {
+      "name": "Morocco",
+      "elo": 1957,
+      "played": 567
+    },
+    {
+      "name": "Turkey",
+      "elo": 1950,
+      "played": 518
+    },
+    {
+      "name": "Croatia",
+      "elo": 1939,
+      "played": 378
+    },
+    {
+      "name": "Uruguay",
+      "elo": 1938,
+      "played": 602
+    },
+    {
+      "name": "Switzerland",
+      "elo": 1929,
+      "played": 543
+    },
+    {
+      "name": "Belgium",
+      "elo": 1924,
+      "played": 515
+    },
+    {
+      "name": "Paraguay",
+      "elo": 1905,
+      "played": 551
+    },
+    {
+      "name": "South Korea",
+      "elo": 1897,
+      "played": 885
+    },
+    {
+      "name": "Senegal",
+      "elo": 1894,
+      "played": 598
+    },
+    {
+      "name": "Denmark",
+      "elo": 1892,
+      "played": 572
+    },
+    {
+      "name": "Italy",
+      "elo": 1885,
+      "played": 615
+    },
+    {
+      "name": "Iran",
+      "elo": 1879,
+      "played": 578
+    },
+    {
+      "name": "Canada",
+      "elo": 1875,
+      "played": 441
+    },
+    {
+      "name": "Australia",
+      "elo": 1866,
+      "played": 507
+    },
+    {
+      "name": "Austria",
+      "elo": 1855,
+      "played": 496
+    },
+    {
+      "name": "Algeria",
+      "elo": 1847,
+      "played": 584
+    },
+    {
+      "name": "Nigeria",
+      "elo": 1839,
+      "played": 588
+    },
+    {
+      "name": "Scotland",
+      "elo": 1835,
+      "played": 507
+    },
+    {
+      "name": "United States",
+      "elo": 1826,
+      "played": 718
+    },
+    {
+      "name": "Panama",
+      "elo": 1825,
+      "played": 463
+    },
+    {
+      "name": "Ivory Coast",
+      "elo": 1820,
+      "played": 587
+    },
+    {
+      "name": "Russia",
+      "elo": 1819,
+      "played": 599
+    },
+    {
+      "name": "Egypt",
+      "elo": 1806,
+      "played": 681
+    },
+    {
+      "name": "Yugoslavia",
+      "elo": 1794,
+      "played": 189
+    },
+    {
+      "name": "Uzbekistan",
+      "elo": 1793,
+      "played": 354
+    },
+    {
+      "name": "Ukraine",
+      "elo": 1786,
+      "played": 337
+    },
+    {
+      "name": "Chile",
+      "elo": 1777,
+      "played": 594
+    },
+    {
+      "name": "Venezuela",
+      "elo": 1773,
+      "played": 419
+    },
+    {
+      "name": "Greece",
+      "elo": 1760,
+      "played": 550
+    },
+    {
+      "name": "Serbia",
+      "elo": 1759,
+      "played": 347
+    },
+    {
+      "name": "Kosovo",
+      "elo": 1759,
+      "played": 104
+    },
+    {
+      "name": "DR Congo",
+      "elo": 1753,
+      "played": 461
+    },
+    {
+      "name": "Iraq",
+      "elo": 1751,
+      "played": 633
+    },
+    {
+      "name": "Tunisia",
+      "elo": 1751,
+      "played": 621
+    },
+    {
+      "name": "Czech Republic",
+      "elo": 1750,
+      "played": 361
+    },
+    {
+      "name": "Republic of Ireland",
+      "elo": 1747,
+      "played": 509
+    },
+    {
+      "name": "Poland",
+      "elo": 1746,
+      "played": 669
+    },
+    {
+      "name": "Basque Country",
+      "elo": 1739,
+      "played": 38
+    },
+    {
+      "name": "Hungary",
+      "elo": 1737,
+      "played": 560
+    },
+    {
+      "name": "Peru",
+      "elo": 1735,
+      "played": 572
+    },
+    {
+      "name": "Sweden",
+      "elo": 1735,
+      "played": 654
+    },
+    {
+      "name": "New Zealand",
+      "elo": 1732,
+      "played": 356
+    },
+    {
+      "name": "Czechoslovakia",
+      "elo": 1727,
+      "played": 226
+    },
+    {
+      "name": "Wales",
+      "elo": 1719,
+      "played": 442
+    },
+    {
+      "name": "Jordan",
+      "elo": 1716,
+      "played": 472
+    },
+    {
+      "name": "Costa Rica",
+      "elo": 1713,
+      "played": 591
+    },
+    {
+      "name": "Bolivia",
+      "elo": 1709,
+      "played": 446
+    },
+    {
+      "name": "Cameroon",
+      "elo": 1701,
+      "played": 576
+    },
+    {
+      "name": "Haiti",
+      "elo": 1701,
+      "played": 410
+    },
+    {
+      "name": "Jersey",
+      "elo": 1694,
+      "played": 153
+    },
+    {
+      "name": "Slovenia",
+      "elo": 1692,
+      "played": 317
+    },
+    {
+      "name": "Slovakia",
+      "elo": 1691,
+      "played": 353
+    },
+    {
+      "name": "Honduras",
+      "elo": 1685,
+      "played": 545
+    },
+    {
+      "name": "Mali",
+      "elo": 1684,
+      "played": 527
+    },
+    {
+      "name": "Saudi Arabia",
+      "elo": 1683,
+      "played": 738
+    },
+    {
+      "name": "Cape Verde",
+      "elo": 1676,
+      "played": 234
+    },
+    {
+      "name": "Guernsey",
+      "elo": 1672,
+      "played": 144
+    },
+    {
+      "name": "United Arab Emirates",
+      "elo": 1672,
+      "played": 612
+    },
+    {
+      "name": "Ghana",
+      "elo": 1670,
+      "played": 589
+    },
+    {
+      "name": "Catalonia",
+      "elo": 1669,
+      "played": 27
+    },
+    {
+      "name": "Georgia",
+      "elo": 1668,
+      "played": 307
+    },
+    {
+      "name": "Jamaica",
+      "elo": 1657,
+      "played": 555
+    },
+    {
+      "name": "Israel",
+      "elo": 1655,
+      "played": 412
+    },
+    {
+      "name": "Romania",
+      "elo": 1653,
+      "played": 576
+    },
+    {
+      "name": "Albania",
+      "elo": 1647,
+      "played": 363
+    },
+    {
+      "name": "German DR",
+      "elo": 1644,
+      "played": 205
+    },
+    {
+      "name": "Curaçao",
+      "elo": 1643,
+      "played": 217
+    },
+    {
+      "name": "Burkina Faso",
+      "elo": 1641,
+      "played": 445
+    },
+    {
+      "name": "Bosnia and Herzegovina",
+      "elo": 1639,
+      "played": 283
+    },
+    {
+      "name": "Northern Ireland",
+      "elo": 1634,
+      "played": 441
+    },
+    {
+      "name": "Guatemala",
+      "elo": 1634,
+      "played": 457
+    },
+    {
+      "name": "South Africa",
+      "elo": 1633,
+      "played": 457
+    },
+    {
+      "name": "Occitania",
+      "elo": 1629,
+      "played": 33
+    },
+    {
+      "name": "Padania",
+      "elo": 1616,
+      "played": 45
+    },
+    {
+      "name": "Isle of Man",
+      "elo": 1613,
+      "played": 58
+    },
+    {
+      "name": "North Macedonia",
+      "elo": 1613,
+      "played": 306
+    },
+    {
+      "name": "Andalusia",
+      "elo": 1604,
+      "played": 12
+    },
+    {
+      "name": "Kernow",
+      "elo": 1596,
+      "played": 9
+    },
+    {
+      "name": "Iceland",
+      "elo": 1595,
+      "played": 489
+    },
+    {
+      "name": "Qatar",
+      "elo": 1590,
+      "played": 635
+    },
+    {
+      "name": "Suriname",
+      "elo": 1578,
+      "played": 267
+    },
+    {
+      "name": "Ynys Môn",
+      "elo": 1575,
+      "played": 67
+    },
+    {
+      "name": "Isle of Wight",
+      "elo": 1575,
+      "played": 48
+    },
+    {
+      "name": "New Caledonia",
+      "elo": 1568,
+      "played": 221
+    },
+    {
+      "name": "Northern Cyprus",
+      "elo": 1563,
+      "played": 34
+    },
+    {
+      "name": "Iraqi Kurdistan",
+      "elo": 1563,
+      "played": 27
+    },
+    {
+      "name": "Oman",
+      "elo": 1562,
+      "played": 542
+    },
+    {
+      "name": "Libya",
+      "elo": 1560,
+      "played": 353
+    },
+    {
+      "name": "Palestine",
+      "elo": 1560,
+      "played": 240
+    },
+    {
+      "name": "Angola",
+      "elo": 1558,
+      "played": 415
+    },
+    {
+      "name": "Abkhazia",
+      "elo": 1556,
+      "played": 33
+    },
+    {
+      "name": "Réunion",
+      "elo": 1554,
+      "played": 95
+    },
+    {
+      "name": "Yorkshire",
+      "elo": 1553,
+      "played": 7
+    },
+    {
+      "name": "Panjab",
+      "elo": 1550,
+      "played": 19
+    },
+    {
+      "name": "Belarus",
+      "elo": 1547,
+      "played": 308
+    },
+    {
+      "name": "Ellan Vannin",
+      "elo": 1544,
+      "played": 22
+    },
+    {
+      "name": "Gabon",
+      "elo": 1539,
+      "played": 390
+    },
+    {
+      "name": "Trinidad and Tobago",
+      "elo": 1539,
+      "played": 598
+    },
+    {
+      "name": "Tamil Eelam",
+      "elo": 1535,
+      "played": 28
+    },
+    {
+      "name": "Madagascar",
+      "elo": 1534,
+      "played": 276
+    },
+    {
+      "name": "Rhodes",
+      "elo": 1534,
+      "played": 18
+    },
+    {
+      "name": "Kárpátalja",
+      "elo": 1534,
+      "played": 11
+    },
+    {
+      "name": "Menorca",
+      "elo": 1533,
+      "played": 25
+    },
+    {
+      "name": "Guinea",
+      "elo": 1532,
+      "played": 501
+    },
+    {
+      "name": "Finland",
+      "elo": 1532,
+      "played": 557
+    },
+    {
+      "name": "Artsakh",
+      "elo": 1532,
+      "played": 11
+    },
+    {
+      "name": "Indonesia",
+      "elo": 1531,
+      "played": 612
+    },
+    {
+      "name": "China",
+      "elo": 1530,
+      "played": 629
+    },
+    {
+      "name": "Syria",
+      "elo": 1529,
+      "played": 470
+    },
+    {
+      "name": "County of Nice",
+      "elo": 1528,
+      "played": 9
+    },
+    {
+      "name": "Thailand",
+      "elo": 1527,
+      "played": 765
+    },
+    {
+      "name": "Corsica",
+      "elo": 1527,
+      "played": 8
+    },
+    {
+      "name": "Kurdistan",
+      "elo": 1522,
+      "played": 5
+    },
+    {
+      "name": "Cascadia",
+      "elo": 1522,
+      "played": 7
+    },
+    {
+      "name": "Sealand",
+      "elo": 1520,
+      "played": 12
+    },
+    {
+      "name": "Galicia",
+      "elo": 1520,
+      "played": 8
+    },
+    {
+      "name": "Quebec",
+      "elo": 1519,
+      "played": 3
+    },
+    {
+      "name": "Canary Islands",
+      "elo": 1518,
+      "played": 4
+    },
+    {
+      "name": "Elba Island",
+      "elo": 1518,
+      "played": 2
+    },
+    {
+      "name": "Silesia",
+      "elo": 1517,
+      "played": 2
+    },
+    {
+      "name": "Surrey",
+      "elo": 1517,
+      "played": 1
+    },
+    {
+      "name": "Chameria",
+      "elo": 1517,
+      "played": 7
+    },
+    {
+      "name": "Nicaragua",
+      "elo": 1516,
+      "played": 181
+    },
+    {
+      "name": "United Koreans in Japan",
+      "elo": 1516,
+      "played": 12
+    },
+    {
+      "name": "Arameans Suryoye",
+      "elo": 1515,
+      "played": 10
+    },
+    {
+      "name": "Parishes of Jersey",
+      "elo": 1512,
+      "played": 3
+    },
+    {
+      "name": "Benin",
+      "elo": 1510,
+      "played": 300
+    },
+    {
+      "name": "Maule Sur",
+      "elo": 1510,
+      "played": 2
+    },
+    {
+      "name": "Donetsk PR",
+      "elo": 1509,
+      "played": 6
+    },
+    {
+      "name": "North Vietnam",
+      "elo": 1508,
+      "played": 1
+    },
+    {
+      "name": "Brittany",
+      "elo": 1508,
+      "played": 6
+    },
+    {
+      "name": "Martinique",
+      "elo": 1506,
+      "played": 266
+    },
+    {
+      "name": "Franconia",
+      "elo": 1506,
+      "played": 3
+    },
+    {
+      "name": "Western Armenia",
+      "elo": 1506,
+      "played": 16
+    },
+    {
+      "name": "Gambia",
+      "elo": 1505,
+      "played": 254
+    },
+    {
+      "name": "Provence",
+      "elo": 1505,
+      "played": 21
+    },
+    {
+      "name": "Biafra",
+      "elo": 1505,
+      "played": 3
+    },
+    {
+      "name": "Sápmi",
+      "elo": 1504,
+      "played": 29
+    },
+    {
+      "name": "Mapuche",
+      "elo": 1503,
+      "played": 2
+    },
+    {
+      "name": "Uganda",
+      "elo": 1502,
+      "played": 556
+    },
+    {
+      "name": "Délvidék",
+      "elo": 1502,
+      "played": 2
+    },
+    {
+      "name": "East Turkestan",
+      "elo": 1502,
+      "played": 5
+    },
+    {
+      "name": "Gozo",
+      "elo": 1499,
+      "played": 14
+    },
+    {
+      "name": "Guadeloupe",
+      "elo": 1498,
+      "played": 221
+    },
+    {
+      "name": "Crimea",
+      "elo": 1498,
+      "played": 5
+    },
+    {
+      "name": "Felvidék",
+      "elo": 1497,
+      "played": 12
+    },
+    {
+      "name": "Saugeais",
+      "elo": 1496,
+      "played": 1
+    },
+    {
+      "name": "Yoruba Nation",
+      "elo": 1495,
+      "played": 2
+    },
+    {
+      "name": "Republic of St. Pauli",
+      "elo": 1494,
+      "played": 4
+    },
+    {
+      "name": "Matabeleland",
+      "elo": 1493,
+      "played": 8
+    },
+    {
+      "name": "Madrid",
+      "elo": 1491,
+      "played": 1
+    },
+    {
+      "name": "Niger",
+      "elo": 1490,
+      "played": 248
+    },
+    {
+      "name": "Cilento",
+      "elo": 1490,
+      "played": 1
+    },
+    {
+      "name": "Seborga",
+      "elo": 1488,
+      "played": 1
+    },
+    {
+      "name": "Aymara",
+      "elo": 1488,
+      "played": 2
+    },
+    {
+      "name": "Luhansk PR",
+      "elo": 1487,
+      "played": 6
+    },
+    {
+      "name": "Hmong",
+      "elo": 1487,
+      "played": 3
+    },
+    {
+      "name": "Dominican Republic",
+      "elo": 1486,
+      "played": 158
+    },
+    {
+      "name": "Åland Islands",
+      "elo": 1486,
+      "played": 51
+    },
+    {
+      "name": "Tahiti",
+      "elo": 1485,
+      "played": 206
+    },
+    {
+      "name": "South Yemen",
+      "elo": 1485,
+      "played": 3
+    },
+    {
+      "name": "Gotland",
+      "elo": 1485,
+      "played": 30
+    },
+    {
+      "name": "Somaliland",
+      "elo": 1484,
+      "played": 6
+    },
+    {
+      "name": "Székely Land",
+      "elo": 1484,
+      "played": 27
+    },
+    {
+      "name": "Kabylia",
+      "elo": 1483,
+      "played": 6
+    },
+    {
+      "name": "Bahrain",
+      "elo": 1482,
+      "played": 580
+    },
+    {
+      "name": "Shetland",
+      "elo": 1482,
+      "played": 58
+    },
+    {
+      "name": "Zambia",
+      "elo": 1479,
+      "played": 734
+    },
+    {
+      "name": "Bulgaria",
+      "elo": 1477,
+      "played": 553
+    },
+    {
+      "name": "Western Australia",
+      "elo": 1477,
+      "played": 12
+    },
+    {
+      "name": "South Ossetia",
+      "elo": 1477,
+      "played": 17
+    },
+    {
+      "name": "Kyrgyzstan",
+      "elo": 1476,
+      "played": 190
+    },
+    {
+      "name": "Găgăuzia",
+      "elo": 1476,
+      "played": 3
+    },
+    {
+      "name": "Ryūkyū",
+      "elo": 1475,
+      "played": 1
+    },
+    {
+      "name": "West Papua",
+      "elo": 1475,
+      "played": 2
+    },
+    {
+      "name": "Romani people",
+      "elo": 1473,
+      "played": 7
+    },
+    {
+      "name": "Marshall Islands",
+      "elo": 1473,
+      "played": 2
+    },
+    {
+      "name": "Guyana",
+      "elo": 1472,
+      "played": 237
+    },
+    {
+      "name": "Montenegro",
+      "elo": 1472,
+      "played": 168
+    },
+    {
+      "name": "Niue",
+      "elo": 1472,
+      "played": 2
+    },
+    {
+      "name": "North Korea",
+      "elo": 1470,
+      "played": 362
+    },
+    {
+      "name": "Comoros",
+      "elo": 1469,
+      "played": 151
+    },
+    {
+      "name": "Western Isles",
+      "elo": 1468,
+      "played": 34
+    },
+    {
+      "name": "Two Sicilies",
+      "elo": 1467,
+      "played": 6
+    },
+    {
+      "name": "Sierra Leone",
+      "elo": 1464,
+      "played": 283
+    },
+    {
+      "name": "Fiji",
+      "elo": 1464,
+      "played": 253
+    },
+    {
+      "name": "El Salvador",
+      "elo": 1463,
+      "played": 508
+    },
+    {
+      "name": "Kazakhstan",
+      "elo": 1463,
+      "played": 269
+    },
+    {
+      "name": "Monaco",
+      "elo": 1463,
+      "played": 24
+    },
+    {
+      "name": "Western Sahara",
+      "elo": 1462,
+      "played": 9
+    },
+    {
+      "name": "Ticino",
+      "elo": 1462,
+      "played": 2
+    },
+    {
+      "name": "Malaysia",
+      "elo": 1459,
+      "played": 701
+    },
+    {
+      "name": "Togo",
+      "elo": 1459,
+      "played": 418
+    },
+    {
+      "name": "Solomon Islands",
+      "elo": 1459,
+      "played": 204
+    },
+    {
+      "name": "Mozambique",
+      "elo": 1458,
+      "played": 375
+    },
+    {
+      "name": "Vanuatu",
+      "elo": 1453,
+      "played": 200
+    },
+    {
+      "name": "Sudan",
+      "elo": 1452,
+      "played": 423
+    },
+    {
+      "name": "Ambazonia",
+      "elo": 1452,
+      "played": 6
+    },
+    {
+      "name": "Mayotte",
+      "elo": 1451,
+      "played": 38
+    },
+    {
+      "name": "Liberia",
+      "elo": 1450,
+      "played": 282
+    },
+    {
+      "name": "Tajikistan",
+      "elo": 1450,
+      "played": 201
+    },
+    {
+      "name": "Chechnya",
+      "elo": 1448,
+      "played": 3
+    },
+    {
+      "name": "Kuwait",
+      "elo": 1445,
+      "played": 668
+    },
+    {
+      "name": "Kenya",
+      "elo": 1441,
+      "played": 574
+    },
+    {
+      "name": "Zanzibar",
+      "elo": 1440,
+      "played": 155
+    },
+    {
+      "name": "Orkney",
+      "elo": 1440,
+      "played": 28
+    },
+    {
+      "name": "Faroe Islands",
+      "elo": 1439,
+      "played": 287
+    },
+    {
+      "name": "Saint Barthélemy",
+      "elo": 1439,
+      "played": 10
+    },
+    {
+      "name": "Greenland",
+      "elo": 1437,
+      "played": 77
+    },
+    {
+      "name": "Saint Helena",
+      "elo": 1435,
+      "played": 8
+    },
+    {
+      "name": "Palau",
+      "elo": 1432,
+      "played": 2
+    },
+    {
+      "name": "Lebanon",
+      "elo": 1431,
+      "played": 313
+    },
+    {
+      "name": "Sark",
+      "elo": 1431,
+      "played": 4
+    },
+    {
+      "name": "Namibia",
+      "elo": 1428,
+      "played": 279
+    },
+    {
+      "name": "Micronesia",
+      "elo": 1427,
+      "played": 7
+    },
+    {
+      "name": "Malawi",
+      "elo": 1426,
+      "played": 620
+    },
+    {
+      "name": "Vietnam Republic",
+      "elo": 1424,
+      "played": 63
+    },
+    {
+      "name": "Barawa",
+      "elo": 1424,
+      "played": 12
+    },
+    {
+      "name": "Luxembourg",
+      "elo": 1422,
+      "played": 389
+    },
+    {
+      "name": "Vietnam",
+      "elo": 1421,
+      "played": 294
+    },
+    {
+      "name": "Hitra",
+      "elo": 1421,
+      "played": 23
+    },
+    {
+      "name": "Mauritania",
+      "elo": 1420,
+      "played": 266
+    },
+    {
+      "name": "Equatorial Guinea",
+      "elo": 1419,
+      "played": 179
+    },
+    {
+      "name": "Vatican City",
+      "elo": 1413,
+      "played": 8
+    },
+    {
+      "name": "Saint Pierre and Miquelon",
+      "elo": 1412,
+      "played": 7
+    },
+    {
+      "name": "Lesotho",
+      "elo": 1411,
+      "played": 296
+    },
+    {
+      "name": "Wallis Islands and Futuna",
+      "elo": 1411,
+      "played": 22
+    },
+    {
+      "name": "Tanzania",
+      "elo": 1410,
+      "played": 515
+    },
+    {
+      "name": "Rwanda",
+      "elo": 1410,
+      "played": 280
+    },
+    {
+      "name": "Chagos Islands",
+      "elo": 1406,
+      "played": 16
+    },
+    {
+      "name": "Darfur",
+      "elo": 1404,
+      "played": 7
+    },
+    {
+      "name": "Armenia",
+      "elo": 1400,
+      "played": 272
+    },
+    {
+      "name": "Raetia",
+      "elo": 1400,
+      "played": 26
+    },
+    {
+      "name": "Saare County",
+      "elo": 1399,
+      "played": 35
+    },
+    {
+      "name": "Papua New Guinea",
+      "elo": 1397,
+      "played": 144
+    },
+    {
+      "name": "Puerto Rico",
+      "elo": 1395,
+      "played": 140
+    },
+    {
+      "name": "Zimbabwe",
+      "elo": 1394,
+      "played": 470
+    },
+    {
+      "name": "French Guiana",
+      "elo": 1390,
+      "played": 157
+    },
+    {
+      "name": "Cuba",
+      "elo": 1385,
+      "played": 335
+    },
+    {
+      "name": "Kiribati",
+      "elo": 1382,
+      "played": 11
+    },
+    {
+      "name": "Ethiopia",
+      "elo": 1380,
+      "played": 345
+    },
+    {
+      "name": "Turkmenistan",
+      "elo": 1379,
+      "played": 175
+    },
+    {
+      "name": "Estonia",
+      "elo": 1374,
+      "played": 430
+    },
+    {
+      "name": "Saint Vincent and the Grenadines",
+      "elo": 1371,
+      "played": 216
+    },
+    {
+      "name": "Yemen DPR",
+      "elo": 1366,
+      "played": 25
+    },
+    {
+      "name": "Botswana",
+      "elo": 1361,
+      "played": 331
+    },
+    {
+      "name": "Tibet",
+      "elo": 1357,
+      "played": 21
+    },
+    {
+      "name": "Falkland Islands",
+      "elo": 1357,
+      "played": 33
+    },
+    {
+      "name": "Frøya",
+      "elo": 1355,
+      "played": 37
+    },
+    {
+      "name": "Burundi",
+      "elo": 1353,
+      "played": 216
+    },
+    {
+      "name": "Azerbaijan",
+      "elo": 1350,
+      "played": 310
+    },
+    {
+      "name": "Cyprus",
+      "elo": 1344,
+      "played": 404
+    },
+    {
+      "name": "Saint Martin",
+      "elo": 1344,
+      "played": 68
+    },
+    {
+      "name": "Tuvalu",
+      "elo": 1343,
+      "played": 39
+    },
+    {
+      "name": "Bermuda",
+      "elo": 1341,
+      "played": 185
+    },
+    {
+      "name": "Congo",
+      "elo": 1333,
+      "played": 356
+    },
+    {
+      "name": "Malta",
+      "elo": 1331,
+      "played": 446
+    },
+    {
+      "name": "Guinea-Bissau",
+      "elo": 1331,
+      "played": 185
+    },
+    {
+      "name": "Sint Maarten",
+      "elo": 1327,
+      "played": 60
+    },
+    {
+      "name": "Grenada",
+      "elo": 1326,
+      "played": 241
+    },
+    {
+      "name": "Central African Republic",
+      "elo": 1322,
+      "played": 130
+    },
+    {
+      "name": "Latvia",
+      "elo": 1317,
+      "played": 354
+    },
+    {
+      "name": "Lithuania",
+      "elo": 1306,
+      "played": 352
+    },
+    {
+      "name": "South Sudan",
+      "elo": 1303,
+      "played": 78
+    },
+    {
+      "name": "Yemen",
+      "elo": 1296,
+      "played": 258
+    },
+    {
+      "name": "India",
+      "elo": 1290,
+      "played": 435
+    },
+    {
+      "name": "Saint Kitts and Nevis",
+      "elo": 1289,
+      "played": 224
+    },
+    {
+      "name": "Eswatini",
+      "elo": 1288,
+      "played": 271
+    },
+    {
+      "name": "Samoa",
+      "elo": 1285,
+      "played": 71
+    },
+    {
+      "name": "Philippines",
+      "elo": 1281,
+      "played": 295
+    },
+    {
+      "name": "Belize",
+      "elo": 1281,
+      "played": 121
+    },
+    {
+      "name": "Moldova",
+      "elo": 1281,
+      "played": 298
+    },
+    {
+      "name": "Hong Kong",
+      "elo": 1277,
+      "played": 378
+    },
+    {
+      "name": "Singapore",
+      "elo": 1262,
+      "played": 589
+    },
+    {
+      "name": "Afghanistan",
+      "elo": 1257,
+      "played": 141
+    },
+    {
+      "name": "Saint Lucia",
+      "elo": 1252,
+      "played": 208
+    },
+    {
+      "name": "Montserrat",
+      "elo": 1242,
+      "played": 66
+    },
+    {
+      "name": "Mauritius",
+      "elo": 1238,
+      "played": 292
+    },
+    {
+      "name": "Eritrea",
+      "elo": 1225,
+      "played": 71
+    },
+    {
+      "name": "Alderney",
+      "elo": 1218,
+      "played": 77
+    },
+    {
+      "name": "Northern Mariana Islands",
+      "elo": 1218,
+      "played": 30
+    },
+    {
+      "name": "Chad",
+      "elo": 1214,
+      "played": 133
+    },
+    {
+      "name": "Aruba",
+      "elo": 1204,
+      "played": 101
+    },
+    {
+      "name": "São Tomé and Príncipe",
+      "elo": 1202,
+      "played": 71
+    },
+    {
+      "name": "Bonaire",
+      "elo": 1196,
+      "played": 44
+    },
+    {
+      "name": "Dominica",
+      "elo": 1184,
+      "played": 184
+    },
+    {
+      "name": "Nepal",
+      "elo": 1173,
+      "played": 268
+    },
+    {
+      "name": "Tonga",
+      "elo": 1166,
+      "played": 68
+    },
+    {
+      "name": "Barbados",
+      "elo": 1165,
+      "played": 264
+    },
+    {
+      "name": "Cook Islands",
+      "elo": 1164,
+      "played": 53
+    },
+    {
+      "name": "Bangladesh",
+      "elo": 1157,
+      "played": 305
+    },
+    {
+      "name": "Myanmar",
+      "elo": 1150,
+      "played": 408
+    },
+    {
+      "name": "Antigua and Barbuda",
+      "elo": 1135,
+      "played": 231
+    },
+    {
+      "name": "American Samoa",
+      "elo": 1135,
+      "played": 55
+    },
+    {
+      "name": "Somalia",
+      "elo": 1125,
+      "played": 121
+    },
+    {
+      "name": "Maldives",
+      "elo": 1121,
+      "played": 233
+    },
+    {
+      "name": "Taiwan",
+      "elo": 1114,
+      "played": 184
+    },
+    {
+      "name": "Andorra",
+      "elo": 1109,
+      "played": 229
+    },
+    {
+      "name": "Gibraltar",
+      "elo": 1102,
+      "played": 160
+    },
+    {
+      "name": "Cambodia",
+      "elo": 1100,
+      "played": 271
+    },
+    {
+      "name": "Mongolia",
+      "elo": 1088,
+      "played": 99
+    },
+    {
+      "name": "Pakistan",
+      "elo": 1081,
+      "played": 209
+    },
+    {
+      "name": "Cayman Islands",
+      "elo": 1073,
+      "played": 120
+    },
+    {
+      "name": "Djibouti",
+      "elo": 1067,
+      "played": 104
+    },
+    {
+      "name": "Guam",
+      "elo": 1046,
+      "played": 123
+    },
+    {
+      "name": "Bahamas",
+      "elo": 1042,
+      "played": 67
+    },
+    {
+      "name": "Sri Lanka",
+      "elo": 1036,
+      "played": 238
+    },
+    {
+      "name": "Seychelles",
+      "elo": 1032,
+      "played": 176
+    },
+    {
+      "name": "British Virgin Islands",
+      "elo": 1029,
+      "played": 123
+    },
+    {
+      "name": "Bhutan",
+      "elo": 1013,
+      "played": 110
+    },
+    {
+      "name": "Turks and Caicos Islands",
+      "elo": 1010,
+      "played": 52
+    },
+    {
+      "name": "Laos",
+      "elo": 996,
+      "played": 206
+    },
+    {
+      "name": "Brunei",
+      "elo": 984,
+      "played": 137
+    },
+    {
+      "name": "United States Virgin Islands",
+      "elo": 968,
+      "played": 78
+    },
+    {
+      "name": "Anguilla",
+      "elo": 952,
+      "played": 91
+    },
+    {
+      "name": "Timor-Leste",
+      "elo": 937,
+      "played": 86
+    },
+    {
+      "name": "Liechtenstein",
+      "elo": 928,
+      "played": 259
+    },
+    {
+      "name": "Macau",
+      "elo": 927,
+      "played": 147
+    },
+    {
+      "name": "San Marino",
+      "elo": 870,
+      "played": 225
+    }
+  ]
+}
