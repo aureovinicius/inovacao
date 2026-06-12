@@ -397,11 +397,12 @@ async function loadPredictions(ver) {
 }
 
 async function renderPredictions() {
-  // botões v1/v2
-  $$('#odds-version .ver-btn').forEach(btn => {
-    btn.classList.toggle('is-active', btn.dataset.ver === oddsVer);
-    btn.onclick = () => { if (oddsVer !== btn.dataset.ver) { oddsVer = btn.dataset.ver; renderPredictions(); } };
-  });
+  // seletor de versão (v1/v2), no estilo dos filtros da aba Jogos
+  const sel = $('#odds-version-select');
+  if (sel) {
+    sel.value = oddsVer;
+    sel.onchange = () => { oddsVer = sel.value; renderPredictions(); };
+  }
   let data = await loadPredictions(oddsVer);
   if (!data && oddsVer === 'v2') data = await loadPredictions('v1'); // v2 ainda não publicada → cai no v1
   const tb = $('#odds-table tbody');
