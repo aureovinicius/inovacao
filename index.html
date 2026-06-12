@@ -122,11 +122,9 @@
       <div class="panel">
         <h2 data-i18n="odds_title">Probabilidades (modelo)</h2>
         <p class="bracket-note" data-i18n="odds_note">Grupos: cálculo exato. Mata-mata: aproximação v1.</p>
-        <div class="odds-version">
-          <select id="odds-version-select" class="team-select" aria-label="Base do modelo">
-            <option value="v1" data-i18n="odds_v1">v1 · base padrão</option>
-            <option value="v2" data-i18n="odds_v2">v2 · base 1970+</option>
-          </select>
+        <div class="odds-version" id="odds-version">
+          <button class="ver-btn is-active" data-ver="v1" type="button" data-i18n="odds_v1">v1 · base padrão</button>
+          <button class="ver-btn" data-ver="v2" type="button" data-i18n="odds_v2">v2 · base 1970+</button>
         </div>
         <div class="table-scroll">
           <table class="data-table" id="odds-table">
