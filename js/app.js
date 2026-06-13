@@ -223,7 +223,7 @@ function renderToday() {
 function renderScorers() {
   const scorers = DATA.scorers?.scorers || [];
   $('#mini-scorers').innerHTML = scorers.slice(0, 5).map((s, i) =>
-    `<li><span class="pos">${i + 1}</span>${teamCell(s.team)}
+    `<li><span class="pos">${i + 1}</span>${crest(s.team)}
      <span>${s.player?.name ?? '—'}</span><span class="goals">${s.goals ?? 0} ⚽</span></li>`
   ).join('') || `<li class="empty">${t('no_scorers')}</li>`;
 
